@@ -15,3 +15,6 @@ DATABASES = {
 		'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
 	}
 }
+
+# Fill in path to Tigerchat on local machine
+PATH_TO_TIGERCHAT = '/path/to/tigerchat/on/local/machine/'

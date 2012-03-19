@@ -1,0 +1,2 @@
+# deploy apache
+sudo $PATH_TO_TIGERCHAT/server/init.d/apache2 start -f $PATH_TO_TIGERCHAT/server/apache/httpd.conf
