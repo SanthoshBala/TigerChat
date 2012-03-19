@@ -1,0 +1,6 @@
+*.pyc
+.project
+localsettings.py
+tigerchat.db
+.settings/*
+*~
