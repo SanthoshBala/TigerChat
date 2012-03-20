@@ -1,3 +1,7 @@
 # apache
-sudo $PATH_TO_TIGERCHAT/server/init.d/apache2 stop
-sudo $PATH_TO_TIGERCHAT/server/init.d/apache2 start -f $PATH_TO_TIGERCHAT/server/apache/httpd.conf
+sudo cp $PATH_TO_TIGERCHAT/apache/mod_wsgi/mod_wsgi.so /etc/apache2/mod_wsgi.so
+sudo cp $PATH_TO_TIGERCHAT/apache/apache2.conf /etc/apache2/apache2.conf
+sudo cp $PATH_TO_TIGERCHAT/apache/httpd.conf /etc/apache2/httpd.conf
+
+sudo $PATH_TO_TIGERCHAT/apache/apache2 stop
+sudo $PATH_TO_TIGERCHAT/apache/apache2 start -f /etc/apache2/httpd.conf
