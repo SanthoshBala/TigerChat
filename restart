@@ -1,7 +1,26 @@
-# apache
+### KILL SERVICES
+
+# 1 - Apache
 sudo cp $PATH_TO_TIGERCHAT/apache/mod_wsgi/mod_wsgi.so /etc/apache2/mod_wsgi.so
 sudo cp $PATH_TO_TIGERCHAT/apache/apache2.conf /etc/apache2/apache2.conf
 sudo cp $PATH_TO_TIGERCHAT/apache/httpd.conf /etc/apache2/httpd.conf
-
 sudo $PATH_TO_TIGERCHAT/apache/apache2 stop
+
+# 2 - Django
+# Doesn't seem to have an explicit stop command, so maybe have to just
+# kill all Django processes. For now, just call runserver again...
+
+# 3 - ejabberd
+sudo cp $PATH_TO_TIGERCHAT/ejabberd/ejabberd.cfg /etc/ejabberd/ejabberd.cfg
+sudo /etc/init.d/ejabberd stop
+
+### DEPLOY SERVICES
+
+# 1 - Apache
 sudo $PATH_TO_TIGERCHAT/apache/apache2 start -f /etc/apache2/httpd.conf
+
+# 2 - Django
+sudo python manage.py runserver
+
+# ejabberd
+sudo /etc/init.d/ejabberd start
