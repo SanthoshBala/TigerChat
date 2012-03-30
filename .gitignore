@@ -5,3 +5,5 @@ tigerchat.db
 ./apache/mod_wsgi/mod_wsgi.so
 .settings/*
 *~
+./apache/mod_wsgi/mod_wsgi.so
+
