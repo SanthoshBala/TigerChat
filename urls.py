@@ -6,7 +6,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^$', 'tigerchat.views.home', name='home'),
+    url(r'^$', 'TigerChat.views.home', name='home'),
     # url(r'^tigerchat/', include('tigerchat.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
