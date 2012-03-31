@@ -2,7 +2,7 @@
 .project
 localsettings.py
 tigerchat.db
-./apache/mod_wsgi/mod_wsgi.so
+./apache/mod_wsgi/*
 .settings/*
 *~
 ./apache/mod_wsgi/mod_wsgi.so
