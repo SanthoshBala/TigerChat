@@ -6,16 +6,16 @@ LoadModule wsgi_module mod_wsgi.so
     DocumentRoot /home/santhosh/workspace/TigerChat/
     
     Alias /media/ /home/santhosh/workspace/TigerChat/media/
-    Alias /favicon.ico ${PATH_TO_TIGERCHAT}/favicon.ico
+    Alias /favicon.ico /home/santhosh/workspace/TigerChat/media/favicon.ico
     
-    <Directory ${PATH_TO_TIGERCHAT}/media>
+    <Directory /home/santhosh/workspace/TigerChat/media>
         Order allow,deny
         Allow from all
     </Directory>
     
     WSGIScriptAlias / /home/santhosh/workspace/TigerChat/apache/django.wsgi
     
-    <Directory ${PATH_TO_TIGERCHAT}/apache>
+    <Directory /home/santhosh/workspace/TigerChat/apache>
         Order allow,deny
         Allow from all
     </Directory>
