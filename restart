@@ -19,8 +19,9 @@ sudo /etc/init.d/ejabberd stop
 # 1 - Apache
 sudo $PATH_TO_TIGERCHAT/apache/apache2 start -f /etc/apache2/httpd.conf
 
-# 2 - Django
-sudo python manage.py runserver
 
 # ejabberd
 sudo /etc/init.d/ejabberd start
+
+# 2 - Django
+sudo python manage.py runserver
