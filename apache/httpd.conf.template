@@ -3,19 +3,19 @@ LoadModule wsgi_module mod_wsgi.so
 <VirtualHost *:80>
     ServerName www.tigerchat.com
     ServerAlias tigerchat.com
-    DocumentRoot /home/santhosh/workspace/TigerChat/
+    DocumentRoot /path/to/tigerchat/
     
-    Alias /media/ /home/santhosh/workspace/TigerChat/media/
-    Alias /favicon.ico /home/santhosh/workspace/TigerChat/media/favicon.ico
+    Alias /media/ /path/to/tigerchat/media/
+    Alias /favicon.ico /path/to/tigerchat/media/favicon.ico
     
-    <Directory /home/santhosh/workspace/TigerChat/media>
+    <Directory /path/to/tigerchat/media>
         Order allow,deny
         Allow from all
     </Directory>
     
-    WSGIScriptAlias / /home/santhosh/workspace/TigerChat/apache/django.wsgi
+    WSGIScriptAlias / /path/to/tigerchat/apache/django.wsgi
     
-    <Directory /home/santhosh/workspace/TigerChat/apache>
+    <Directory /path/to/tigerchat/apache>
         Order allow,deny
         Allow from all
     </Directory>
