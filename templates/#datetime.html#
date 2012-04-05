@@ -1,0 +1,15 @@
+<html>
+<body>
+
+<h1>My First Web Page</h1>
+
+<script type="text/javascript">
+  while(True) {
+  document.write()
+  
+}
+
+</script>
+
+</body>
+</html> 

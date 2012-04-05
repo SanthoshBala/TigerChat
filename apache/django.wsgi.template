@@ -4,9 +4,8 @@ import sys
 # os.environ['PATH_TO_TIGERCHAT'] is what we want to maximize
 # generality, but for some reason this reference generates a
 # KeyError exception
-
-PATH_TO_WORKSPACE = '/home/bansal/workspace/'
-PATH_TO_TIGERCHAT = '/home/bansal/workspace/TigerChat/'
+PATH_TO_WORKSPACE = '/path/to/tigerchat's/parent/directory/'
+PATH_TO_TIGERCHAT = '/path/to/tigerchat/'
 
 if PATH_TO_WORKSPACE not in sys.path:
     sys.path.append(PATH_TO_WORKSPACE)
