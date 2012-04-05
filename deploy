@@ -1,12 +1,31 @@
-# deploy apache
+### KILL SERVICES
+
+# Dealing with static resources
+sudo python manage.py collectstatic -v 0 --noinput
+
+# 1 - Apache
 sudo cp $PATH_TO_TIGERCHAT/apache/mod_wsgi/mod_wsgi.so /etc/apache2/mod_wsgi.so
+sudo cp /usr/lib/apache2/modules/mod_proxy.so /etc/apache2/mod_proxy.so
+sudo cp /usr/lib/apache2/modules/mod_proxy_http.so /etc/apache2/mod_proxy_http.so
 sudo cp $PATH_TO_TIGERCHAT/apache/apache2.conf /etc/apache2/apache2.conf
 sudo cp $PATH_TO_TIGERCHAT/apache/httpd.conf /etc/apache2/httpd.conf
+
+# 2 - Django
+# Doesn't seem to have an explicit stop command, so maybe have to just
+# kill all Django processes. For now, just call runserver again...
+
+# 3 - ejabberd
+sudo cp $PATH_TO_TIGERCHAT/ejabberd/ejabberd.cfg /etc/ejabberd/ejabberd.cfg
+
+
+### DEPLOY SERVICES
+
+# 1 - Apache
 sudo $PATH_TO_TIGERCHAT/apache/apache2 start -f /etc/apache2/httpd.conf
 
-# deploy django
-sudo python manage.py runserver
 
-# deploy ejabberd
-sudo cp $PATH_TO_TIGERCHAT/ejabberd/ejabberd.cfg /etc/ejabberd/ejabberd.cfg
+# ejabberd
 sudo /etc/init.d/ejabberd start
+
+# 2 - Django
+sudo python manage.py runserver

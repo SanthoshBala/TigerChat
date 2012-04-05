@@ -1,0 +1,4 @@
+
+sudo $PATH_TO_TIGERCHAT/apache/apache2 stop
+sudo /etc/init.d/ejabberd stop
+killall python	

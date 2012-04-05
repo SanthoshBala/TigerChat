@@ -1,7 +1,12 @@
 ### KILL SERVICES
 
+# Dealing with static resources
+sudo python manage.py collectstatic -v 0 --noinput
+
 # 1 - Apache
 sudo cp $PATH_TO_TIGERCHAT/apache/mod_wsgi/mod_wsgi.so /etc/apache2/mod_wsgi.so
+sudo cp /usr/lib/apache2/modules/mod_proxy.so /etc/apache2/mod_proxy.so
+sudo cp /usr/lib/apache2/modules/mod_proxy_http.so /etc/apache2/mod_proxy_http.so
 sudo cp $PATH_TO_TIGERCHAT/apache/apache2.conf /etc/apache2/apache2.conf
 sudo cp $PATH_TO_TIGERCHAT/apache/httpd.conf /etc/apache2/httpd.conf
 sudo $PATH_TO_TIGERCHAT/apache/apache2 stop
@@ -13,6 +18,9 @@ sudo $PATH_TO_TIGERCHAT/apache/apache2 stop
 # 3 - ejabberd
 sudo cp $PATH_TO_TIGERCHAT/ejabberd/ejabberd.cfg /etc/ejabberd/ejabberd.cfg
 sudo /etc/init.d/ejabberd stop
+
+
+
 
 ### DEPLOY SERVICES
 
