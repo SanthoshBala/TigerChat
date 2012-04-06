@@ -6,6 +6,23 @@ function log(msg)
     $('#log').append('<div></div>').append(document.createTextNode(msg));
 }
 
+function mysendmessage() {
+	var chat_msg = document.getElementById('message_to_send').value;
+		
+	var recipient = document.getElementById('chat_recipient').value;
+	var callee = document.getElementById('jid').value;
+		
+	var reply = $msg({to: recipient, from: callee, type: 'chat'})
+            .c("body").t(chat_msg);//(Strophe.copyElement(body));
+
+	connection.send(reply.tree());
+
+	log(callee + ': ' + chat_msg);
+   
+	
+}
+
+
 function onConnect(status)
 {
     if (status == Strophe.Status.CONNECTING) {
@@ -37,14 +54,21 @@ function onMessage(msg) {
     if (type == "chat" && elems.length > 0) {
 	var body = elems[0];
 
-	log('ECHOBOT: I got a message from ' + from + ': ' + 
-	    Strophe.getText(body));
+	log(from + ': ' + Strophe.getText(body));
     
-	var reply = $msg({to: from, from: to, type: 'chat'})
-            .cnode(Strophe.copyElement(body));
-	connection.send(reply.tree());
+    //log('Rohan');
+    //log('From: ' + from);
+    //log('To: ' + to);
+    //log('Checking dynamic nature.');
+    
+    var to2 = 'rohan2@localhost';
+	var from2 = 'rohan@localhost';
+	
+	var reply = $msg({to: to2, from: from2, type: 'chat'}).c("body").t('Test Message!');//(Strophe.copyElement(body));
 
-	log('ECHOBOT: I sent ' + from + ': ' + Strophe.getText(body));
+	//connection.send(reply.tree());
+
+	//log('ECHOBOT: I sent ' + from + ': ' + Strophe.getText(body));
     }
 
     // we must return true to keep the handler alive.  

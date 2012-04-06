@@ -9,7 +9,12 @@
   <script type='text/javascript'
 	  src='/static/echobot.js'></script>
 </head>
+
+
+
 <body>
+	
+	
   <div id='login' style='text-align: center'>
     <form name='cred'>
       <label for='jid'>JID:</label>
@@ -20,6 +25,15 @@
     </form>
   </div>
   <hr />
+  
+  
+  
+  <div id='div_send_message' style='text-align: center'>
+  To: <input type='text' id='chat_recipient' /> <br/><br/>
+  Message: <input type='text' id='message_to_send' /> <br/><br/> 
+  <input type='button' id='sendmessage' value='sendmessage' onclick='mysendmessage()'/>
+  </div>
+  
   <div id='log'></div>
   
   
