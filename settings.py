@@ -3,7 +3,7 @@
 # import stuff from localsettings
 # localsettings not source controlled, but localsettings.template
 from localsettings import *
-
+import _ssl;_ssl.PROTOCOL_SSLv23 = _ssl.PROTOCOL_SSLv3
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -99,17 +99,18 @@ MIDDLEWARE_CLASSES = (
 	'django.middleware.csrf.CsrfViewMiddleware',
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
 	'django.contrib.messages.middleware.MessageMiddleware',
-#    'django_cas.middleware.CASMiddleware',
-#    'django.middleware.doc.XViewMiddleware',
+    'django_cas.middleware.CASMiddleware',
+    'django.middleware.doc.XViewMiddleware',
 )
 
-#CAS_SERVER_URL =  'https://fed.princeton.edu/cas/login'
-#CAS_REDIRECT_URL = '/time/'
+CAS_SERVER_URL =  'https://fed.princeton.edu/cas/login'
+CAS_REDIRECT_URL = '/tigerchat/'
+CAS_VERSION = '1'
 
-#AUTHENTICATION_BACKENDS = (
-#    'django.contrib.auth.backends.ModelBackend',
-#    'django_cas.backends.CASBackend',
-#)
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'django_cas.backends.CASBackend',
+)
 
 
 

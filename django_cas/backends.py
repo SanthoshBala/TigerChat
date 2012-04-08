@@ -7,6 +7,37 @@ from django.conf import settings
 
 from django_cas.models import User
 
+
+
+import httplib, ssl, urllib2, socket
+class HTTPSConnectionV3(httplib.HTTPSConnection):
+    def __init__(self, *args, **kwargs):
+        httplib.HTTPSConnection.__init__(self, *args, **kwargs)
+        
+    def connect(self):
+        sock = socket.create_connection((self.host, self.port), self.timeout)
+        if self._tunnel_host:
+            self.sock = sock
+            self._tunnel()
+        try:
+            self.sock = ssl.wrap_socket(sock, self.key_file, self.cert_file, ssl_version=ssl.PROTOCOL_SSLv3)
+        except ssl.SSLError, e:
+            print("Trying SSLv3.")
+            self.sock = ssl.wrap_socket(sock, self.key_file, self.cert_file, ssl_version=ssl.PROTOCOL_SSLv23)
+            
+class HTTPSHandlerV3(urllib2.HTTPSHandler):
+    def https_open(self, req):
+        return self.do_open(HTTPSConnectionV3, req)
+# install opener
+urllib2.install_opener(urllib2.build_opener(HTTPSHandlerV3()))
+
+
+
+
+
+
+
+
 __all__ = ['CASBackend']
 
 def _verify_cas1(ticket, service):
@@ -18,7 +49,7 @@ def _verify_cas1(ticket, service):
     params = {'ticket': ticket, 'service': service}
     url = (urljoin(settings.CAS_SERVER_URL, 'validate') + '?' +
            urlencode(params))
-    page = urlopen(url)
+    page = urllib2.urlopen(url)
     try:
         verified = page.readline().strip()
         if verified == 'yes':
@@ -43,7 +74,7 @@ def _verify_cas2(ticket, service):
     params = {'ticket': ticket, 'service': service}
     url = (urljoin(settings.CAS_SERVER_URL, 'proxyValidate') + '?' +
            urlencode(params))
-    page = urlopen(url)
+    page = urllib2.urlopen(url)
     try:
         response = page.read()
         tree = ElementTree.fromstring(response)
