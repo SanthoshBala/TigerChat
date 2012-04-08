@@ -1,9 +1,45 @@
 var BOSH_SERVICE = '/xmpp-httpbind';
 var connection = null;
+var chatBoxes = new Array();
 
 function log(msg) 
 {
     $('#log').append('<div></div>').append(document.createTextNode(msg));
+}
+
+function makeNewChatbox() {
+	
+	var chat_with_name = document.getElementById('chatbox_id').value;  // The name of the person to begin chatting with
+	var new_name = "chatbox_" + chat_with_name;  // Creating the ID (chatbox_name)
+	
+	// If it has already been created
+	if ($("#" + new_name).length > 0) {
+		// If it's open
+		if ($('#' + new_name).dialog('isOpen') == true) {
+			$('#' + new_name).append('tried to close.');
+			return;
+		}
+		// if its not open, open it
+		else {
+			 $('#' + new_name).dialog('open');
+		}
+	}
+	
+	
+	$(" <div />" ).attr("id",new_name)
+	.html('<div style = "background-color: #ddd;">' + chat_with_name + '</div>')
+	.appendTo($( "body" ));
+	
+	$("#" + new_name).dialog({
+        autoOpen: true,
+        buttons: { 'Close button': function() { $(this).dialog('close'); } },
+        closeOnEscape: true,
+        resizable: true
+    });
+	
+	chatBoxes.push(chat_with_name);
+	
+	
 }
 
 function mysendmessage() {
@@ -76,6 +112,10 @@ function onMessage(msg) {
     return true;
 }
 
+
+
+
+
 $(document).ready(function () {
     connection = new Strophe.Connection(BOSH_SERVICE);
 
@@ -85,6 +125,40 @@ $(document).ready(function () {
 
     // Uncomment the following line to see all the debug output.
     //Strophe.log = function (level, msg) { log('LOG: ' + msg); };
+
+	var $dialog = $('<div></div>')
+		.html('This dialog will show every time!')
+		.dialog({
+			autoOpen: false,
+			title: 'Basic Dialog'
+		});
+
+	$('#opener').click(function() {
+		$dialog.dialog('open');
+		// prevent the default action, e.g., following a link
+		return false;
+	});
+	
+
+
+
+	$('#dialog4').dialog({
+        autoOpen: false,
+        show: 'slide', // bounce//explode//clip//fold//highlight//pulsate//puff//scale//shake//slide//blind
+        hide: 'explode',
+        buttons: { 'Close': function() { $(this).dialog('close'); } },
+        closeOnEscape: true,
+        resizable: false
+    });
+    $('#toggle4').click(function() {
+        if ($('#dialog4').dialog('isOpen') == true)
+            $('#dialog4').dialog('close');
+        else
+            $('#dialog4').dialog('open');
+        return false;
+    });
+    
+
 
 
     $('#connect').bind('click', function () {

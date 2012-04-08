@@ -99,7 +99,19 @@ MIDDLEWARE_CLASSES = (
 	'django.middleware.csrf.CsrfViewMiddleware',
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
 	'django.contrib.messages.middleware.MessageMiddleware',
+#    'django_cas.middleware.CASMiddleware',
+#    'django.middleware.doc.XViewMiddleware',
 )
+
+#CAS_SERVER_URL =  'https://fed.princeton.edu/cas/login'
+#CAS_REDIRECT_URL = '/time/'
+
+#AUTHENTICATION_BACKENDS = (
+#    'django.contrib.auth.backends.ModelBackend',
+#    'django_cas.backends.CASBackend',
+#)
+
+
 
 ROOT_URLCONF = 'TigerChat.urls'
 
@@ -108,6 +120,7 @@ TEMPLATE_DIRS = (
 	# Always use forward slashes, even on Windows.
 	# Don't forget to use absolute paths, not relative paths.
 	PATH_TO_TIGERCHAT + '/templates',
+	PATH_TO_TIGERCHAT + '/html',
 	PATH_TO_TIGERCHAT + '/strophe/examples'
 )
 

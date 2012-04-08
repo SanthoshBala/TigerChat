@@ -26,8 +26,10 @@ function makeNewChatbox() {
 	}
 	
 	
+	
 	$(" <div />" ).attr("id",new_name)
-	.html('<div style = "background-color: #ddd;">' + chat_with_name + '</div>')
+	.attr("title", chat_with_name)
+	.html('<div style = "background-color: #ddd;"> <div id = "text_area_' + chat_with_name + '">  chat area! </div> <input type="text" name="send_text_' + chat_with_name + '" id="send_text_' + chat_with_name + '" /></div>')
 	.appendTo($( "body" ));
 	
 	$("#" + new_name).dialog({

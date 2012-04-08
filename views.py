@@ -8,6 +8,9 @@ def home(request):
 
 def current_datetime(request):
    return render_to_response('echobot.html');
+   
+def tigerchat_main(request):
+   return render_to_response('tigerchathome.html');
 
 def new_datetime(request):
 	now = datetime.datetime.now()

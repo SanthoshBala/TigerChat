@@ -10,6 +10,9 @@ urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'TigerChat.views.home', name='home'),
     url(r'^time/$', 'TigerChat.views.current_datetime'),
+    url(r'^tigerchat/$', 'TigerChat.views.tigerchat_main'),
+    #url(r'^login/$', 'django_cas.views.login'),
+	#url(r'^logout/$', 'django_cas.views.logout'),
     #url(r'^newtime/$', 'TigerChat.views.new_datetime'),
     # url(r'^tigerchat/', include('tigerchat.foo.urls')),
 
