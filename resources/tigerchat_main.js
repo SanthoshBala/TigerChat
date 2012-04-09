@@ -7,6 +7,12 @@ function log(msg)
     $('#log').append('<div></div>').append(document.createTextNode(msg));
 }
 
+function TestFunc() {
+	log("hello");
+	$("#mynewchatbox").attr("title", "hello rohan.");
+}
+
+
 function makeNewChatbox() {
 	
 	var chat_with_name = document.getElementById('chatbox_id').value;  // The name of the person to begin chatting with
@@ -16,7 +22,8 @@ function makeNewChatbox() {
 	if ($("#" + new_name).length > 0) {
 		// If it's open
 		if ($('#' + new_name).dialog('isOpen') == true) {
-			$('#' + new_name).append('tried to close.');
+			$('#text_area_' + chat_with_name).append("<span>Rohan Bansal: Hello</span><br/>");
+			$('#text_area_' + chat_with_name).scrollTop($('#text_area_' + chat_with_name)[0].scrollHeight);
 			return;
 		}
 		// if its not open, open it
@@ -29,15 +36,16 @@ function makeNewChatbox() {
 	
 	$(" <div />" ).attr("id",new_name)
 	.attr("title", chat_with_name)
-	.html('<div style = "background-color: #ddd;"> <div id = "text_area_' + chat_with_name + '">  chat area! </div> <input type="text" name="send_text_' + chat_with_name + '" id="send_text_' + chat_with_name + '" /></div>')
+	.html('<div class = "scrolling_area" id = "text_area_' + chat_with_name + '">  chat area! </div> <input type="text" name="send_text_' + chat_with_name + '" id="send_text_' + chat_with_name + '" class="chatbox_text" />')
 	.appendTo($( "body" ));
 	
 	$("#" + new_name).dialog({
         autoOpen: true,
-        buttons: { 'Close button': function() { $(this).dialog('close'); } },
         closeOnEscape: true,
         resizable: true
     });
+	$("#" + new_name).addClass('chatbox_below_title');
+	$("#" + new_name).css({'height' : '250'});
 	
 	chatBoxes.push(chat_with_name);
 	
@@ -141,7 +149,14 @@ $(document).ready(function () {
 		return false;
 	});
 	
-
+	$('#mynewchatbox').dialog({
+        autoOpen: true,
+        show: 'slide', // bounce//explode//clip//fold//highlight//pulsate//puff//scale//shake//slide//blind
+        hide: 'explode',
+        buttons: { 'Close': function() { $(this).dialog('close'); } },
+        closeOnEscape: true,
+        resizable: true
+    });
 
 
 	$('#dialog4').dialog({
