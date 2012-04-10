@@ -7,66 +7,170 @@ function log(msg)
     $('#log').append('<div></div>').append(document.createTextNode(msg));
 }
 
-function TestFunc() {
-	log("hello");
-	$("#mynewchatbox").attr("title", "hello rohan.");
+
+function getTimeStamp(){
+	//log('hello.');
+	var currTime = new Date();
+	//log(currTime.getHours());
+	//log('bye');
+	var timeString = '[' + currTime.getHours() + ":" + currTime.getMinutes() + '] ' ;
+	//log(timeString);
+	return timeString;
 }
 
 
-function makeNewChatbox() {
+/************************************************************************
+ * This function handles when a user presses enter while inside a 
+ * chatbox. 
+ * 
+ * Argument: chat_with_name -> name of person that message needs to be
+ * 								sent to (without server, i.e. localhost)
+ * *********************************************************************/
+function HandleChatboxEnter(chat_with_name) {
+	var send_text = $('#send_text_' + chat_with_name).val();
+	var sender_name = document.getElementById('jid').value;
+	$('#send_text_' + chat_with_name).val('');
+	if(jQuery.trim(send_text).length <= 0) return;
 	
-	var chat_with_name = document.getElementById('chatbox_id').value;  // The name of the person to begin chatting with
+	var timestamp = getTimeStamp();
+
+	$('#text_area_' + chat_with_name).append('<span style = "color:#ff6633;" >' + timestamp + sender_name + ": " + '</span> <span style = "color:#000000;" >' + send_text + "</span><br/>");
+	$('#text_area_' + chat_with_name).scrollTop($('#text_area_' + chat_with_name)[0].scrollHeight);
+	sendMessage(send_text, sender_name, chat_with_name);
+}
+
+
+
+
+/************************************************************************
+ * Called when a user decides to begin chatting.  
+ * 
+ * The user to begin chatting with is grabbed from a text box.
+ ************************************************************************/
+function beginChat() {
+	var chat_with_name = document.getElementById('chatbox_id').value;
+	makeNewChatbox(chat_with_name);
+}
+
+
+/************************************************************************
+ * Makes a new chatbox, or reopens one that had already been made.
+ * 
+ * Argument: chat_with_name -> name of person to chat with (no server)
+ * *********************************************************************/
+function makeNewChatbox(chat_with_name) {
+	
+	
+	//var chat_with_name = document.getElementById('chatbox_id').value;  // The name of the person to begin chatting with
 	var new_name = "chatbox_" + chat_with_name;  // Creating the ID (chatbox_name)
 	
 	// If it has already been created
 	if ($("#" + new_name).length > 0) {
 		// If it's open
 		if ($('#' + new_name).dialog('isOpen') == true) {
-			$('#text_area_' + chat_with_name).append("<span>Rohan Bansal: Hello</span><br/>");
-			$('#text_area_' + chat_with_name).scrollTop($('#text_area_' + chat_with_name)[0].scrollHeight);
 			return;
 		}
 		// if its not open, open it
 		else {
 			 $('#' + new_name).dialog('open');
+			 $('#text_area_' + chat_with_name).scrollTop($('#text_area_' + chat_with_name)[0].scrollHeight);
 		}
 	}
 	
 	
-	
+	// Create the div container for the dialog
 	$(" <div />" ).attr("id",new_name)
 	.attr("title", chat_with_name)
-	.html('<div class = "scrolling_area" id = "text_area_' + chat_with_name + '">  chat area! </div> <input type="text" name="send_text_' + chat_with_name + '" id="send_text_' + chat_with_name + '" class="chatbox_text" />')
+	.html('<div class = "scrolling_area" id = "text_area_' + chat_with_name + '">  </div> <input type="text" name="send_text_' + chat_with_name + '" id="send_text_' + chat_with_name + '" class="chatbox_text" />')
 	.appendTo($( "body" ));
 	
+	// Set Properties of the dialog
 	$("#" + new_name).dialog({
         autoOpen: true,
         closeOnEscape: true,
         resizable: true
     });
+    // Add my class, and set default height
 	$("#" + new_name).addClass('chatbox_below_title');
 	$("#" + new_name).css({'height' : '250'});
+	$("#send_text_" + chat_with_name).css({'font-family': 'Tahoma,Arial,sans-serif'});
+	$("#send_text_" + chat_with_name).css({'font-size': '13px'});
 	
+	// Bind function for pressing enter
+	$('#send_text_' + chat_with_name).keypress(function(e)
+	{
+         if (e.which == 13) //e = 13 is enter
+         {
+			 HandleChatboxEnter(chat_with_name);
+		 }
+	});
+	
+	// Push name to chatboxes, to store!
 	chatBoxes.push(chat_with_name);
 	
 	
 }
 
-function mysendmessage() {
-	var chat_msg = document.getElementById('message_to_send').value;
-		
-	var recipient = document.getElementById('chat_recipient').value;
-	var callee = document.getElementById('jid').value;
-		
-	var reply = $msg({to: recipient, from: callee, type: 'chat'})
-            .c("body").t(chat_msg);//(Strophe.copyElement(body));
 
+/************************************************************************
+ * Send a message.
+ * 
+ * Message from sender, to recipient, and contents = message_to_send
+ * *********************************************************************/
+function sendMessage(message_to_send, sender, recipient) {
+	var recipient_full = recipient + "@localhost";
+	var reply = $msg( {to: recipient_full, from: sender, type: 'chat' } ).c("body").t(message_to_send);
 	connection.send(reply.tree());
+}
 
-	log(callee + ': ' + chat_msg);
-   
+
+/************************************************************************
+ * Show a message in the users text area. 
+ * 
+ * If no open window exists, open (or create).  
+ * 
+ * Message from 'from', contents = message
+ ************************************************************************/
+function showChatMessage(from, message) {
+	
+	makeNewChatbox(from);
+	var timestamp = getTimeStamp();
+	$('#text_area_' + from).append('<span style = "color:#0033cc;" >' + timestamp + from + ": " + '</span> <span style = "color:#000000;" >' + message + "</span><br/>");
+	$('#text_area_' + from).scrollTop($('#text_area_' + from)[0].scrollHeight);
 	
 }
+
+/************************************************************************
+ * Function handle for when a message is received.
+ * 
+ ***********************************************************************/
+function onMessage(msg) {
+    var to = msg.getAttribute('to');
+    var from = msg.getAttribute('from'); 
+    from = from.split('/')[0];
+    from = from.split('@')[0];
+    var type = msg.getAttribute('type');
+    var elems = msg.getElementsByTagName('body');
+
+    if (type == "chat" && elems.length > 0) {
+		var body = elems[0];
+		
+		showChatMessage(from, Strophe.getText(body));
+    }
+
+    // we must return true to keep the handler alive.  
+    // returning false would remove it after it finishes.
+    return true;
+}
+
+
+
+
+
+
+
+
+
 
 
 function onConnect(status)
@@ -91,40 +195,6 @@ function onConnect(status)
     }
 }
 
-function onMessage(msg) {
-    var to = msg.getAttribute('to');
-    var from = msg.getAttribute('from');
-    var type = msg.getAttribute('type');
-    var elems = msg.getElementsByTagName('body');
-
-    if (type == "chat" && elems.length > 0) {
-	var body = elems[0];
-
-	log(from + ': ' + Strophe.getText(body));
-    
-    //log('Rohan');
-    //log('From: ' + from);
-    //log('To: ' + to);
-    //log('Checking dynamic nature.');
-    
-    var to2 = 'rohan2@localhost';
-	var from2 = 'rohan@localhost';
-	
-	var reply = $msg({to: to2, from: from2, type: 'chat'}).c("body").t('Test Message!');//(Strophe.copyElement(body));
-
-	//connection.send(reply.tree());
-
-	//log('ECHOBOT: I sent ' + from + ': ' + Strophe.getText(body));
-    }
-
-    // we must return true to keep the handler alive.  
-    // returning false would remove it after it finishes.
-    return true;
-}
-
-
-
-
 
 $(document).ready(function () {
     connection = new Strophe.Connection(BOSH_SERVICE);
@@ -135,47 +205,6 @@ $(document).ready(function () {
 
     // Uncomment the following line to see all the debug output.
     //Strophe.log = function (level, msg) { log('LOG: ' + msg); };
-
-	var $dialog = $('<div></div>')
-		.html('This dialog will show every time!')
-		.dialog({
-			autoOpen: false,
-			title: 'Basic Dialog'
-		});
-
-	$('#opener').click(function() {
-		$dialog.dialog('open');
-		// prevent the default action, e.g., following a link
-		return false;
-	});
-	
-	$('#mynewchatbox').dialog({
-        autoOpen: true,
-        show: 'slide', // bounce//explode//clip//fold//highlight//pulsate//puff//scale//shake//slide//blind
-        hide: 'explode',
-        buttons: { 'Close': function() { $(this).dialog('close'); } },
-        closeOnEscape: true,
-        resizable: true
-    });
-
-
-	$('#dialog4').dialog({
-        autoOpen: false,
-        show: 'slide', // bounce//explode//clip//fold//highlight//pulsate//puff//scale//shake//slide//blind
-        hide: 'explode',
-        buttons: { 'Close': function() { $(this).dialog('close'); } },
-        closeOnEscape: true,
-        resizable: false
-    });
-    $('#toggle4').click(function() {
-        if ($('#dialog4').dialog('isOpen') == true)
-            $('#dialog4').dialog('close');
-        else
-            $('#dialog4').dialog('open');
-        return false;
-    });
-    
-
 
 
     $('#connect').bind('click', function () {
