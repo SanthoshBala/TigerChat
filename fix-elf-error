@@ -1,0 +1,5 @@
+sudo rm ./apache/mod_wsgi/mod_wsgi.so
+sudo ./apache/mod_wsgi/make distclean
+sudo rm /etc/apache2/mod_wsgi.so
+sudo ./apache/mod_wsgi/configure
+sudo cp /usr/lib/apache2/modules/mod_wsgi.so ./apache/mod_wsgi/mod_wsgi.so
