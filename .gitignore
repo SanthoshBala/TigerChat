@@ -7,5 +7,5 @@ tigerchat.db
 ./apache/httpd.conf
 .settings/*
 *~
-./apache/mod_wsgi/mod_wsgi.so
-
+*.so
+*.wsgi

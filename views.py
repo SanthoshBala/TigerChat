@@ -12,7 +12,7 @@ def current_datetime(request):
    
 def tigerchat_main(request):
 	# Create Person profile if one does not already exist
-	person = Person.objects.get_or_create(username=request.user.username)
+	#person = Person.objects.get_or_create(username=request.user.username)
 	#return HttpResponse(request.user.username)
 	return render_to_response('tigerchathome.html');
 
