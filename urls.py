@@ -13,6 +13,8 @@ urlpatterns = patterns('',
     url(r'^tigerchat/$', 'TigerChat.views.tigerchat_main'),
     url(r'^login/$', 'django_cas.views.login'),
     url(r'^logout/$', 'django_cas.views.logout'),
+    url(r'^users/$', 'TigerChat.communication.views.users'),
+    url(r'^people/$', 'TigerChat.communication.views.people'),
     #url(r'^newtime/$', 'TigerChat.views.new_datetime'),
     # url(r'^tigerchat/', include('tigerchat.foo.urls')),
 

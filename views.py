@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
+from communication.models import *
 import datetime
 
 def home(request):
@@ -10,7 +11,10 @@ def current_datetime(request):
    return render_to_response('echobot.html');
    
 def tigerchat_main(request):
-   return render_to_response('tigerchathome.html');
+	# Create Person profile if one does not already exist
+	person = Person.objects.get_or_create(username=request.user.username)
+	#return HttpResponse(request.user.username)
+	return render_to_response('tigerchathome.html');
 
 def new_datetime(request):
 	now = datetime.datetime.now()
