@@ -15,6 +15,7 @@ urlpatterns = patterns('',
     url(r'^logout/$', 'django_cas.views.logout'),
     url(r'^users/$', 'TigerChat.communication.views.users'),
     url(r'^people/$', 'TigerChat.communication.views.people'),
+    url(r'^search/$', 'TigerChat.communication.views.search'),
     #url(r'^newtime/$', 'TigerChat.views.new_datetime'),
     # url(r'^tigerchat/', include('tigerchat.foo.urls')),
 
