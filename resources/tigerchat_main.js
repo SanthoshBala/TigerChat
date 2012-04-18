@@ -2,10 +2,128 @@ var BOSH_SERVICE = '/xmpp-httpbind';
 var connection = null;
 var chatBoxes = new Array();
 
+
 function log(msg) 
 {
     $('#log').append('<div></div>').append(document.createTextNode(msg));
 }
+
+function testhref() {
+	log('href test!');
+}
+
+
+
+
+
+
+
+// Show the friends list in the UI
+function populateFriendsList(data) {
+	
+	$(" <div />" ).attr("id", "friends_dialog")
+	.attr("title", "Friends")
+	.html('<div class = "friends_table" id = "my_friends_table">' +
+	'<table width="100%" cellpadding="0" cellspacing="0" id="friend-table">' +
+	'<tr friendname = "rohan1">' +
+		'<td><a href="http://www.yahoo.com/">http://www.yahoo.com/</a></td>' +
+		'<td>rohan1</td>' +
+	'</tr>' +
+	'<tr friendname= "rohan2">' +
+		'<td><a href="javascript:testhref();">http://www.microsoft.com/</a></td>' +
+		'<td>rohan2</td>' +
+	'</tr>' +
+  '</div>')
+	.appendTo($( "body" ));
+	
+	
+	
+	for(var i = 0; i < data.length; i++) {
+	
+		var newrow = '<tr friendname= "' + data[i].username + '">' +
+		'<td><a href="javascript:testhref();">http://www.microsoft.com/</a></td>' +
+		'<td>' + data[i].username + '</td>' +
+		'</tr>';
+		$("#friend-table").append(newrow);
+	
+	}
+	
+	 $('#friend-table td:first-child').hide();
+	 
+	 $('#friend-table tr').hover(function ()
+      {
+        $(this).toggleClass('Highlight');
+      });
+	
+	 $('#friend-table tr').click(function ()
+      {
+		  makeNewChatbox($(this).attr("friendname"));
+      });
+	
+	$("#friends_dialog").dialog({
+		position: 'right',
+        autoOpen: true,
+        closeOnEscape: true,
+        resizable: true
+    });
+    
+  
+
+}
+
+// Send the GET request to get the json friends data
+function getFriendsList() {
+	$.get("/users/",
+	function(data) {
+		populateFriendsList(data);
+	}, "json");
+}
+
+
+
+
+function testJson() {
+	log('hello!');
+	var myjid = connection.getBAREJIDFROMJID()
+	$.get("/users/", { regex: "test"},
+   function(data){
+		alert("Data length: " + data.length);
+		for(var i = 0; i < data.length; i++)
+		log('First one: ' + data[i].username);
+	}, "json");
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 function getTimeStamp(){
@@ -199,6 +317,9 @@ function onConnect(status)
 $(document).ready(function () {
     connection = new Strophe.Connection(BOSH_SERVICE);
 
+	//testJson();
+	getFriendsList();
+	
     // Uncomment the following lines to spy on the wire traffic.
     //connection.rawInput = function (data) { log('RECV: ' + data); };
     //connection.rawOutput = function (data) { log('SEND: ' + data); };

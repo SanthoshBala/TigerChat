@@ -411,5 +411,5 @@
 .scrolling_area { overflow: auto; height: 80%; word-wrap: break-word; font-family: Tahoma,Arial,sans-serif; font-size:13px; }
 .chatbox_text { overflow: auto; width: 90%; word-wrap: break-word; position: absolute; bottom: 15px; left: 8px;}
 .chatbox_below_title {height: 250px; position: relative;}
-
+.Highlight { background-color: #dcfac9; cursor: pointer; }
 
