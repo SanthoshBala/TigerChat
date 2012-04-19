@@ -35,17 +35,35 @@ def search(request):
         for line in entry:
             fields = line.split()
             if fields[0] == 'uid:':
-                result['username'] = fields[1]
+                try:
+                    result['username'] = fields[1]
+                except:
+                    continue
             elif fields[0] == 'givenName:':
-                result['first_name'] = fields[1]
+                try:
+                    result['first_name'] = fields[1]
+                except:
+                    continue
             elif fields[0] == 'sn:':
-                result['last_name'] = fields[1]
+                try:
+                    result['last_name'] = fields[1]
+                except:
+                    continue
             elif fields[0] == 'purescollege:':
-                result['dorm'] = fields[1]
+                try:
+                    result['dorm'] = fields[1]
+                except:
+                    continue
             elif fields[0] == 'puclassyear:':
-                result['class'] = fields[1]
+                try:
+                    result['class'] = fields[1]
+                except:
+                    continue
             elif fields[0] == 'puhomedepartmentnumber:':
-                result['dept'] = fields[1]
+                try:
+                    result['dept'] = fields[1]
+                except:
+                    continue
             else:
                 continue
 #        data['results'].append(result)
