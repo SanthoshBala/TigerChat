@@ -273,7 +273,7 @@
 .ui-corner-bottom { -moz-border-radius-bottomleft: 4px/*{cornerRadius}*/; -webkit-border-bottom-left-radius: 4px/*{cornerRadius}*/; -moz-border-radius-bottomright: 4px/*{cornerRadius}*/; -webkit-border-bottom-right-radius: 4px/*{cornerRadius}*/; }
 .ui-corner-right {  -moz-border-radius-topright: 4px/*{cornerRadius}*/; -webkit-border-top-right-radius: 4px/*{cornerRadius}*/; -moz-border-radius-bottomright: 4px/*{cornerRadius}*/; -webkit-border-bottom-right-radius: 4px/*{cornerRadius}*/; }
 .ui-corner-left { -moz-border-radius-topleft: 4px/*{cornerRadius}*/; -webkit-border-top-left-radius: 4px/*{cornerRadius}*/; -moz-border-radius-bottomleft: 4px/*{cornerRadius}*/; -webkit-border-bottom-left-radius: 4px/*{cornerRadius}*/; }
-.ui-corner-all { -moz-border-radius: 4px/*{cornerRadius}*/; -webkit-border-radius: 4px/*{cornerRadius}*/; }
+.ui-corner-all { -moz-border-radius: 12px/*{cornerRadius}*/; -webkit-border-radius: 4px/*{cornerRadius}*/; }
 
 /* Overlays */
 .ui-widget-overlay { background: #aaaaaa/*{bgColorOverlay}*/ url(/static/jquery-ui-imgs/ui-bg_flat_0_aaaaaa_40x100.png)/*{bgImgUrlOverlay}*/ 50%/*{bgOverlayXPos}*/ 50%/*{bgOverlayYPos}*/ repeat-x/*{bgOverlayRepeat}*/; opacity: .3;filter:Alpha(Opacity=30)/*{opacityOverlay}*/; }
@@ -348,8 +348,8 @@
     height: 200px; /*must have*/
 }/* Dialog
 ----------------------------------*/
-.ui-dialog { position: relative; /*padding: .2em;*/ width: 300px; }
-.ui-dialog .ui-dialog-titlebar { padding: .5em .3em .3em 1em; position: relative;  }
+.ui-dialog { position: relative; /*padding: .2em;*/ width: 300px; border-radius: 12px 12px 0px 12px }
+.ui-dialog .ui-dialog-titlebar { padding: .5em .3em .3em 1em; position: relative; border-radius: 12px 12px 0px 0px }
 .ui-dialog .ui-dialog-title { float: left; margin: .1em 0 .2em; } 
 .ui-dialog .ui-dialog-titlebar-close { position: absolute; right: .3em; top: 50%; width: 19px; margin: -10px 0 0 0; padding: 1px; height: 18px; }
 .ui-dialog .ui-dialog-titlebar-close span { display: block; margin: 1px; }
@@ -412,4 +412,3 @@
 .chatbox_text { overflow: auto; width: 90%; word-wrap: break-word; position: absolute; bottom: 15px; left: 8px;}
 .chatbox_below_title {height: 250px; position: relative;}
 .Highlight { background-color: #dcfac9; cursor: pointer; }
-
