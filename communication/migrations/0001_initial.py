@@ -12,17 +12,63 @@ class Migration(SchemaMigration):
         db.create_table('communication_person', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('user', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True, null=True, blank=True)),
+            ('jid', self.gf('django.db.models.fields.CharField')(max_length=30)),
             ('first_name', self.gf('django.db.models.fields.CharField')(max_length=30)),
             ('last_name', self.gf('django.db.models.fields.CharField')(max_length=30)),
-            ('major', self.gf('django.db.models.fields.CharField')(max_length=3)),
+            ('major', self.gf('django.db.models.fields.CharField')(max_length=30)),
         ))
         db.send_create_signal('communication', ['Person'])
+
+        # Adding model 'Friendship'
+        db.create_table('communication_friendship', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('status', self.gf('django.db.models.fields.CharField')(max_length=30)),
+            ('creator', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='creator', null=True, to=orm['communication.Person'])),
+            ('receiver', self.gf('django.db.models.fields.related.ForeignKey')(related_name='receiver', to=orm['communication.Person'])),
+        ))
+        db.send_create_signal('communication', ['Friendship'])
+
+        # Adding model 'Group'
+        db.create_table('communication_group', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('jid', self.gf('django.db.models.fields.CharField')(max_length=30)),
+            ('status', self.gf('django.db.models.fields.CharField')(max_length=30)),
+        ))
+        db.send_create_signal('communication', ['Group'])
+
+        # Adding M2M table for field members on 'Group'
+        db.create_table('communication_group_members', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('group', models.ForeignKey(orm['communication.group'], null=False)),
+            ('person', models.ForeignKey(orm['communication.person'], null=False))
+        ))
+        db.create_unique('communication_group_members', ['group_id', 'person_id'])
+
+        # Adding M2M table for field admins on 'Group'
+        db.create_table('communication_group_admins', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('group', models.ForeignKey(orm['communication.group'], null=False)),
+            ('person', models.ForeignKey(orm['communication.person'], null=False))
+        ))
+        db.create_unique('communication_group_admins', ['group_id', 'person_id'])
 
 
     def backwards(self, orm):
         
         # Deleting model 'Person'
         db.delete_table('communication_person')
+
+        # Deleting model 'Friendship'
+        db.delete_table('communication_friendship')
+
+        # Deleting model 'Group'
+        db.delete_table('communication_group')
+
+        # Removing M2M table for field members on 'Group'
+        db.delete_table('communication_group_members')
+
+        # Removing M2M table for field admins on 'Group'
+        db.delete_table('communication_group_admins')
 
 
     models = {
@@ -55,12 +101,28 @@ class Migration(SchemaMigration):
             'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'}),
             'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
         },
+        'communication.friendship': {
+            'Meta': {'object_name': 'Friendship'},
+            'creator': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'creator'", 'null': 'True', 'to': "orm['communication.Person']"}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'receiver': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'receiver'", 'to': "orm['communication.Person']"}),
+            'status': ('django.db.models.fields.CharField', [], {'max_length': '30'})
+        },
+        'communication.group': {
+            'Meta': {'object_name': 'Group'},
+            'admins': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'admins'", 'symmetrical': 'False', 'to': "orm['communication.Person']"}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'jid': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
+            'members': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'members'", 'symmetrical': 'False', 'to': "orm['communication.Person']"}),
+            'status': ('django.db.models.fields.CharField', [], {'max_length': '30'})
+        },
         'communication.person': {
             'Meta': {'object_name': 'Person'},
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'jid': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
-            'major': ('django.db.models.fields.CharField', [], {'max_length': '3'}),
+            'major': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'user': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['auth.User']", 'unique': 'True', 'null': 'True', 'blank': 'True'})
         },
         'contenttypes.contenttype': {

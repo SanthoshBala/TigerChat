@@ -1,4 +1,5 @@
 # Create your views here.
+from django.db.models import Q
 from communication.models import *
 from lib.django_json_handlers import json_handler
 from django.http import HttpResponse
@@ -70,3 +71,56 @@ def search(request):
         data.append(result)
     response = simplejson.dumps(data)
     return HttpResponse(response, mimetype='application/javascript')
+
+
+def get_friends(request):
+    user = request.user
+    friendships = Friendship.objects.filter( Q(creator=user.person) |
+                                             Q(receiver=user.person))
+    friendships = friendships.filter(status='Confirmed')
+
+    data = simplejson.dumps(friendships, default=json_handler)
+    http_response = HttpResponse(data, mimetype='application/javascript')
+    return http_response
+        
+
+
+def get_pending(request):
+    user = request.user
+    friendships = Friendship.objects.filter(Q(receiver=user.person))
+    friendships = friendships.filter(status='Pending')
+
+    data = simplejson.dumps(friendships, default=json_handler)
+    http_response = HttpResponse(data, mimetype='application/javascript')
+    return http_response
+
+
+
+def add_friend(request):
+    user = request.user
+    friend_jid = request.GET.get('jid')
+    friend, created = Person.objects.get_or_create(jid=friend_jid)
+
+    ## see if there are existing friendships with these two
+    friendships = Friendship.objects.filter( Q(creator=user.person, receiver=friend) |
+                                             Q(creator=friend, receiver=user.person))
+
+    ## if there are no existing friendships, create one
+    if len(friendships) == 0:
+        f = Friendship.objects.create(creator=user.person, receiver=friend)
+        f.status = 'Pending'
+        f.save()
+    elif len(friendships) == 1:
+        f = friendships[0]
+        if f.status == 'Pending' and f.receiver == user.person:
+            f.status = 'Confirmed'
+            f.save()
+            # if f.creator is the user.person, then they've already
+            # sent this friend request, so ignore this message
+        # else friendship already confirmed, so ignore
+
+    data = simplejson.dumps(f, default=json_handler)
+    http_response = HttpResponse(data, mimetype='application/javascript')
+    return http_response
+        
+        

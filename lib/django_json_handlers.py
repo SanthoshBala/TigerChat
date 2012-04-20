@@ -6,10 +6,11 @@ def json_handler(obj):
     # Student
     if isinstance(obj, Person):
         base_dict = {
-            'username': obj.username,
+            'username': obj.user.username,
             'first_name': obj.first_name,
             'last_name': obj.last_name,
-            'jid': obj.jid
+            'jid': obj.jid,
+            'major': obj.major,
             }
 
         return base_dict
@@ -21,6 +22,15 @@ def json_handler(obj):
             'last_name': obj.last_name,
             }
         return base_dict
+
+    elif isinstance(obj, Friendship):
+        base_dict = {
+            'status': obj.status,
+            'creator': obj.creator.jid,
+            'receiver': obj.receiver.jid,
+            }
+        return base_dict
+        
     elif isinstance(obj, QuerySet):
         return list(obj)
     else:
