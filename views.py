@@ -22,12 +22,12 @@ def tigerchat_main(request):
 	if (created):
 		person.user = request.user
 		person.save()
-		args = 'sudo /usr/sbin/ejabberdctl register %s localhost pd' % person.jid
-		args = args.split()
-		out = subprocess.check_output(args, shell=False)
-		return render_to_response('tigerchathome.html')
+		#args = 'sudo /usr/sbin/ejabberdctl register %s localhost pd' % person.jid
+		#args = args.split()
+		#out = subprocess.check_output(args, shell=False)
+		return render_to_response('tigerchathome.html', {'newperson': True, 'this_user_name': person.jid})
 
-	return render_to_response('tigerchathome.html')
+	return render_to_response('tigerchathome.html', {'newperson': False, 'this_user_name': person.jid})
 
 
 def new_datetime(request):

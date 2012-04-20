@@ -17,6 +17,8 @@
 	  src='/static/tigerchat_connections.js'></script>
   <script type='text/javascript'
 	  src='/static/database_queries.js'></script>
+  <script type='text/javascript'
+	  src='/static/strophe.register.js'></script>
 </head>
 
 
@@ -41,7 +43,7 @@
   To: <input type='text' id='chatbox_id' /> <br/><br/>
   <input type='button' id='makebox' value='makebox' onclick='beginChat()'/>
   
-  <input type='button' id='sendpres' value='sendpres' onclick='addFriend()'/>
+  <input type='button' id='sendpres' value='sendIQ' onclick='sendIQmsg()'/>
   </div>
   
 
@@ -52,7 +54,8 @@
 
   <div id='log'></div>
   
-    
+    <input id="newpersontag" value={{newperson}} />
+    <input id="this_user_name" value={{this_user_name}} />
     
     
     

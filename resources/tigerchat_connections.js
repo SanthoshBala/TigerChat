@@ -106,11 +106,34 @@ function onLogin(connection)
 
 
 
+function sendIQ() {
+
+	var newIQmsg = $iq({type: 'get', id: 'afwyraga42', to: 'localhost'});
+	connection.send(newIQmsg);
+	return true;
+}
+
+
+
+function onIQ(iq) {
+	
+	thistype = iq.getAttribute("type");
+	
+	
+	return true;
+}
 
 
 
 
+function sendIQmsg() {
 
+	var newid = connection.getUniqueId();
+	var newIQmsg = $iq({type: 'get', id: newid, to: 'localhost'});
+	newIQmsg.c('query', {xmlns: 'jabber:iq:register'});
+	connection.send(newIQmsg);
+	return true;
+}
 
 
 
@@ -219,6 +242,7 @@ function onMessage(msg) {
 
 function onConnect(status)
 {
+	
     if (status == Strophe.Status.CONNECTING) {
 	log('Strophe is connecting.');
     } else if (status == Strophe.Status.CONNFAIL) {
@@ -233,9 +257,10 @@ function onConnect(status)
 	log('Strophe is connected.');
 	log('ECHOBOT: Send a message to ' + connection.jid + 
 	    ' to talk to me.');
-
+	
 	connection.addHandler(onMessage, null, 'message', null, null,  null); 
 	connection.addHandler(onPresence, null, 'presence', null, null, null); 
+	connection.addHandler(onIQ, null, 'iq', null, null, null); 
 	connection.send($pres().tree());
     }
 }
@@ -256,17 +281,57 @@ $(document).ready(function () {
 
     // Uncomment the following line to see all the debug output.
     //Strophe.log = function (level, msg) { log('LOG: ' + msg); };
+	
+		
+	my_user_name = $('#jid').get(0).value;
+	my_user_name = my_user_name.split('@')[0];
+	my_user_name = $('#this_user_name').get(0).value;
+	    
+
+	if( $('#newpersontag').get(0).value == 'True') {
+		log('Found new person!');
+		var callback = function (status) {
+			log('in callback function.');
+			log(status);
+			if (status === Strophe.Status.REGISTER) {
+				log('step 1');
+			    connection.register.fields.username = my_user_name;
+				connection.register.fields.password = 'pwd';
+				connection.register.submit();
+		    } 
+		    else if (status === Strophe.Status.REGISTERED) {
+		        log("registered!");
+		        connection.authenticate();
+		    } 
+		    else if (status === Strophe.Status.CONNECTED) {
+		        log("logged in!");
+		    }
+		    else {
+				log(status);
+				log("something else");
+		        // every other status a connection.connect would receive
+		    }
+		};
+		
+		connection.register.connect("localhost", callback, 60, 1);
+	}
+		
+	
+
 
     $('#connect').bind('click', function () {
 	var button = $('#connect').get(0);
 	if (button.value == 'connect') {
 	    button.value = 'disconnect';
-		
-		my_user_name = $('#jid').get(0).value;
-		my_user_name = my_user_name.split('@')[0];
-	    connection.connect($('#jid').get(0).value,
-			       $('#pass').get(0).value,
-			       onConnect);
+	    
+	    var testingvar = my_user_name + '@localhost';
+	    log(testingvar);
+		connection.connect(testingvar, 'pwd', onConnect);
+
+	
+	
+	
+	
 	} else {
 	    button.value = 'connect';
 	    connection.disconnect();
