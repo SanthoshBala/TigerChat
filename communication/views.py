@@ -78,6 +78,23 @@ def get_friends(request):
     friendships = Friendship.objects.filter( Q(creator=user.person) |
                                              Q(receiver=user.person))
     friendships = friendships.filter(status='Confirmed')
+    results = []
+    for friendship in list(friendships):
+
+        if (friendship.creator.jid == request.user.username):
+            friend = friendship.receiver
+        else:
+            friend = friendship.creator
+        results.append(friend)
+        
+    data = simplejson.dumps(results, default=json_handler)
+    http_response = HttpResponse(data, mimetype='application/javascript')
+    return http_response
+    
+def get_pending(request):
+    user = request.user
+    friendships = Friendship.objects.filter( Q(creator=user.person))
+    friendships = friendships.filter(status='Pending')
 
     data = simplejson.dumps(friendships, default=json_handler)
     http_response = HttpResponse(data, mimetype='application/javascript')
@@ -85,7 +102,7 @@ def get_friends(request):
         
 
 
-def get_pending(request):
+def get_requests(request):
     user = request.user
     friendships = Friendship.objects.filter(Q(receiver=user.person))
     friendships = friendships.filter(status='Pending')

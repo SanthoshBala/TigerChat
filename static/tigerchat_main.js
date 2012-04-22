@@ -34,7 +34,7 @@ function fillSearchBox(data) {
 	// Ask to add 
 	$('#search-table tr').click(function ()
       {
-		  makeNewChatbox($(this).attr("friendname"));
+		  addNewFriend($(this).attr("friendname"));
       });
     
 }
@@ -173,10 +173,10 @@ function repopulate_pending_requests(data) {
 	$('#pending-table tr').remove();
 	
 	for(var i = 0; i < data.length; i++) {
-		var newrow = '<tr pendingname= "' + data[i].username + '">' +
-		'<td>' + data[i].username + '</td>' +
-		'<td>' +  "<input type='button' value='Accept' onclick='addNewFriend(\"" + data[i].username + "\")'/>" + '</td>' +
-		'<td>' +  "<input type='button' value='Reject' onclick='RejectFriend(\"" + data[i].username + "\")'/>" + '</td>' +
+		var newrow = '<tr pendingname= "' + data[i].creator + '">' +
+		'<td>' + data[i].creator + '</td>' +
+		'<td>' +  "<input type='button' value='Accept' onclick='addReceivedFriend(\"" + data[i].creator + "\")'/>" + '</td>' +
+		'<td>' +  "<input type='button' value='Reject' onclick='RejectFriend(\"" + data[i].creator + "\")'/>" + '</td>' +
 		'</tr>';
 		$("#pending-table").append(newrow);
 	
@@ -191,11 +191,25 @@ function repopulate_pending_requests(data) {
 	
 }
 
+
+
+
+
+
+
+
 function addNewFriend(newfriendname) {
+
+	$.get("/addfriend/", {jid: newfriendname} );
+	sendRequest(connection, my_user_name, newfriendname);
+	
+}
+
+function addReceivedFriend(newfriendname) {
 	// Add to database
 	log('hello');
 	log(newfriendname);
-	$.post("/addfriend/", {jid: newfriendname} );
+	$.get("/addfriend/", {jid: newfriendname} );
 	
 	// send a subscribed
 	acceptRequest(connection, my_user_name, newfriendname);

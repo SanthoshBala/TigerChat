@@ -15,11 +15,13 @@ class Person(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     major = models.CharField(max_length=30)
+    has_jabber_acct = models.BooleanField(default=False)
     
 class Friendship(models.Model):
     status = models.CharField(max_length=30, choices=FRIENDSHIP_STATUS_CHOICES)
     creator = models.ForeignKey(Person, related_name='creator', null=True, blank=True)
     receiver = models.ForeignKey(Person, related_name='receiver')
+
 
 class Group(models.Model):
     jid = models.CharField(max_length=30)

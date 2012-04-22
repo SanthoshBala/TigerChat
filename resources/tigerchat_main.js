@@ -34,7 +34,7 @@ function fillSearchBox(data) {
 	// Ask to add 
 	$('#search-table tr').click(function ()
       {
-		  makeNewChatbox($(this).attr("friendname"));
+		  addNewFriend($(this).attr("friendname"));
       });
     
 }
@@ -91,15 +91,7 @@ function populateFriendsList(data) {
 	.html('<div class = "friends_table" id = "my_friends_table">' +
 	'<input type="button" onclick="openSearchBox()" value="Search"> ' + 
 	'<table width="100%" cellpadding="0" cellspacing="0" id="friend-table">' +
-	'<tr friendname = "person1">' +
-		'<td><a href="http://www.yahoo.com/">http://www.yahoo.com/</a></td>' +
-		'<td>rohan1</td>' +
-	'</tr>' +
-	'<tr friendname= "person2">' +
-		'<td><a href="javascript:testhref();">http://www.microsoft.com/</a></td>' +
-		'<td>rohan2</td>' +
-	'</tr>' +
-  '</div>')
+	'</div>')
 	.appendTo($( "body" ));
 	
 	
@@ -139,7 +131,7 @@ function populateFriendsList(data) {
 
 // Send the GET request to get the json friends data
 function getFriendsList() {
-	$.get("/users/",
+	$.get("/friends/",
 	function(data) {
 		populateFriendsList(data);
 	}, "json");
@@ -173,10 +165,10 @@ function repopulate_pending_requests(data) {
 	$('#pending-table tr').remove();
 	
 	for(var i = 0; i < data.length; i++) {
-		var newrow = '<tr pendingname= "' + data[i].username + '">' +
-		'<td>' + data[i].username + '</td>' +
-		'<td>' +  "<input type='button' value='Accept' onclick='addNewFriend(\"" + data[i].username + "\")'/>" + '</td>' +
-		'<td>' +  "<input type='button' value='Reject' onclick='RejectFriend(\"" + data[i].username + "\")'/>" + '</td>' +
+		var newrow = '<tr pendingname= "' + data[i].creator + '">' +
+		'<td>' + data[i].creator + '</td>' +
+		'<td>' +  "<input type='button' value='Accept' onclick='addReceivedFriend(\"" + data[i].creator + "\")'/>" + '</td>' +
+		'<td>' +  "<input type='button' value='Reject' onclick='RejectFriend(\"" + data[i].creator + "\")'/>" + '</td>' +
 		'</tr>';
 		$("#pending-table").append(newrow);
 	
@@ -191,11 +183,25 @@ function repopulate_pending_requests(data) {
 	
 }
 
+
+
+
+
+
+
+
 function addNewFriend(newfriendname) {
+
+	$.get("/addfriend/", {jid: newfriendname} );
+	sendRequest(connection, my_user_name, newfriendname);
+	
+}
+
+function addReceivedFriend(newfriendname) {
 	// Add to database
 	log('hello');
 	log(newfriendname);
-	$.post("/addfriend/", {jid: newfriendname} );
+	$.get("/addfriend/", {jid: newfriendname} );
 	
 	// send a subscribed
 	acceptRequest(connection, my_user_name, newfriendname);

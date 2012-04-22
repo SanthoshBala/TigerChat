@@ -19,8 +19,9 @@ def tigerchat_main(request):
 	person, created = Person.objects.get_or_create(jid=request.user.username)
 	output = 'shit'
 	# Create ejabberd user if necessary
-	if (created):
+	if (not person.has_jabber_acct):
 		person.user = request.user
+		person.has_jabber_acct = True
 		person.save()
 		#args = 'sudo /usr/sbin/ejabberdctl register %s localhost pd' % person.jid
 		#args = args.split()

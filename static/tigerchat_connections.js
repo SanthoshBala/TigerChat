@@ -167,7 +167,7 @@ function sendIQmsg() {
 		
 		// If not, then repopulate pending_friends and display
 		else {
-			$.get("/users/",
+			$.get("/requests/",
 			function(data){
 			repopulate_pending_requests(data);
 			});
