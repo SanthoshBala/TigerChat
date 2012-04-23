@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from django.contrib.sites.models import Site
 from communication.models import *
 import datetime
@@ -13,7 +14,8 @@ def home(request):
 
 def current_datetime(request):
    return render_to_response('echobot.html');
-   
+
+@login_required   
 def tigerchat_main(request):
 	# Create Person profile if one does not already exist
 	person, created = Person.objects.get_or_create(jid=request.user.username)

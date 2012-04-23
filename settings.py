@@ -106,6 +106,7 @@ MIDDLEWARE_CLASSES = (
 CAS_SERVER_URL =  'https://fed.princeton.edu/cas/login'
 CAS_REDIRECT_URL = '/tigerchat/'
 CAS_VERSION = '1'
+LOGIN_URL = '/login/'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
@@ -171,3 +172,10 @@ LOGGING = {
 		},
 	}
 }
+
+# SENDGRID EMAIL SETTINGS
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'tigerchat'
+EMAIL_HOST_PASSWORD = 'tigersendgrid'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
