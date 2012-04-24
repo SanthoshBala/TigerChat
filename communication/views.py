@@ -136,16 +136,16 @@ def add_friend(request):
         sender = 'santhosh@princeton.edu'
         subject = 'Hello from Princeton TigerChat!'
         message = 'You have been invited to join TigerChat! TigerChat \
-                  is a chat portal build for the Princeton community.
-                  Join now at www.tigerchat.com.
-                  
+                  is a chat portal build for the Princeton community.\
+                  Join now at www.tigerchat.com.\
+                  \
                   Team TigerChat'
         # UNCOMMENT THIS AS SOON AS ACCOUNT APPROVED BY SENDGRID
         #send_mail(subject, message, sender, to, fail_silently=True)
         http_response = HttpReponse('email will be sent')
     elif len(potential_friends > 1):
         ## error
-        except('Non-specific jid')
+        raise Exception('Non-specific jid')
     else:
         friend = Person.objects.get(jid=friend_jid)
     ## see if there are existing friendships with these two

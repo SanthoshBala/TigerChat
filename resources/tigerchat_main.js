@@ -57,10 +57,17 @@ function openSearchBox() {
 		return;
 	}
 	$(" <div />" ).attr("id", "search_dialog")
-	.attr("title", "Search")
-	.html('<div class = "search_box" id="my_search_box">' + 
+	.attr("title", "Add Friend")
+	.html('<div class = "search_box" id="my_search_box" style="height: 100%; margin: auto; position: relative; background-color:white; border-radius: 0px 0px 0px 12px;">' +
+			
+			'<div class="search_text" id="my_search_text" style="height: 32px; text-align: center; padding-left: 5px; padding-right: 11px; padding-top: 5px;" >' +
+			'<input type="text" id="search_textbox" style="width: 100%; border-radius: 0px">' +
+			'</div>' + 
+			
+			'<div class="search_table" id="my_search_table" >' +
 			'<table width="100%" cellpadding="0" cellspacing="0" id="search-table">' +
-			'<input type="text" id="search_textbox">' +
+			'</div>' +	
+			
 			'</div>')
 	.appendTo($( "body" ));	
 	
@@ -87,11 +94,44 @@ function openSearchBox() {
 function populateFriendsList(data) {
 	
 	$(" <div />" ).attr("id", "friends_dialog")
-	.attr("title", "Friends")
-	.html('<div class = "friends_table" id = "my_friends_table">' +
+	.attr("title", "Buddy List")
+	.html('<div class = "friends_list" id = "my_friends_list" style="height: 100%; margin: auto; position: relative; background-color:#E0E0E0; border-radius: 0px 0px 0px 12px;">' + 
+	
+	'<div class = "friends_header" id = "my_friends_header" style="height: 32px; padding-left: 5px; padding-top: 5px;">' + 
 	'<input type="button" onclick="openSearchBox()" value="Search"> ' + 
+	'</div>' + 
+	
+	'<div class = "friends_searchbox" id = "my_friends_searchbox" style="height: 32px; text-align: center; padding-left: 5px; padding-right: 11px;">' + 
+	'<input type="text" id="friends_search" class="friends_search" style="width: 100%; border-radius: 0px">' +
+	'</div>' + 
+	
+	'<div class = "friends_table" id = "my_friends_table" style="overflow-y: auto; position: absolute; left: 7px; right: 5px; top:70px; bottom: 20px; background: white;">' +
 	'<table width="100%" cellpadding="0" cellspacing="0" id="friend-table">' +
-	'</div>')
+	'<tr friendname= "' + 'a' + '">' +
+		'<td style="width: 2px;"></td> <td style="width: 20px;"> <img src="/static/imgs/online.png" width="14" height="14" style="" />  </td> ' + '<td>' + 'Rohan Bansal' + '</td>' + '</tr>' + 
+	'<tr friendname= "' + 'b' + '">' +
+		'<td style="width: 2px;"></td> <td style="width: 20px;"> <img src="/static/imgs/online.png" width="14" height="14" style="" />  </td> ' + '<td>' + 'Santhosh Balasubranium' + '</td>' + '</tr>' + 
+	'<tr friendname= "' + 'c' + '">' +
+		'<td style="width: 2px;"></td> <td style="width: 20px;"> <img src="/static/imgs/online.png" width="14" height="14" style="" />  </td> ' + '<td>' + 'Vyas Ramasubramani' + '</td>' + '</tr>' + 
+	'<tr friendname= "' + 'd' + '">' +
+		'<td style="width: 2px;"></td> <td style="width: 20px;"> <img src="/static/imgs/online.png" width="14" height="14" style="" />  </td> ' + '<td>' + 'Matt Dolan' + '</td>' + '</tr>' + 
+	'<tr friendname= "' + 'e' + '">' +
+		'<td style="width: 2px;"></td> <td style="width: 20px;"> <img src="/static/imgs/online.png" width="14" height="14" style="" />  </td> ' + '<td>' + 'Chiraag Galaiya' + '</td>' + '</tr>' + 
+	'<tr friendname= "' + 'f' + '">' +
+		'<td style="width: 2px;"></td> <td style="width: 20px;"> <img src="/static/imgs/online.png" width="14" height="14" style="" />  </td> ' + '<td>' + 'Adam Kravietz' + '</td>' + '</tr>' + 
+	'<tr friendname= "' + 'g' + '">' +
+		'<td style="width: 2px;"></td> <td style="width: 20px;"> <img src="/static/imgs/online.png" width="14" height="14" style="" />  </td> ' + '<td>' + 'Kashyap Rajagopal' + '</td>' + '</tr>' + 
+	'<tr friendname= "' + 'h' + '">' +
+		'<td style="width: 2px;"></td> <td style="width: 20px;"> <img src="/static/imgs/online.png" width="14" height="14" style="" />  </td> ' + '<td>' + 'Eric Lee' + '</td>' + '</tr>' + 
+	'<tr friendname= "' + 'i' + '">' +
+		'<td style="width: 2px;"></td> <td style="width: 20px;"> <img src="/static/imgs/online.png" width="14" height="14" style="" />  </td> ' + '<td>' + 'Pat Wu' + '</td>' + '</tr>' + 
+	'<tr friendname= "' + 'j' + '">' +
+		'<td style="width: 2px;"></td> <td style="width: 20px;"> <img src="/static/imgs/online.png" width="14" height="14" style="" />  </td> ' + '<td>' + 'Aaron Glasserman' + '</td>' + '</tr>' + 
+	'</div>' +
+	'</table>' + 
+	
+	
+	'<div id="padding"></div>')
 	.appendTo($( "body" ));
 	
 	
@@ -99,14 +139,13 @@ function populateFriendsList(data) {
 	for(var i = 0; i < data.length; i++) {
 	
 		var newrow = '<tr friendname= "' + data[i].username + '">' +
-		'<td><a href="javascript:testhref();">http://www.microsoft.com/</a></td>' +
-		'<td>' + data[i].username + '</td>' +
-		'</tr>';
+		'<td style="width: 2px;"></td> <td style="width: 20px;"> <img src="/static/imgs/online.png" width="14" height="14" style="" />  </td> ' + '<td>' + data[i].username + '</td>' + '</tr>';
+	
 		$("#friend-table").append(newrow);
 	
 	}
 	
-	 $('#friend-table td:first-child').hide();
+	 //$('#friend-table td:first-child').hide();
 	 
 	 $('#friend-table tr').hover(function ()
       {
@@ -124,7 +163,8 @@ function populateFriendsList(data) {
         closeOnEscape: true,
         resizable: true
     });
-    
+    $("#friends_dialog").css({'height' : '250'});
+	
   
 
 }
