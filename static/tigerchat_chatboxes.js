@@ -1,4 +1,3 @@
-var BOSH_SERVICE = '/xmpp-httpbind';
 var connection = null;
 var chatBoxes = new Array();
 var my_user_name;

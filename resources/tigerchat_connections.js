@@ -140,6 +140,37 @@ function sendIQmsg() {
 
 
 
+function handle_subscribe_message(newfriend) {
+	log('in function.');
+	$.get("/friends/",
+			function(data){
+				data = jQuery.parseJSON(data);
+				
+				for(var i = 0; i < data.length; i++) {
+					log('checking on data friend ' + data[i].username +' against ' + newfriend);
+					if(data[i].username == newfriend) {
+						log('FOUND TRUE!');
+						log('hello?');
+						log('Already friends with ' + newfriend);
+						acceptRequest(connection, my_user_name, newfriend);
+						return;
+					} 
+				}
+				
+				
+				log('not friends.');
+			
+				$.get("/requests/",
+				function(data){
+				repopulate_pending_requests(data);
+			});
+
+			}
+			
+		);
+}
+
+
 
 
 /***********************************************************************
@@ -153,7 +184,7 @@ function sendIQmsg() {
 	 
 	 // Now deal with the different types of presences
 		alert('got a presence from ' + sender + ' of type = ' + presType);
-	 if (presType == '') {
+	 if (presType == null) {
 		 // if no type attribute, user is online. update roster
 		 
 	 }
@@ -162,8 +193,8 @@ function sendIQmsg() {
 		// check to see if we are friends (accepted)
 		var friends_bool;
 		
-		friends_bool = check_if_friends(sender);
-		
+		friends_bool = handle_subscribe_message(sender);
+			
 		
 		
 		if( friends_bool == 1) {
@@ -271,25 +302,10 @@ function onConnect(status)
 
 
 $(document).ready(function () {
-    connection = new Strophe.Connection(BOSH_SERVICE);
+    connection = new Strophe.Connection('/xmpp-httpbind');
 
 
-
-	getFriendsList();
-	
-    // Uncomment the following lines to spy on the wire traffic.
-    //connection.rawInput = function (data) { log('RECV: ' + data); };
-    //connection.rawOutput = function (data) { log('SEND: ' + data); };
-
-    // Uncomment the following line to see all the debug output.
-    //Strophe.log = function (level, msg) { log('LOG: ' + msg); };
-	
-		
-	my_user_name = $('#jid').get(0).value;
-	my_user_name = my_user_name.split('@')[0];
-	my_user_name = $('#this_user_name').get(0).value;
-	    
-
+	// Handle New Person case
 	if( $('#newpersontag').get(0).value == 'True') {
 		log('Found new person!');
 		var callback = function (status) {
@@ -317,6 +333,8 @@ $(document).ready(function () {
 		
 		connection.register.connect("localhost", callback, 60, 1);
 	}
+	
+	
 		
 	
 
@@ -340,20 +358,32 @@ $(document).ready(function () {
 	}
     });
     
-				 
-		 // Create a subscribed dialog
-		$(" <div />" ).attr("id", 'subscribe_dialog')
+    
+    
+	//getFriendsList();
+	
+	// Initialize the instance friends variable
+	$.get('/friends/', function(data) {InitializeFriendsVariable(data)} );
+
+	// Set the global username
+	my_user_name = $('#this_user_name').get(0).value;
+	    
+    
+    
+    
+	// Create a subscribed dialog
+	$(" <div />" ).attr("id", 'subscribe_dialog')
 		.attr("title", "Pending Requests")
 		.html('<div class = "subscribe_box" id="subscribe_box">' + 
 		'<table width="100%" cellpadding="0" cellspacing="0" id="pending-table">' +
 		'</div>')
 		.appendTo($( "body" ));
 	
-		$("#subscribe_dialog").dialog({
-			autoOpen: false,
-			closeOnEscape: true,
-			resizable: true
-		});
+	$("#subscribe_dialog").dialog({
+		autoOpen: false,
+		closeOnEscape: true,
+		resizable: true
+	});
 			
     
 });
