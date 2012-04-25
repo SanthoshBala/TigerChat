@@ -1,4 +1,20 @@
 
+//This needs to be set at the beginning
+// Then, any time a new friend is added, we need to add that friend to this array
+var instance_friends = new Array();
+
+
+
+
+
+
+
+
+
+
+
+
+
 function log(msg) 
 {
     $('#log').append('<div></div>').append(document.createTextNode(msg));
@@ -24,18 +40,26 @@ function fillSearchBox(data) {
 		//alert("data = " + data.length);
 		 $('#search-table tr').remove();
 	for(var i = 0; i < newdata.length; i++) {
+		if(typeof newdata[i].class === "undefined") var classyear = '';
+		else var classyear = newdata[i].class;
+
+		// If we are already friends, or we have already requested, then we need to remove the ADD FRIEND button
+
+
 		var newrow = '<tr friendname= "' + newdata[i].username + '">' +
-		'<td>' + newdata[i].username + '</td>' +
+		'<td>' + newdata[i].first_name + ' ' + newdata[i].last_name + '</td>' +
+		'<td>' + classyear + '</td>' +
+		'<td>' + '<input type="button" value="Add" onclick="addNewFriend(\'' + newdata[i].username + '\')"/>' + '</td>' + 
 		'</tr>';
 		$("#search-table").append(newrow);
 	
 	}
 	
 	// Ask to add 
-	$('#search-table tr').click(function ()
-      {
-		  addNewFriend($(this).attr("friendname"));
-      });
+	//$('#search-table tr').click(function ()
+     // {
+	//	  addNewFriend($(this).attr("friendname"));
+     // });
     
 }
 
@@ -64,8 +88,9 @@ function openSearchBox() {
 			'<input type="text" id="search_textbox" style="width: 100%; border-radius: 0px">' +
 			'</div>' + 
 			
-			'<div class="search_table" id="my_search_table" >' +
+			'<div class="search_table" id="my_search_table" style="overflow-y: auto; position: absolute; left: 7px; right: 5px; top:32px; bottom: 20px; background: white;">' +
 			'<table width="100%" cellpadding="0" cellspacing="0" id="search-table">' +
+			'</table>' + 
 			'</div>' +	
 			
 			'</div>')
@@ -86,6 +111,7 @@ function openSearchBox() {
         closeOnEscape: true,
         resizable: true
     });
+    $("#search_dialog").css({'height' : '200'});
 }
 
 
@@ -95,7 +121,7 @@ function populateFriendsList(data) {
 	
 	$(" <div />" ).attr("id", "friends_dialog")
 	.attr("title", "Buddy List")
-	.html('<div class = "friends_list" id = "my_friends_list" style="height: 100%; margin: auto; position: relative; background-color:#E0E0E0; border-radius: 0px 0px 0px 12px;">' + 
+	.html('<div class = "friends_list" id = "my_friends_list" style="height: 100%; margin: auto; position: relative; background-color:#EEEEEE; border-radius: 0px 0px 0px 12px;">' + 
 	
 	'<div class = "friends_header" id = "my_friends_header" style="height: 32px; padding-left: 5px; padding-top: 5px;">' + 
 	'<input type="button" onclick="openSearchBox()" value="Search"> ' + 
@@ -248,6 +274,11 @@ function addReceivedFriend(newfriendname) {
 	// send a subscribe
 	sendRequest(connection, my_user_name, newfriendname);
 	
+	
+	$.get("/requests/",
+				function(data){
+				repopulate_pending_requests(data);
+			});
 }
 
 

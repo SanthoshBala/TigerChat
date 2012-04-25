@@ -152,25 +152,27 @@ function sendIQmsg() {
 	 var presType = pres.getAttribute('type'); 
 	 
 	 // Now deal with the different types of presences
-
+		alert('got a presence from ' + sender + ' of type = ' + presType);
 	 if (presType == '') {
 		 // if no type attribute, user is online. update roster
 		 
 	 }
 	 else if (presType == 'subscribe') {
-		 
+		log('Got a subscribe presence from ' + sender);
 		// check to see if we are friends (accepted)
-		if( check_if_friends(sender) == true) {
-			acceptRequest(connection, my_user_name, sender);
+		var friends_bool;
+		
+		friends_bool = check_if_friends(sender);
+		
+		
+		
+		if( friends_bool == 1) {
+			
 		}
 		
 		
 		// If not, then repopulate pending_friends and display
 		else {
-			$.get("/requests/",
-			function(data){
-			repopulate_pending_requests(data);
-			});
 		}
 		
 	 }

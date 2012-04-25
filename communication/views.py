@@ -130,7 +130,7 @@ def add_friend(request):
 
     potential_friends = Person.objects.filter(jid=friend_jid)
     ## If there is no person with this jid, just email them...
-    if len(potential_friends == 0):
+    if (len(potential_friends) == 0):
         ## send an email
         to = ['%s@princeton.edu' % friend_jid]
         sender = 'santhosh@princeton.edu'
@@ -143,7 +143,7 @@ def add_friend(request):
         # UNCOMMENT THIS AS SOON AS ACCOUNT APPROVED BY SENDGRID
         #send_mail(subject, message, sender, to, fail_silently=True)
         http_response = HttpReponse('email will be sent')
-    elif len(potential_friends > 1):
+    elif (len(potential_friends) > 1):
         ## error
         raise Exception('Non-specific jid')
     else:
@@ -166,7 +166,7 @@ def add_friend(request):
             # sent this friend request, so ignore this message
             # else friendship already confirmed, so ignore
                 
-                data = simplejson.dumps(f, default=json_handler)
+        data = simplejson.dumps(f, default=json_handler)
     
     http_response = HttpResponse(data, mimetype='application/javascript')
     return http_response
