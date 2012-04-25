@@ -109,7 +109,44 @@ function populateFriendsList(data) {
     // set height
     $("#friends_dialog").css({'height' : '250'});
 	
-  
+}
+
+
+function updateBuddyListStatus(sender, status) {
+
+	// return if we're trying to update ourself
+	if(sender == my_user_name) return;
+	
+	// set the appropriate image
+	if(status == "online") var imgurl = '/static/imgs/online.png';
+	else if(status == "offline") var imgurl = '/static/imgs/offline.png';
+	else var imgurl = '/static/imgs/princeton.png';
+	
+	// edit the row
+	$('#friend-table tr[friendname~="' + sender + '"]').replaceWith('<tr friendname= "' + sender + '">' +
+																'<td style="width: 2px;"></td> <td style="width: 20px;"> <img src="' + 
+																imgurl + 
+																'" width="14" height="14" style="" />  </td> ' + 
+																'<td>' + sender + '</td>');
+
+	$('#friend-table tr[friendname~="' + sender + '"]').hover(function ()
+      {
+        $(this).toggleClass('Highlight');
+      });
+    
+    $('#friend-table tr[friendname~="' + sender + '"]').click(function ()
+      {
+		  makeNewChatbox($(this).attr("friendname"));
+      });
+     
 
 }
+
+
+
+
+
+
+
+
 

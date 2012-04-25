@@ -183,11 +183,18 @@ function handle_subscribe_message(newfriend) {
 	 var presType = pres.getAttribute('type'); 
 	 
 	 // Now deal with the different types of presences
-		alert('got a presence from ' + sender + ' of type = ' + presType);
+		log('got a presence from ' + sender + ' of type = ' + presType);
 	 if (presType == null) {
 		 // if no type attribute, user is online. update roster
-		 
+		 updateBuddyListStatus(sender, "online");
 	 }
+	 
+	 else if (presType == 'unavailable') {
+		log("Setting offline.");
+		updateBuddyListStatus(sender, "offline");
+	 
+	 }
+	 
 	 else if (presType == 'subscribe') {
 		log('Got a subscribe presence from ' + sender);
 		// check to see if we are friends (accepted)

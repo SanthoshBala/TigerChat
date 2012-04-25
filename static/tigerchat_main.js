@@ -1,5 +1,11 @@
 
 
+function testFunction() {
+	
+	updateBuddyListStatus('naacho', 'online')
+	
+}
+
 
 
 function log(msg) 
