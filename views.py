@@ -35,7 +35,7 @@ def tigerchat_main(request):
 
 @login_required
 def register_new_user(request):
-	return render_to_response('Welcome Page.html')
+	return render_to_response('LoginPage.html')
 
 def new_datetime(request):
 	now = datetime.datetime.now()
