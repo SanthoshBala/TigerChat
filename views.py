@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -19,7 +19,7 @@ def current_datetime(request):
 def tigerchat_main(request):
 	# Create Person profile if one does not already exist
 	person, created = Person.objects.get_or_create(jid=request.user.username)
-	output = 'shit'
+
 	# Create ejabberd user if necessary
 	if (not person.has_jabber_acct):
 		person.user = request.user
@@ -28,10 +28,14 @@ def tigerchat_main(request):
 		#args = 'sudo /usr/sbin/ejabberdctl register %s localhost pd' % person.jid
 		#args = args.split()
 		#out = subprocess.check_output(args, shell=False)
-		return render_to_response('tigerchathome.html', {'newperson': True, 'this_user_name': person.jid})
+		http_response = HttpResponseRedirect('/register/')
+		return http_response
 
 	return render_to_response('tigerchathome.html', {'newperson': False, 'this_user_name': person.jid})
 
+@login_required
+def register_new_user(request):
+	return render_to_response('Welcome Page.html')
 
 def new_datetime(request):
 	now = datetime.datetime.now()
