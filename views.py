@@ -10,7 +10,7 @@ import subprocess
 
 
 def home(request):
-	return HttpResponse('THIS. IS. NOT. TIGERCHAT!!!')
+	return HttpResponse('Welcome to TigerChat! A chat portal for the Princeton University community. Stay tuned for updates on the final release of our product.')
 
 def current_datetime(request):
    return render_to_response('echobot.html');
