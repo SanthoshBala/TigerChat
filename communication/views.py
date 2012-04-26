@@ -107,7 +107,7 @@ def search(request):
 		else:
 			raise Exception('more than one user with username')
 
-    response = simplejson.dumps(data)
+    response = simplejson.dumps(data, default=json_handler)
     return HttpResponse(response, mimetype='application/javascript')
 
 ## get_friends() get this user's friend list
