@@ -291,17 +291,17 @@ function onConnect(status)
 {
 	
     if (status == Strophe.Status.CONNECTING) {
-	log('Strophe is connecting.');
+	//log('Strophe is connecting.');
     } else if (status == Strophe.Status.CONNFAIL) {
-	log('Strophe failed to connect.');
+	//log('Strophe failed to connect.');
 	$('#connect').get(0).value = 'connect';
     } else if (status == Strophe.Status.DISCONNECTING) {
-	log('Strophe is disconnecting.');
+	//log('Strophe is disconnecting.');
     } else if (status == Strophe.Status.DISCONNECTED) {
 	log('Strophe is disconnected.');
 	$('#connect').get(0).value = 'connect';
     } else if (status == Strophe.Status.CONNECTED) {
-	log('Strophe is connected.');
+	//slog('Strophe is connected.');
 	log('ECHOBOT: Send a message to ' + connection.jid + 
 	    ' to talk to me.');
 	
@@ -319,69 +319,27 @@ $(document).ready(function () {
     connection = new Strophe.Connection('/xmpp-httpbind');
 
 
-	// Handle New Person case
-	if( $('#newpersontag').get(0).value == 'True') {
-		log('Found new person!');
-		var callback = function (status) {
-			log('in callback function.');
-			log(status);
-			if (status === Strophe.Status.REGISTER) {
-				log('step 1');
-			    connection.register.fields.username = my_user_name;
-				connection.register.fields.password = 'pwd';
-				connection.register.submit();
-		    } 
-		    else if (status === Strophe.Status.REGISTERED) {
-		        log("registered!");
-		        connection.authenticate();
-		    } 
-		    else if (status === Strophe.Status.CONNECTED) {
-		        log("logged in!");
-		    }
-		    else {
-				log(status);
-				log("something else");
-		        // every other status a connection.connect would receive
-		    }
-		};
-		
-		connection.register.connect("localhost", callback, 60, 1);
-	}
+	// Set the global username
+	my_user_name = $('#this_user_name').get(0).value;
+	
+	var testingvar = my_user_name + '@localhost/princeton';
 	
 	
+	connection.connect(testingvar, 'pwd', onConnect);
+
+
 		
 	
 
 
-    $('#connect').bind('click', function () {
-	var button = $('#connect').get(0);
-	if (button.value == 'connect') {
-	    button.value = 'disconnect';
-	    
-	    var testingvar = my_user_name + '@localhost/princeton';
-	    log(testingvar);
-		connection.connect(testingvar, 'pwd', onConnect);
-
-	
-	
-	
-	
-	} else {
-	    button.value = 'connect';
+    $('#disconnect').bind('click', function () {
 	    connection.disconnect();
-	}
     });
     
     
-    
-	//getFriendsList();
-	
 	// Initialize the instance friends variable
 	$.get('/friends/', function(data) {InitializeFriendsVariable(data)} );
 
-	// Set the global username
-	my_user_name = $('#this_user_name').get(0).value;
-	    
     
     
     
