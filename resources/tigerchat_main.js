@@ -27,20 +27,43 @@ function fillSearchBox(data) {
 		
 		var username = newdata[i].username;
 		
-		// If we are already friends, or we have already requested, then we need to remove the ADD FRIEND button
-		if(instance_friends[username] != undefined) {
-			var newrow = '<tr friendname= "' + newdata[i].username + '">' +
+		var newrow = '<tr friendname= "' + newdata[i].username + '">' +
 			'<td>' + newdata[i].first_name + ' ' + newdata[i].last_name + '</td>' +
-			'<td>' + classyear + '</td>' +
+			'<td>' + classyear + '</td>';
+		
+		// If we are already friends, or we have already requested, then we need to remove the ADD FRIEND button
+		if(newdata[i].friendship_status == 'Confirmed') {
+			//check whether we have added the friend already
+			newrow = newrow + 
+			'<td>' + '<button disabled="disabled" type="button"> Friends </button>' + '</td>' + 
+			'</tr>';
+		}
+		
+		else if(newdata[i].friendship_status == 'Pending') {
+			//check whether we have added the friend already
+			newrow = newrow + 
 			'<td>' + '<button disabled="disabled" type="button"> Added </button>' + '</td>' + 
 			'</tr>';
 		}
 		
+		else if(newdata[i].friendship_status == 'To_Accept') {
+			//check whether we have added the friend already
+			newrow = newrow + 
+			'<td>' + '<button disabled="disabled" type="button"> Accept </button>' + '</td>' + 
+			'</tr>';
+		}
+		
+		else if(newdata[i].friendship_status == 'DNE') {
+			//check whether we have added the friend already
+			newrow = newrow + 
+			'<td>' + '<button disabled="disabled" type="button"> DNE </button>' + '</td>' + 
+			'</tr>';
+		}
+		
+		
 		// Otherwise, create buttons as usual
 		else {
-			var newrow = '<tr friendname= "' + newdata[i].username + '">' +
-			'<td>' + newdata[i].first_name + ' ' + newdata[i].last_name + '</td>' +
-			'<td>' + classyear + '</td>' +
+			newrow = newrow +
 			'<td>' + '<input type="button" value="Add" onclick="addNewFriend(\'' + newdata[i].username + '\')"/>' + '</td>' + 
 			'</tr>';
 		}
@@ -97,6 +120,7 @@ function openSearchBox() {
          {
 			 searchterm = $('#search_textbox').val();
 				$('#search_textbox').val('');
+				
 			 populateSearchBox(searchterm);
 		 }
 	});
@@ -149,7 +173,7 @@ function addNewFriend(newfriendname) {
 
 	$.get("/addfriend/", {jid: newfriendname} );
 	sendRequest(connection, my_user_name, newfriendname);
-	
+	$('#search-table tr[friendname="' + newfriendname + '"] td:eq(2)').replaceWith('<td>' + '<button disabled="disabled" type="button"> Added </button>' + '</td>');
 }
 
 function addReceivedFriend(newfriendname) {

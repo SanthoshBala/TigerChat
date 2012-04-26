@@ -79,6 +79,34 @@ def search(request):
                 continue
 #        data['results'].append(result)
         data.append(result)
+
+
+    for POI in data:
+	person_name = POI.get("username")
+	# check if person is an existing user
+	poi_user = User.objects.filter(username=person_name)
+	if len(poi_user) == 0: # no matching user
+		POI['friendship_status'] = 'DNE'
+	# result matches existing user
+	elif len(poi_user) == 1: 
+		poi_user = poi_user[0]
+		# check if person is a friend
+		friendship = Friendship.objects.filter( Q(creator=request.user.person, receiver=poi_user.person) |
+												Q(creator=poi_user.person, receiver=request.user.person))
+		if len(friendship) == 0:
+			POI['friendship_status'] = 'None'
+		elif len(friendship) == 1:
+			# check if I have sent a request to person
+			if friendship[0].status == 'Confirmed':
+				POI['friendship_status'] = 'Confirmed'
+			else: 		# check if I have sent a request
+				if friendship[0].creator == request.user.person:
+					POI['friendship_status'] = 'Pending'
+				else:
+					POI['friendship_status'] = 'To_Accept'
+		else:
+			raise Exception('more than one user with username')
+
     response = simplejson.dumps(data)
     return HttpResponse(response, mimetype='application/javascript')
 
