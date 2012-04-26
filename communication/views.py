@@ -8,7 +8,7 @@ from django.http import HttpResponse
 import os
 import simplejson
 import string
-
+from commands import getoutput
 
 ## users(): Returns list of all users in database
 def users(request):
@@ -28,10 +28,13 @@ def people(request):
 def search(request):
     # Create command from search query term
     query = request.GET.get('query')
-    cmd = '/usr/bin/ldapsearch -x -h ldap.princeton.edu -u -b o=\'Princeton University,c=US\' \"(cn=*%s*)\" uid givenName sn purescollege puclassyear puhomedepartmentnumber' % query
-    fin, fout = os.popen4(cmd)
+   # cmd = '/usr/bin/ldapsearch -x -h ldap.princeton.edu -u -b o=\'Princeton University,c=US\' \"(cn=*%s*)\" uid givenName sn purescollege puclassyear puhomedepartmentnumber' % query
+    #fin, fout = os.popen4(cmd)
     # Get all entries from ldapsearch
-    entries = fout.read().split('#')[8:-3]
+    
+    #entries = fout.read().split('#')[8:-3]
+    fout = getoutput('/usr/bin/ldapsearch -x -h ldap.princeton.edu -u -b o="Princeton University, c=US" "(cn=*%s*)" uid givenName sn purescollege puclassyear puhomedepartmentnumber' % query)
+    entries = fout.split('#')[8:-3]
 #    data = {}
     data = []
 #    data['results'] = []
@@ -178,7 +181,26 @@ def remove_everything(request):
     User.objects.all().delete()
     return HttpResponse('Everything Cleared');
     
+def ldap_search(request):
+    # parse params for what to search by
+    # set up ldap connection
+    server = 'ldap.princeton.edu'
+    who = ''
+    cred = ''
+    ldap_connection = ldap.open(server)
+    ldap_connection.simple_bind_s(who, cred)
+    scope = ldap.SCOPE_SUBTREE
+    base = "o=\'Princeton University,c=US\'"
+    retrieve_attrs = None
     
+    # perform search
+    query = 'subramani'
+    query_string = 'cn=*%s*' % query
+    count = 0
+    result_set = []
+    result_id = ldap_connection.search(base, scope, query_string, retrieve_attrs)
+    # parse results
+    # return results
     
     
     
