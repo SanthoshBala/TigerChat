@@ -28,4 +28,4 @@ sudo $PATH_TO_TIGERCHAT/apache/apache2 start -f /etc/apache2/httpd.conf
 sudo /etc/init.d/ejabberd start
 
 # 2 - Django
-sudo python manage.py runserver
+sudo python manage.py runserver ec2-107-20-18-60.compute-1.amazonaws.com:8000

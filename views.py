@@ -10,13 +10,14 @@ import subprocess
 
 
 def home(request):
-	return HttpResponse('Welcome to TigerChat! A chat portal for the Princeton University community. Stay tuned for updates on the final release of our product.')
+	return HttpResponse('Welcome to TigerChat! A chat portal for the Princeton University community. Stay tuned for updates on the final release of our product. (sendgrid)')
 
 def current_datetime(request):
    return render_to_response('echobot.html');
 
-@login_required   
+   
 def tigerchat_main(request):
+	return render_to_response('tigerchathome.html', {'newperson': False})
 	# Create Person profile if one does not already exist
 	person, created = Person.objects.get_or_create(jid=request.user.username)
 
