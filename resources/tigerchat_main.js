@@ -173,7 +173,7 @@ function addNewFriend(newfriendname) {
 
 	$.get("/addfriend/", {jid: newfriendname} );
 	sendRequest(connection, my_user_name, newfriendname);
-	
+	$('#search-table tr[friendname="' + newfriendname + '"] td:eq(2)').replaceWith('<td>' + '<button disabled="disabled" type="button"> Added </button>' + '</td>');
 }
 
 function addReceivedFriend(newfriendname) {
