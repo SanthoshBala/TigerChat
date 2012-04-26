@@ -21,6 +21,7 @@ urlpatterns = patterns('',
     url(r'^requests/$', 'TigerChat.communication.views.get_requests'),
     url(r'^invite/$', 'TigerChat.communication.views.invite_user'),
     url(r'^addfriend/$', 'TigerChat.communication.views.add_friend'),
+    url(r'^removeall/$', 'TigerChat.communication.views.remove_everything'),
                        #url(r'^newtime/$', 'TigerChat.views.new_datetime'),
                        # url(r'^tigerchat/', include('tigerchat.foo.urls')),
 

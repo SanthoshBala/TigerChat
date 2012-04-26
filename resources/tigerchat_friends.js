@@ -42,18 +42,6 @@ function populateFriendsList(data) {
 	
 	'<div class = "friends_table" id = "my_friends_table" style="overflow-y: auto; position: absolute; left: 7px; right: 5px; top:70px; bottom: 20px; background: white;">' +
 	'<table width="100%" cellpadding="0" cellspacing="0" id="friend-table">' +
-	'<tr friendname= "' + 'a' + '">' +
-		'<td style="width: 2px;"></td> <td style="width: 20px;"> <img src="/static/imgs/online.png" width="14" height="14" style="" />  </td> ' + '<td>' + 'Rohan Bansal' + '</td>' + '</tr>' + 
-	'<tr friendname= "' + 'b' + '">' +
-		'<td style="width: 2px;"></td> <td style="width: 20px;"> <img src="/static/imgs/online.png" width="14" height="14" style="" />  </td> ' + '<td>' + 'Santhosh Balasubranium' + '</td>' + '</tr>' + 
-	'<tr friendname= "' + 'c' + '">' +
-		'<td style="width: 2px;"></td> <td style="width: 20px;"> <img src="/static/imgs/online.png" width="14" height="14" style="" />  </td> ' + '<td>' + 'Vyas Ramasubramani' + '</td>' + '</tr>' + 
-	'<tr friendname= "' + 'd' + '">' +
-		'<td style="width: 2px;"></td> <td style="width: 20px;"> <img src="/static/imgs/online.png" width="14" height="14" style="" />  </td> ' + '<td>' + 'Matt Dolan' + '</td>' + '</tr>' + 
-	'<tr friendname= "' + 'e' + '">' +
-		'<td style="width: 2px;"></td> <td style="width: 20px;"> <img src="/static/imgs/online.png" width="14" height="14" style="" />  </td> ' + '<td>' + 'Chiraag Galaiya' + '</td>' + '</tr>' + 
-	'<tr friendname= "' + 'f' + '">' +
-		'<td style="width: 2px;"></td> <td style="width: 20px;"> <img src="/static/imgs/online.png" width="14" height="14" style="" />  </td> ' + '<td>' + 'Adam Kravietz' + '</td>' + '</tr>' + 
 	'<tr friendname= "' + 'g' + '">' +
 		'<td style="width: 2px;"></td> <td style="width: 20px;"> <img src="/static/imgs/online.png" width="14" height="14" style="" />  </td> ' + '<td>' + 'Kashyap Rajagopal' + '</td>' + '</tr>' + 
 	'<tr friendname= "' + 'h' + '">' +
@@ -142,6 +130,32 @@ function updateBuddyListStatus(sender, status) {
 
 }
 
+
+function addToBuddyList(friend_netid) {
+	
+	
+	var status = instance_friends[friend_netid].status;
+	if(status == "online") var imgurl = "/static/imgs/online.png";
+	else if(status == "offline") var imgurl = "/static/imgs/offline.png";
+	else var imgurl = "/static/imgs/princeton.png";
+	
+	var newrow = '<tr friendname= "' + friend_netid + '">' +
+		'<td style="width: 2px;"></td> <td style="width: 20px;"> <img src="' + imgurl + '" width="14" height="14" style="" />  </td> ' + '<td>' + friend_netid + '</td>' + '</tr>';
+	
+	$("#friend-table").append(newrow);
+		
+	$('#friend-table tr').hover(function ()
+      {
+        $(this).toggleClass('Highlight');
+      });
+	
+	// Click Function
+	 $('#friend-table tr').click(function ()
+      {
+		  makeNewChatbox($(this).attr("friendname"));
+      });
+      
+}
 
 
 

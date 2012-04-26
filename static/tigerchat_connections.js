@@ -183,35 +183,28 @@ function handle_subscribe_message(newfriend) {
 	 var presType = pres.getAttribute('type'); 
 	 
 	 // Now deal with the different types of presences
-		log('got a presence from ' + sender + ' of type = ' + presType);
+	log('got a presence from ' + sender + ' of type = ' + presType);
+	 if(sender == my_user_name) return true;
+	 // Set sender to be online
 	 if (presType == null) {
 		 // if no type attribute, user is online. update roster
 		 updateBuddyListStatus(sender, "online");
+		 if(instance_friends[sender] != undefined) instance_friends[sender].status = "online";
 	 }
 	 
+	 // Set sender to be offline
 	 else if (presType == 'unavailable') {
-		log("Setting offline.");
 		updateBuddyListStatus(sender, "offline");
+		 f(instance_friends[sender] != undefined) instance_friends[sender].status = "offline";
 	 
 	 }
 	 
 	 else if (presType == 'subscribe') {
-		log('Got a subscribe presence from ' + sender);
 		// check to see if we are friends (accepted)
 		var friends_bool;
 		
 		friends_bool = handle_subscribe_message(sender);
 			
-		
-		
-		if( friends_bool == 1) {
-			
-		}
-		
-		
-		// If not, then repopulate pending_friends and display
-		else {
-		}
 		
 	 }
 	 
@@ -219,7 +212,17 @@ function handle_subscribe_message(newfriend) {
 		 
 	 }
 	 else if (presType == 'subscribed') {
+		 log("got a subscribed message from " + sender);
 		 
+		 var newfriend = {};
+		 newfriend.FirstName = "testFirst";
+		 newfriend.LastName = "testLast";
+		 newfriend.status = "offline";
+		 instance_friends[sender] = newfriend;
+		 
+		 log("adding to buddy list.");
+		 
+		 addToBuddyList(sender);
 		 // no action necessary
 		 
 	 }
@@ -227,12 +230,16 @@ function handle_subscribe_message(newfriend) {
 		 
 	 }
 	 
+	 else {
+	 
+		
+	 }
 	 // If type attribute exists, there are four cases
 	 
 	 
 	 
 				
-				return true;
+	return true;
 				
 				
  }
@@ -351,7 +358,7 @@ $(document).ready(function () {
 	if (button.value == 'connect') {
 	    button.value = 'disconnect';
 	    
-	    var testingvar = my_user_name + '@localhost';
+	    var testingvar = my_user_name + '@localhost/princeton';
 	    log(testingvar);
 		connection.connect(testingvar, 'pwd', onConnect);
 

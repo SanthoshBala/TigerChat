@@ -171,4 +171,17 @@ def add_friend(request):
     http_response = HttpResponse(data, mimetype='application/javascript')
     return http_response
             
-        
+
+def remove_everything(request):   
+    Friendship.objects.all().delete()
+    Person.objects.all().delete()
+    User.objects.all().delete()
+    return HttpResponse('Everything Cleared');
+    
+    
+    
+    
+    
+    
+    
+	

@@ -1,0 +1,3 @@
+sudo ejabberdctl unregister bansal localhost
+sudo ejabberdctl unregister premed localhost
+sudo ejabberdctl unregister naacho localhost 
