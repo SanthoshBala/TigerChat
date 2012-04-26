@@ -195,7 +195,7 @@ function handle_subscribe_message(newfriend) {
 	 // Set sender to be offline
 	 else if (presType == 'unavailable') {
 		updateBuddyListStatus(sender, "offline");
-		 f(instance_friends[sender] != undefined) instance_friends[sender].status = "offline";
+		 if(instance_friends[sender] != undefined) instance_friends[sender].status = "offline";
 	 
 	 }
 	 
