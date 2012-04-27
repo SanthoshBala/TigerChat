@@ -3,7 +3,15 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Untitled Document</title>
-  <link rel="stylesheet" href="Backgrounds.css" type='text/css' />
+  <link rel="stylesheet" href="/static/Backgrounds.css" type='text/css' />
+  <script type='text/javascript'
+	  src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
+  <script type='text/javascript'
+	  src='/static/strophe.js'></script>
+  <script type='text/javascript'
+	  src='/static/strophe.register.js'></script>
+  <script type='text/javascript'
+	  src='/static/first_time.js'></script>
 </head>
 
 
@@ -25,6 +33,12 @@ Residential College: <input type="text" id='college' /><br/>&nbsp;
 
 </form>
 
+<input type="button" value="Go To Tigerchat" onClick="goToTigerchat()">
+
+
+<div id='log'></div>
+
+    <input  type="hidden" id="user_name" value={{user_name}} />
 
 </body>
 </html>

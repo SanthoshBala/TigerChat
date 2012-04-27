@@ -30,7 +30,7 @@ function populateFriendsList(data) {
 	
 	$(" <div />" ).attr("id", "friends_dialog")
 	.attr("title", "Buddy List")
-	.html('<div class = "friends_list" id = "my_friends_list" style="height: 100%; margin: auto; position: relative; background-color:#EEEEEE; border-radius: 0px 0px 0px 12px;">' + 
+	.html('<div class = "friends_list" id = "my_friends_list" style="height: 100%; margin: auto; position: relative; background-color:#F2F2F2; border-radius: 0px 0px 0px 12px;">' + 
 	
 	'<div class = "friends_header" id = "my_friends_header" style="height: 32px; padding-left: 5px; padding-top: 5px;">' + 
 	'<input type="button" onclick="openSearchBox()" value="Search"> ' + 
