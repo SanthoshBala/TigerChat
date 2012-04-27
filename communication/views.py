@@ -3,12 +3,15 @@ from django.db.models import Q
 from communication.models import *
 from lib.django_json_handlers import json_handler
 from django.contrib.auth.decorators import login_required
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMultiAlternatives
+from django.template.loader import render_to_string
 from django.http import HttpResponse
 import os
 import simplejson
 import string
 from commands import getoutput
+
+
 
 ## users(): Returns list of all users in database
 def users(request):
@@ -163,17 +166,10 @@ def add_friend(request):
     ## If there is no person with this jid, just email them...
     if (len(potential_friends) == 0):
         ## send an email
-        to = ['%s@princeton.edu' % friend_jid]
-        sender = 'santhosh@princeton.edu'
-        subject = 'Hello from Princeton TigerChat!'
-        message = 'You have been invited to join TigerChat! TigerChat \
-                  is a chat portal build for the Princeton community.\
-                  Join now at www.tigerchat.com.\
-                  \
-                  Team TigerChat'
-        # UNCOMMENT THIS AS SOON AS ACCOUNT APPROVED BY SENDGRID
-        #send_mail(subject, message, sender, to, fail_silently=True)
-        http_response = HttpReponse('email will be sent')
+        invitee = friend_jid
+        inviter = request.user.person
+        send_invitation_email(inviter, invitee)
+        http_response = HttpReponse('Invited')
     elif (len(potential_friends) > 1):
         ## error
         raise Exception('Non-specific jid')
@@ -202,6 +198,19 @@ def add_friend(request):
     http_response = HttpResponse(data, mimetype='application/javascript')
     return http_response
             
+## send email to invited friend
+# inviter: string
+# invitee: Person
+def send_invitation_email(inviter, invitee):
+	subject = 'Hello from Princeton TigerChat!'
+	from_email = 'TigerChat@tigerchat.net'
+	to = '%s@princeton.edu' % invitee
+	inviter_name = '%s %s' % (inviter.first_name, inviter.last_name)
+	html_content = render_to_string('invite_email.html', {'to_addr': to, 'inviter': inviter_name})
+	text_content = '%s has invited you to join TigerChat!\nTigerChat is a chat portal built for the Princeton University community. Now you can always stay connected with your fellow Princetonians. Sign up with your University NetID and instantly chat with all of your friends. Join now at www.tigerchat.net.'
+	msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+	msg.attach_alternative(html_content, "text/html")
+	msg.send()
 
 def remove_everything(request):   
     Friendship.objects.all().delete()
