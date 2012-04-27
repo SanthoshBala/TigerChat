@@ -13,7 +13,7 @@ import subprocess
 def home(request):
 	if request.user.is_authenticated():
 		return HttpResponseRedirect('/tigerchat/')
-	return HttpResponse('Welcome to TigerChat! A chat portal for the Princeton University community. Stay tuned for updates on the final release of our product.')
+	return render_to_response('welcome.html')
 
 def current_datetime(request):
    return render_to_response('echobot.html');
