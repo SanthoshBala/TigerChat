@@ -113,6 +113,7 @@ def search(request):
     response = simplejson.dumps(data, default=json_handler)
     return HttpResponse(response, mimetype='application/javascript')
 
+
 ## get_friends() get this user's friend list
 @login_required
 def get_friends(request):
@@ -218,26 +219,51 @@ def remove_everything(request):
     User.objects.all().delete()
     return HttpResponse('Everything Cleared');
     
-def ldap_search(request):
-    # parse params for what to search by
-    # set up ldap connection
-    server = 'ldap.princeton.edu'
-    who = ''
-    cred = ''
-    ldap_connection = ldap.open(server)
-    ldap_connection.simple_bind_s(who, cred)
-    scope = ldap.SCOPE_SUBTREE
-    base = "o=\'Princeton University,c=US\'"
-    retrieve_attrs = None
-    
-    # perform search
-    query = 'subramani'
-    query_string = 'cn=*%s*' % query
-    count = 0
-    result_set = []
-    result_id = ldap_connection.search(base, scope, query_string, retrieve_attrs)
-    # parse results
-    # return results
+# returns a dictionary representing user_netid's ldap record
+def get_ldap_record(user_netid):
+    fout = getoutput('/usr/bin/ldapsearch -x -h ldap.princeton.edu -u -b o="Princeton University, c=US" "(mail=%s@princeton.edu)"' % user_netid)
+    entries = fout.split('#')[8:-3]
+    entry = entries[0]
+    result = {}
+    # Parse each entry to create dict
+    entry = entry.strip().split('\n')
+    # Parse each line in entry
+    for line in entry:
+        fields = line.split()
+        if fields[0] == 'uid:':
+            try:
+                result['username'] = fields[1]
+            except:
+                continue
+        elif fields[0] == 'givenName:':
+            try:
+                result['first_name'] = fields[1]
+            except:
+                continue
+        elif fields[0] == 'sn:':
+            try:
+                result['last_name'] = fields[1]
+            except:
+                continue
+        elif fields[0] == 'purescollege:':
+            try:
+                result['dorm'] = fields[1]
+            except:
+                continue
+        elif fields[0] == 'puclassyear:':
+            try:
+                result['class'] = fields[1]
+            except:
+                continue
+        elif fields[0] == 'puhomedepartmentnumber:':
+            try:
+                result['dept'] = fields[1]
+            except:
+                continue
+        else:
+            continue
+    return result
+
     
     
     

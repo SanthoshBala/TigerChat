@@ -17,7 +17,6 @@ def current_datetime(request):
 
 @login_required   
 def tigerchat_main(request):
-	return render_to_response('tigerchathome.html', {'newperson': False})
 	# Create Person profile if one does not already exist
 	person, created = Person.objects.get_or_create(jid=request.user.username)
 
@@ -26,9 +25,7 @@ def tigerchat_main(request):
 		person.user = request.user
 		person.has_jabber_acct = True
 		person.save()
-		#args = 'sudo /usr/sbin/ejabberdctl register %s localhost pd' % person.jid
-		#args = args.split()
-		#out = subprocess.check_output(args, shell=False)
+		# redirect to /register/ for ejabberd creation
 		http_response = HttpResponseRedirect('/register/')
 		return http_response
 
@@ -37,6 +34,14 @@ def tigerchat_main(request):
 @login_required
 def register_new_user(request):
 	person = request.user.person
+	ldap_record = get_ldap_record(person.jid)
+	# set first_name
+	person.first_name = ldap_record['first_name']
+	# set last_name
+	person.last_name = ldap_record['last_name']
+	# set dorm
+	# set classyear
+	# set department
 	return render_to_response('newuser.html', {'user_name': person.jid})
 
 def new_datetime(request):
