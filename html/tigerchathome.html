@@ -23,39 +23,20 @@
 
 
 
-<body background="/static/jquery-ui-imgs/woodbg.jpg">
+<body background="/static/jquery-ui-imgs/black_bg.jpg">
 	
 	
-  <div id='login' style='text-align: center'>
-    <form name='cred'>
-      <label for='jid'>JID:</label>
-      <input type='text' id='jid' />
-      <label for='pass'>Password:</label>
-      <input type='password' id='pass' />
-      <input type='button' id='connect' value='connect' />
-    </form>
-  </div>
-  <hr />
+
+      <input type='button' id='disconnect' value='disconnect' />
   
   
-  
-  <div id='test_making_chatboxes' style='text-align: center'>
-  To: <input type='text' id='chatbox_id' /> <br/><br/>
-  <input type='button' id='makebox' value='checkFriendsShit' onclick='checkFriendsVariable()'/>
-  
-  <input type='button' id='sendpres' value='TestFunction' onclick='testFunction()'/>
-  </div>
   
 
 
 
-
-
-
-  <div id='log'></div>
+  <div id='log' style="color: green;"></div>
   
-    <input id="newpersontag" value={{newperson}} />
-    <input id="this_user_name" value={{this_user_name}} />
+    <input  type="hidden" id="this_user_name" value={{this_user_name}} />
     
     
     

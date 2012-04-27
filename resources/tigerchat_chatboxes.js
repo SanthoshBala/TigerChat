@@ -29,7 +29,6 @@ function getTimeStamp(){
  * *********************************************************************/
 function HandleChatboxEnter(chat_with_name) {
 	var send_text = $('#send_text_' + chat_with_name).val();
-	var sender_name = document.getElementById('jid').value;
 	sender_name = my_user_name + '@localhost';
 	$('#send_text_' + chat_with_name).val('');
 	if(jQuery.trim(send_text).length <= 0) return;

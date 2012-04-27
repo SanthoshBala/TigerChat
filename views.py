@@ -31,11 +31,12 @@ def tigerchat_main(request):
 		http_response = HttpResponseRedirect('/register/')
 		return http_response
 
-	return render_to_response('tigerchathome.html', {'newperson': False, 'this_user_name': person.jid})
+	return render_to_response('tigerchathome.html', {'this_user_name': person.jid})
 
 @login_required
 def register_new_user(request):
-	return render_to_response('Welcome Page.html')
+	person = request.user.person
+	return render_to_response('newuser.html', {'user_name': person.jid})
 
 def new_datetime(request):
 	now = datetime.datetime.now()
