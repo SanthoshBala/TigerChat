@@ -15,7 +15,7 @@ def home(request):
 def current_datetime(request):
    return render_to_response('echobot.html');
 
-   
+@login_required   
 def tigerchat_main(request):
 	return render_to_response('tigerchathome.html', {'newperson': False})
 	# Create Person profile if one does not already exist
