@@ -4,13 +4,16 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.models import Site
 from communication.models import *
+from communication.views import get_ldap_record
 import datetime
 import os
 import subprocess
 
 
 def home(request):
-	return HttpResponse('Welcome to TigerChat! A chat portal for the Princeton University community. Stay tuned for updates on the final release of our product. (sendgrid)')
+	if request.user.is_authenticated():
+		return HttpResponseRedirect('/tigerchat/')
+	return HttpResponse('Welcome to TigerChat! A chat portal for the Princeton University community. Stay tuned for updates on the final release of our product.')
 
 def current_datetime(request):
    return render_to_response('echobot.html');
