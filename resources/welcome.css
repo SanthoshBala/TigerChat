@@ -1,0 +1,70 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/* Styles for the Welcome Page */
+
+
+/* For the button on the Welcome Page */
+.big-button {
+	-moz-box-shadow: 1px 1px 0px 1px #fce2c1;
+	-webkit-box-shadow: 1px 1px 0px 1px #fce2c1;
+	box-shadow: 1px 1px 0px 1px #fce2c1;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #fcac4b), color-stop(1, #fb9e25) );
+	background:-moz-linear-gradient( center top, #fcac4b 5%, #fb9e25 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fcac4b', endColorstr='#fb9e25');
+	background-color:#fcac4b;
+	-moz-border-radius:30px;
+	-webkit-border-radius:30px;
+	border-radius:30px;
+	border:3px solid #bfbcb8;
+	display:inline-block;
+	color:#ffffff;
+	font-family:arial;
+	font-size:28px;
+	font-weight:bold;
+	padding:10px 48px;
+	text-decoration:none;
+	text-shadow:1px 1px 0px #cc9f52;
+	position:absolute;
+	bottom:40px;
+	left:100px;
+}.big-button:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #fb9e25), color-stop(1, #fcac4b) );
+	background:-moz-linear-gradient( center top, #fb9e25 5%, #fcac4b 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fb9e25', endColorstr='#fcac4b');
+	background-color:#fb9e25;
+}.big-button:active {
+}
+
+ /* For the button containers */
+.buttonbox {
+	position:relative;
+	vertical-align:central;
+	background-color:#FCFCFC;
+	z-index:50;
+}
+
+/* For the login box */
+div#login {
+	width:500px;
+	height:275px;
+	border:10px solid;
+	-webkit-border-radius: 40px;
+	-moz-border-radius: 40px;
+	border-radius: 40px;
+	-moz-border-bottom-colors: #555 #666 #777 #888 #999 #aaa #bbb #ccc;
+	-moz-border-top-colors: #555 #666 #777 #888 #999 #aaa #bbb #ccc;
+	-moz-border-left-colors: #555 #666 #777 #888 #999 #aaa #bbb #ccc;
+	-moz-border-right-colors: #555 #666 #777 #888 #999 #aaa #bbb #ccc;
+	padding: 5px 5px 5px 5px;
+	
+}
+
+/* To fill up extra space */
+div#fillspace {
+	height:100px;
+}
+
+center#buttoncenter {
+	position:absolute;
+}
