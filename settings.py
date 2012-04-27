@@ -176,6 +176,6 @@ LOGGING = {
 # SENDGRID EMAIL SETTINGS
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = 'tigerchat'
-EMAIL_HOST_PASSWORD = 'tigersendgrid'
+EMAIL_HOST_PASSWORD = 'tigerchat'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
