@@ -75,6 +75,8 @@ function makeNewChatbox(chat_with_name) {
 		else {
 			 $('#' + new_name).dialog('open');
 			 $('#text_area_' + chat_with_name).scrollTop($('#text_area_' + chat_with_name)[0].scrollHeight);
+			 $("#" + new_name).css({'height' : '250'});
+			return;
 		}
 	}
 	
@@ -83,17 +85,34 @@ function makeNewChatbox(chat_with_name) {
 	$(" <div />" ).attr("id",new_name)
 	.attr("title", chat_with_name)
 	.html('<div class = "scrolling_area" id = "text_area_' + chat_with_name + '">  </div> <input type="text" name="send_text_' + chat_with_name + '" id="send_text_' + chat_with_name + '" class="chatbox_text" />')
-	.appendTo($( "body" ));
+	.appendTo($( "#boxes" ));
 	
 	// Set Properties of the dialog
 	$("#" + new_name).dialog({
         autoOpen: true,
         closeOnEscape: true,
-        resizable: true
+        resizable: true,
+        position: [400,400],
+		
     });
     // Add my class, and set default height
 	$("#" + new_name).addClass('chatbox_below_title');
 	$("#" + new_name).css({'height' : '250'});
+	$("#" + new_name).parent().css({'position' : 'fixed'});
+	/*$("#" + new_name).parent().blur( function() {
+												//log('whaaat.');
+												$(this).children(":first").addClass('ui-widget-header-disabled');
+												$(this).children(":first").removeClass('ui-widget-header');
+											}
+											);*/
+			$("#" + new_name).parent().focus( function() {
+												//log('whaaat.');
+												$('div[id*="chatbox"]').parent().children(":first").removeClass('ui-widget-header');
+												$('div[id*="chatbox"]').parent().children(":first").addClass('ui-widget-header-disabled');
+												//$(this).children(":first").removeClass('ui-widget-header-disabled');
+												$(this).children(":first").addClass('ui-widget-header');
+											}
+											);
 	$("#send_text_" + chat_with_name).css({'font-family': 'Tahoma,Arial,sans-serif'});
 	$("#send_text_" + chat_with_name).css({'font-size': '13px'});
 	

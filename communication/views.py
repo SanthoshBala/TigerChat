@@ -167,7 +167,7 @@ def add_friend(request):
         invitee = friend_jid
         inviter = request.user.person
         send_invitation_email(inviter, invitee)
-        http_response = HttpReponse('Invited')
+        http_response = HttpResponse('Invited')
     elif (len(potential_friends) > 1):
         ## error
         raise Exception('Non-specific jid')
@@ -191,10 +191,7 @@ def add_friend(request):
             # sent this friend request, so ignore this message
             # else friendship already confirmed, so ignore
                 
-        data = simplejson.dumps(f, default=json_handler)
-    
-    http_response = HttpResponse(data, mimetype='application/javascript')
-    return http_response
+    return HttpResponse("Success")
             
 ## send email to invited friend
 # inviter: string

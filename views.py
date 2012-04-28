@@ -15,9 +15,6 @@ def home(request):
 		return HttpResponseRedirect('/tigerchat/')
 	return render_to_response('welcome.html')
 
-def current_datetime(request):
-   return render_to_response('echobot.html');
-
 @login_required   
 def tigerchat_main(request):
 	# Create Person profile if one does not already exist
@@ -34,19 +31,8 @@ def tigerchat_main(request):
 
 	return render_to_response('tigerchathome.html', {'this_user_name': person.jid})
 
-@login_required
-def register_new_user(request):
-	person = request.user.person
-	ldap_record = get_ldap_record(person.jid)
-	# set first_name
-	person.first_name = ldap_record['first_name']
-	# set last_name
-	person.last_name = ldap_record['last_name']
-	# set dorm
-	# set classyear
-	# set department
-	return render_to_response('newuser.html', {'user_name': person.jid})
 
-def new_datetime(request):
+
+def datetime(request):
 	now = datetime.datetime.now()
 	return render_to_response('datetime_template.html', {'current_date': now});
