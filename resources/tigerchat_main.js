@@ -188,10 +188,13 @@ function addReceivedFriend(newfriendname) {
 	sendRequest(connection, my_user_name, newfriendname);
 	
 	
-	$.get("/requests/",
+	$('#pending-table tr[pendingname= "' + newfriendname + '"]').remove();
+	
+	
+	/*$.get("/requests/",
 				function(data){
 				repopulate_pending_requests(data);
-			});
+			});*/
 }
 
 
