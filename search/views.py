@@ -28,6 +28,13 @@ def search_ldap(request):
                     result['username'] = fields[1]
                 except:
                     continue
+            if fields[0] == 'mail:':
+                try:
+                    uid = fields[1].split('@')[0]
+                    result['mail'] = fields[1]
+                    result['username'] = uid
+                except:
+                    continue
             elif fields[0] == 'givenName:':
                 try:
                     result['first_name'] = fields[1]
@@ -105,6 +112,13 @@ def get_ldap_record(user_netid):
                 result['username'] = fields[1]
             except:
                 continue
+        elif fields[0] == 'mail:':
+                try:
+                    uid = fields[1].split('@')[0]
+                    result['mail'] = fields[1]
+                    result['username'] = uid
+                except:
+                    continue
         elif fields[0] == 'givenName:':
             try:
                 result['first_name'] = fields[1]
