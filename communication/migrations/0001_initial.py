@@ -17,6 +17,7 @@ class Migration(SchemaMigration):
             ('last_name', self.gf('django.db.models.fields.CharField')(max_length=30)),
             ('major', self.gf('django.db.models.fields.CharField')(max_length=30)),
             ('dorm', self.gf('django.db.models.fields.CharField')(max_length=30)),
+            ('year', self.gf('django.db.models.fields.IntegerField')(null=True, blank=True)),
             ('has_jabber_acct', self.gf('django.db.models.fields.BooleanField')(default=False)),
         ))
         db.send_create_signal('communication', ['Person'])
@@ -30,11 +31,35 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('communication', ['Friendship'])
 
-        # Adding model 'Group'
-        db.create_table('communication_group', (
+        # Adding model 'Room'
+        db.create_table('communication_room', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('jid', self.gf('django.db.models.fields.CharField')(max_length=30)),
             ('status', self.gf('django.db.models.fields.CharField')(max_length=30)),
+            ('private', self.gf('django.db.models.fields.BooleanField')(default=False)),
+        ))
+        db.send_create_signal('communication', ['Room'])
+
+        # Adding M2M table for field members on 'Room'
+        db.create_table('communication_room_members', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('room', models.ForeignKey(orm['communication.room'], null=False)),
+            ('person', models.ForeignKey(orm['communication.person'], null=False))
+        ))
+        db.create_unique('communication_room_members', ['room_id', 'person_id'])
+
+        # Adding M2M table for field admins on 'Room'
+        db.create_table('communication_room_admins', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('room', models.ForeignKey(orm['communication.room'], null=False)),
+            ('person', models.ForeignKey(orm['communication.person'], null=False))
+        ))
+        db.create_unique('communication_room_admins', ['room_id', 'person_id'])
+
+        # Adding model 'Group'
+        db.create_table('communication_group', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('owner', self.gf('django.db.models.fields.related.OneToOneField')(related_name='owner', unique=True, to=orm['communication.Person'])),
         ))
         db.send_create_signal('communication', ['Group'])
 
@@ -46,14 +71,6 @@ class Migration(SchemaMigration):
         ))
         db.create_unique('communication_group_members', ['group_id', 'person_id'])
 
-        # Adding M2M table for field admins on 'Group'
-        db.create_table('communication_group_admins', (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('group', models.ForeignKey(orm['communication.group'], null=False)),
-            ('person', models.ForeignKey(orm['communication.person'], null=False))
-        ))
-        db.create_unique('communication_group_admins', ['group_id', 'person_id'])
-
 
     def backwards(self, orm):
         
@@ -63,14 +80,20 @@ class Migration(SchemaMigration):
         # Deleting model 'Friendship'
         db.delete_table('communication_friendship')
 
+        # Deleting model 'Room'
+        db.delete_table('communication_room')
+
+        # Removing M2M table for field members on 'Room'
+        db.delete_table('communication_room_members')
+
+        # Removing M2M table for field admins on 'Room'
+        db.delete_table('communication_room_admins')
+
         # Deleting model 'Group'
         db.delete_table('communication_group')
 
         # Removing M2M table for field members on 'Group'
         db.delete_table('communication_group_members')
-
-        # Removing M2M table for field admins on 'Group'
-        db.delete_table('communication_group_admins')
 
 
     models = {
@@ -112,11 +135,9 @@ class Migration(SchemaMigration):
         },
         'communication.group': {
             'Meta': {'object_name': 'Group'},
-            'admins': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'admins'", 'symmetrical': 'False', 'to': "orm['communication.Person']"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'jid': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
-            'members': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'members'", 'symmetrical': 'False', 'to': "orm['communication.Person']"}),
-            'status': ('django.db.models.fields.CharField', [], {'max_length': '30'})
+            'members': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'group_members'", 'symmetrical': 'False', 'to': "orm['communication.Person']"}),
+            'owner': ('django.db.models.fields.related.OneToOneField', [], {'related_name': "'owner'", 'unique': 'True', 'to': "orm['communication.Person']"})
         },
         'communication.person': {
             'Meta': {'object_name': 'Person'},
@@ -127,7 +148,17 @@ class Migration(SchemaMigration):
             'jid': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'major': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
-            'user': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['auth.User']", 'unique': 'True', 'null': 'True', 'blank': 'True'})
+            'user': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['auth.User']", 'unique': 'True', 'null': 'True', 'blank': 'True'}),
+            'year': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'})
+        },
+        'communication.room': {
+            'Meta': {'object_name': 'Room'},
+            'admins': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'admins'", 'symmetrical': 'False', 'to': "orm['communication.Person']"}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'jid': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
+            'members': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'room_members'", 'symmetrical': 'False', 'to': "orm['communication.Person']"}),
+            'private': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'status': ('django.db.models.fields.CharField', [], {'max_length': '30'})
         },
         'contenttypes.contenttype': {
             'Meta': {'ordering': "('name',)", 'unique_together': "(('app_label', 'model'),)", 'object_name': 'ContentType', 'db_table': "'django_content_type'"},
