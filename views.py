@@ -4,13 +4,16 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.models import Site
 from communication.models import *
+from communication.views import get_ldap_record
 import datetime
 import os
 import subprocess
 
 
 def home(request):
-	return HttpResponse('Welcome to TigerChat! A chat portal for the Princeton University community. Stay tuned for updates on the final release of our product.')
+	if request.user.is_authenticated():
+		return HttpResponseRedirect('/tigerchat/')
+	return render_to_response('welcome.html')
 
 def current_datetime(request):
    return render_to_response('echobot.html');
@@ -25,9 +28,7 @@ def tigerchat_main(request):
 		person.user = request.user
 		person.has_jabber_acct = True
 		person.save()
-		#args = 'sudo /usr/sbin/ejabberdctl register %s localhost pd' % person.jid
-		#args = args.split()
-		#out = subprocess.check_output(args, shell=False)
+		# redirect to /register/ for ejabberd creation
 		http_response = HttpResponseRedirect('/register/')
 		return http_response
 
@@ -36,6 +37,14 @@ def tigerchat_main(request):
 @login_required
 def register_new_user(request):
 	person = request.user.person
+	ldap_record = get_ldap_record(person.jid)
+	# set first_name
+	person.first_name = ldap_record['first_name']
+	# set last_name
+	person.last_name = ldap_record['last_name']
+	# set dorm
+	# set classyear
+	# set department
 	return render_to_response('newuser.html', {'user_name': person.jid})
 
 def new_datetime(request):

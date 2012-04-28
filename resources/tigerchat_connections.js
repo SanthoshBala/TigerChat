@@ -357,7 +357,7 @@ $(document).ready(function () {
 		resizable: true
 	});
 			
-    
+    $(window).resize();
 });
 
 
