@@ -22,8 +22,11 @@ def search(request):
     # Get all entries from ldapsearch
     
     #entries = fout.read().split('#')[8:-3]
-    fout = getoutput('/usr/bin/ldapsearch -x -h ldap.princeton.edu -u -b o="Princeton University, c=US" "(cn=*%s*)" uid givenName sn purescollege puclassyear puhomedepartmentnumber' % query)
+#    fout = getoutput('/usr/bin/ldapsearch -x -h ldap.princeton.edu -u -b o="Princeton University, c=US" "(cn=*%s*)" uid givenName sn purescollege puclassyear puhomedepartmentnumber mail' % query)
+    fout = getoutput('/usr/bin/ldapsearch -x -h ldap.princeton.edu -u -b o="Princeton University, c=US" "(cn=*%s*)"' % query)
+
     entries = fout.split('#')[8:-3]
+
 #   data = {}
     data = []
 #   data['results'] = []
@@ -31,12 +34,20 @@ def search(request):
     for entry in entries:
         result = {}
         entry = entry.strip().split('\n')
+
         # Parse each line in entry
         for line in entry:
             fields = line.split()
             if fields[0] == 'uid:':
                 try:
                     result['username'] = fields[1]
+                except:
+                    continue
+            if fields[0] == 'mail:':
+                try:
+                    uid = fields[1].split('@')[0]
+                    result['mail'] = fields[1]
+                    result['username'] = uid
                 except:
                     continue
             elif fields[0] == 'givenName:':
