@@ -331,11 +331,7 @@ Copyright (C) 2006 Free Software Foundation, Inc.
 This config.status script is free software; the Free Software Foundation
 gives unlimited permission to copy, distribute and modify it."
 
-<<<<<<< HEAD
-ac_pwd='/home/tiger/workspace/TigerChat'
-=======
-ac_pwd='/home/santhosh/workspace/TigerChat'
->>>>>>> 1fd7b5dbde222bdc155b3ffbd276e192927c01b2
+ac_pwd='/home/bansal/workspace/TigerChat'
 srcdir='./apache/mod_wsgi'
 # If no file are specified by the user, then we need to provide default
 # value.  By we need to know if files were specified by the user.

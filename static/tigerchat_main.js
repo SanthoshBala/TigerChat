@@ -56,7 +56,7 @@ function fillSearchBox(data) {
 		else if(newdata[i].friendship_status == 'DNE') {
 			//check whether we have added the friend already
 			newrow = newrow + 
-			'<td>' + '<button disabled="disabled" type="button"> DNE </button>' + '</td>' + 
+			'<td>' + '<input type="button" value="Invite" onclick="sendInvite(\'' + newdata[i].username + '\')"/>' + '</td>' + 
 			'</tr>';
 		}
 		
@@ -79,6 +79,14 @@ function fillSearchBox(data) {
 	//	  addNewFriend($(this).attr("friendname"));
      // });
     
+}
+
+
+
+function sendInvite(newfriendname) {
+
+	$.get("/addfriend/", {jid: newfriendname} );
+	$('#search-table tr[friendname="' + newfriendname + '"] td:eq(2)').replaceWith('<td>' + '<button disabled="disabled" type="button"> Invite Sent </button>' + '</td>');
 }
 
 function populateSearchBox(searchterm) {

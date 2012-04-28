@@ -8,6 +8,7 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render_to_response
 from django.template.loader import render_to_string
 from lib.django_json_handlers import json_handler
 from communication.views import *
@@ -42,8 +43,8 @@ def register_new_user(request):
 	# set department
 	if 'major' in ldap_record:
 		person.major = ldap_record['major']
-	#  return render_to_response('newuser.html', {'user_name': person.jid})
-	return HttpResponseRedirect('/tigerchat/')
+	return render_to_response('newuser.html', {'user_name': person.jid})
+	#return HttpResponseRedirect('/tigerchat/')
 
 ## create_room(): Create a new room - set user as admin
 #@login_required
