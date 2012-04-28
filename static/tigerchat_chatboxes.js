@@ -84,7 +84,7 @@ function makeNewChatbox(chat_with_name) {
 	// Create the div container for the dialog
 	$(" <div />" ).attr("id",new_name)
 	.attr("title", chat_with_name)
-	.html('<div class = "scrolling_area" id = "text_area_' + chat_with_name + '">  </div> <input type="text" name="send_text_' + chat_with_name + '" id="send_text_' + chat_with_name + '" class="chatbox_text" />')
+	.html('<div class = "scrolling_area" id = "text_area_' + chat_with_name + '">  </div> <textarea rows="2" name="send_text_' + chat_with_name + '" id="send_text_' + chat_with_name + '" class="chatbox_text" />')
 	.appendTo($( "#boxes" ));
 	
 	// Set Properties of the dialog
@@ -107,13 +107,18 @@ function makeNewChatbox(chat_with_name) {
 											);*/
 			$("#" + new_name).parent().focus( function() {
 												//log('whaaat.');
-												$('div[id*="chatbox"]').parent().children(":first").removeClass('ui-widget-header');
-												$('div[id*="chatbox"]').parent().children(":first").addClass('ui-widget-header-disabled');
+												$('div[id^="chatbox"]').parent().children(":first-child").removeClass('ui-widget-header');
+												//$('div[id*="chatbox"]').parent(":first-child").children().addClass('TESTCLASS');
+												$('div[id*="chatbox"]').parent().children(":first-child").addClass('ui-widget-header-disabled');
+												//log('changed to ' + new_name);
+
 												//$(this).children(":first").removeClass('ui-widget-header-disabled');
 												$(this).children(":first").addClass('ui-widget-header');
+												//$(this).children(":first").addClass('WHATTHEFUCK');
+												$(this).children(":first").removeClass('ui-widget-header-disabled');
 											}
 											);
-	$("#send_text_" + chat_with_name).css({'font-family': 'Tahoma,Arial,sans-serif'});
+	$("#send_text_" + chat_with_name).css({'font-family': 'Tahoma,Arial,sans-serif'}); 
 	$("#send_text_" + chat_with_name).css({'font-size': '13px'});
 	
 	// Bind function for pressing enter
@@ -123,6 +128,20 @@ function makeNewChatbox(chat_with_name) {
          {
 			 HandleChatboxEnter(chat_with_name);
 		 }
+	});
+	
+	// Bind function for pressing enter
+	$('#send_text_' + chat_with_name).focus(function()
+	{
+		$('div[id^="chatbox"]').parent().children(":first-child").removeClass('ui-widget-header');
+		//$('div[id*="chatbox"]').parent(":first-child").children().addClass('TESTCLASS');
+		$('div[id*="chatbox"]').parent().children(":first-child").addClass('ui-widget-header-disabled');
+		//log('changed to ' + new_name
+
+		//$(this).children(":first").removeClass('ui-widget-header-disabled');
+		$(this).parent().parent().children(":first").addClass('ui-widget-header');
+		//$(this).children(":first").addClass('WHATTHEFUCK');
+		$(this).parent().parent().children(":first").removeClass('ui-widget-header-disabled');		         
 	});
 	
 	// Push name to chatboxes, to store!

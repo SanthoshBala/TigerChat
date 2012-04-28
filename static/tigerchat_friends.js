@@ -81,8 +81,8 @@ function populateFriendsList(data) {
 	for(var i = 0; i < sorted_list_online.length; i++) {
 		friend_netid = sorted_list_online[i];
 		var status = instance_friends[friend_netid].status;
-		if(status == "online") var imgurl = "/static/imgs/online.png";
-		else if(status == "offline") var imgurl = "/static/imgs/offline.png";
+		if(status == "online") var imgurl = "/static/imgs/bullet_ball_glass_green.png";
+		else if(status == "offline") var imgurl = "/static/imgs/bullet_ball_glass_red.png";
 		else var imgurl = "/static/imgs/princeton.png";
 		
 		var newrow = '<tr friendname= "' + friend_netid + '">' +
@@ -100,8 +100,8 @@ function populateFriendsList(data) {
 	for(var i = 0; i < sorted_list_offline.length; i++) {
 		friend_netid = sorted_list_offline[i];
 		var status = instance_friends[friend_netid].status;
-		if(status == "online") var imgurl = "/static/imgs/online.png";
-		else if(status == "offline") var imgurl = "/static/imgs/offline.png";
+		if(status == "online") var imgurl = "/static/imgs/bullet_ball_glass_green.png";
+		else if(status == "offline") var imgurl = "/static/imgs/bullet_ball_glass_red.png";
 		else var imgurl = "/static/imgs/princeton.png";
 		
 		var newrow = '<tr friendname= "' + friend_netid + '">' +
@@ -154,8 +154,8 @@ function updateBuddyListStatus(sender, status) {
 	if(sender == my_user_name) return;
 	
 	// set the appropriate image
-	if(status == "online") var imgurl = '/static/imgs/online.png';
-	else if(status == "offline") var imgurl = '/static/imgs/offline.png';
+	if(status == "online") var imgurl = '/static/imgs/bullet_ball_glass_green.png';
+	else if(status == "offline") var imgurl = '/static/imgs/bullet_ball_glass_red.png';
 	else var imgurl = '/static/imgs/princeton.png';
 	
 	// edit the row
@@ -183,8 +183,8 @@ function addToBuddyList(friend_netid) {
 	
 	
 	var status = instance_friends[friend_netid].status;
-	if(status == "online") var imgurl = "/static/imgs/online.png";
-	else if(status == "offline") var imgurl = "/static/imgs/offline.png";
+	if(status == "online") var imgurl = "/static/imgs/bullet_ball_glass_green.png";
+	else if(status == "offline") var imgurl = "/static/imgs/bullet_ball_glass_red.png";
 	else var imgurl = "/static/imgs/princeton.png";
 	
 	var newrow = '<tr friendname= "' + friend_netid + '">' +

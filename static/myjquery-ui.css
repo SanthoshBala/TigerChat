@@ -409,7 +409,7 @@
 
 .newbox { overflow: auto; height: 700px; left: 832px; top: 18px; width: 318px; z-index: 6; position: absolute; z-index: 1; }
 
-.scrolling_area { overflow: auto; height: 80%; word-wrap: break-word; font-family: Tahoma,Arial,sans-serif; font-size:13px; }
+.scrolling_area { overflow: auto; /*height: 80%;*/ word-wrap: break-word; font-family: Tahoma,Arial,sans-serif; font-size:13px; bottom: 70px; left: 8px; right: 3px; top: 3px; position:absolute;}
 .chatbox_text { overflow: auto; width: 90%; word-wrap: break-word; position: absolute; bottom: 15px; left: 8px;}
 .chatbox_below_title {height: 250px; position: relative;}
 .Highlight { background-color: #dcfac9; cursor: pointer; }

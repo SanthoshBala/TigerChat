@@ -329,7 +329,7 @@ $(document).ready(function () {
 
 
 		
-	
+		
 
 
     $('#disconnect').bind('click', function () {
@@ -358,9 +358,11 @@ $(document).ready(function () {
 	});
 			
     $(window).resize();
+    
+    window.onbeforeunload = function(){
+		connection.disconnect();
+    };
 });
-
-
 
 
 
