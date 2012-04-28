@@ -16,6 +16,8 @@ class Migration(SchemaMigration):
             ('first_name', self.gf('django.db.models.fields.CharField')(max_length=30)),
             ('last_name', self.gf('django.db.models.fields.CharField')(max_length=30)),
             ('major', self.gf('django.db.models.fields.CharField')(max_length=30)),
+            ('dorm', self.gf('django.db.models.fields.CharField')(max_length=30)),
+            ('has_jabber_acct', self.gf('django.db.models.fields.BooleanField')(default=False)),
         ))
         db.send_create_signal('communication', ['Person'])
 
@@ -118,7 +120,9 @@ class Migration(SchemaMigration):
         },
         'communication.person': {
             'Meta': {'object_name': 'Person'},
+            'dorm': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
+            'has_jabber_acct': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'jid': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30'}),

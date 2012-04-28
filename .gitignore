@@ -9,3 +9,4 @@ tigerchat.db
 *~
 *.so
 *.wsgi
+./static/*
