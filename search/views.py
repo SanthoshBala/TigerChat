@@ -1,5 +1,11 @@
 # Create your views here.
-
+from django.db.models import Q
+from commands import getoutput
+from django.http import HttpResponse
+import string
+import simplejson
+from lib.django_json_handlers import json_handler
+from communication.models import *
 
 ## search(): Returns list of all people that match query term
 ## at the moment, cannot search by individual fields
@@ -11,7 +17,7 @@ def search_ldap(request):
     # Get all entries from ldapsearch
     
     #entries = fout.read().split('#')[8:-3]
-    fout = getoutput('/usr/bin/ldapsearch -x -h ldap.princeton.edu -u -b o="Princeton University, c=US" "(cn=*%s*)" uid givenName sn purescollege puclassyear puhomedepartmentnumber' % query)
+    fout = getoutput('/usr/bin/ldapsearch -x -h ldap.princeton.edu -u -b o="Princeton University, c=US" "(cn=*%s*)"' % query)
     entries = fout.split('#')[8:-3]
 #   data = {}
     data = []
