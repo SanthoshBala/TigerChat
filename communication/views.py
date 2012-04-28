@@ -12,9 +12,6 @@ import string
 from commands import getoutput
 
 
-
-
-
 ## get_friends() get this user's friend list
 @login_required
 def get_friends(request):
