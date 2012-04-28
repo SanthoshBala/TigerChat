@@ -12,7 +12,7 @@ from django.shortcuts import render_to_response
 from django.template.loader import render_to_string
 from lib.django_json_handlers import json_handler
 from communication.views import *
-
+from search.views import get_ldap_record
 
 ##### USER VIEWS ######
 
