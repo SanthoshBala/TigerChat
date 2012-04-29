@@ -141,24 +141,24 @@ function sendIQmsg() {
 
 
 function handle_subscribe_message(newfriend) {
-	log('in function.');
+	//log('in function.');
 	$.get("/friends/",
 			function(data){
 				data = jQuery.parseJSON(data);
 				
 				for(var i = 0; i < data.length; i++) {
-					log('checking on data friend ' + data[i].username +' against ' + newfriend);
+					//log('checking on data friend ' + data[i].username +' against ' + newfriend);
 					if(data[i].username == newfriend) {
-						log('FOUND TRUE!');
-						log('hello?');
-						log('Already friends with ' + newfriend);
+						//log('FOUND TRUE!');
+						//log('hello?');
+						//log('Already friends with ' + newfriend);
 						acceptRequest(connection, my_user_name, newfriend);
 						return;
 					} 
 				}
 				
 				
-				log('not friends.');
+				//log('not friends.');
 			
 				$.get("/requests/",
 				function(data){
@@ -184,18 +184,36 @@ function handle_subscribe_message(newfriend) {
 	 
 	 // Now deal with the different types of presences
 	//log('got a presence from ' + sender + ' of type = ' + presType);
-	 if(sender == my_user_name) return true;
+	if(sender == my_user_name) return true;
 	 // Set sender to be online
-	 if (presType == null) {
+	if (presType == null) {
 		 // if no type attribute, user is online. update roster
-		 updateBuddyListStatus(sender, "online");
 		 if(instance_friends[sender] != undefined) instance_friends[sender].status = "online";
-	 }
+		 if ($("#chatbox_" + sender).length > 0) {
+			if ($('#chatbox_' + sender).dialog('isOpen') == true) {
+				var timestamp = getTimeStamp();
+				$('#text_area_' + sender).append('<span style = "color:#AAAAAA;" >' + timestamp + '</span> <span style = "color:#AAAAAA;" >' + sender + ' has logged on' + "</span><br/>");
+				$('#text_area_' + sender).scrollTop($('#text_area_' + sender)[0].scrollHeight);
+	
+			}
+		}
+		 updateBuddyListStatus(sender, "online");
+	}
 	 
 	 // Set sender to be offline
-	 else if (presType == 'unavailable') {
+	else if (presType == 'unavailable') {
+		if(instance_friends[sender] != undefined) instance_friends[sender].status = "offline";
+		if ($("#chatbox_" + sender).length > 0) {
+			if ($('#chatbox_' + sender).dialog('isOpen') == true) {
+				var timestamp = getTimeStamp();
+				$('#text_area_' + sender).append('<span style = "color:#AAAAAA;" >' + timestamp + '</span> <span style = "color:#AAAAAA;" >' + sender + ' has logged off' + "</span><br/>");
+				$('#text_area_' + sender).scrollTop($('#text_area_' + sender)[0].scrollHeight);
+	
+			}
+		}
+		
+		 
 		updateBuddyListStatus(sender, "offline");
-		 if(instance_friends[sender] != undefined) instance_friends[sender].status = "offline";
 	 
 	 }
 	 
@@ -212,7 +230,7 @@ function handle_subscribe_message(newfriend) {
 		 
 	 }
 	 else if (presType == 'subscribed') {
-		 log("got a subscribed message from " + sender);
+		// log("got a subscribed message from " + sender);
 		 
 		 var newfriend = {};
 		 newfriend.FirstName = "testFirst";
@@ -220,7 +238,7 @@ function handle_subscribe_message(newfriend) {
 		 newfriend.status = "online";
 		 instance_friends[sender] = newfriend;
 		 
-		 log("adding to buddy list.");
+		// log("adding to buddy list.");
 		 
 		 addToBuddyList(sender);
 		 // no action necessary

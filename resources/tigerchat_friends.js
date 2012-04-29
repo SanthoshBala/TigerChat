@@ -5,13 +5,13 @@ var instance_friends = {};
 function InitializeFriendsVariable(data) {
 
 	var mydata = jQuery.parseJSON(data);
-
+	
 	for(var i = 0; i < mydata.length; i++) {
 		
 		var netID = mydata[i].username;
 		var new_friend = {};
-		new_friend.FirstName = "testFirstName";
-		new_friend.LastName = "testLastName";
+		new_friend.FirstName = "";
+		new_friend.LastName = "";
 		new_friend.status = "offline";
 		instance_friends[netID] = new_friend;
 	
@@ -20,6 +20,134 @@ function InitializeFriendsVariable(data) {
 	
 	
 	populateFriendsList(mydata);
+}
+
+
+function repopulateFriendsList() {
+
+	var filter_key = $('#friends_search').val();
+
+	// Sort the list of friends
+	var sorted_list_online = [];
+	var sorted_list_offline = [];
+	for(friend_netid in instance_friends) {
+		
+
+		
+		if (  	(friend_netid.search(filter_key) == -1 ) &&  
+				(instance_friends[friend_netid].FirstName.search(filter_key) == -1 ) && 
+				(instance_friends[friend_netid].LastName.search(filter_key) == -1 ) ) {
+			continue;
+		}
+		
+		if(instance_friends.hasOwnProperty(friend_netid)){
+			if(instance_friends[friend_netid].status == "online") {
+				sorted_list_online.push(friend_netid);
+			}
+			else {
+				sorted_list_offline.push(friend_netid);
+			}
+        }
+	}
+    sorted_list_offline.sort();
+	sorted_list_online.sort();
+	
+	
+	$('#friend-table tr').remove();
+	
+	// Row for expanding/collapsing offline buddies
+	var arrow_img = "/static/imgs/DownTriangle.png";
+	var newrow = '<tr friendname = "NONE" id= "online_collapse" status="open">' +
+			'<td style="width: 15px;" onclick="collapse_grouping(\'online\')"><img src="' + arrow_img + '" width="12" height="12" style="" /> </td>' + '<td colspan="2"> Online </td>' + '</tr>';
+		$("#friend-table").append(newrow);
+		
+		
+		
+	// Add my online friends to the buddy list
+	for(var i = 0; i < sorted_list_online.length; i++) {
+		friend_netid = sorted_list_online[i];
+		var status = instance_friends[friend_netid].status;
+		if(status == "online") var imgurl = "/static/imgs/bullet_ball_glass_green.png";
+		else if(status == "offline") var imgurl = "/static/imgs/bullet_ball_glass_red.png";
+		else var imgurl = "/static/imgs/princeton.png";
+		
+		var newrow = '<tr friendname= "' + friend_netid + '" grouping="online">' +
+			'<td style="width: 15px;"></td> <td style="width: 20px;"> <img src="' + imgurl + '" width="14" height="14" style="" />  </td> ' + '<td>' + friend_netid + '</td>' + '</tr>';	
+		$("#friend-table").append(newrow);
+	}
+	
+	// Row for expanding/collapsing offline buddies
+	var arrow_img = "/static/imgs/DownTriangle.png";
+	var newrow = '<tr friendname = "NONE" id= "offline_collapse" status="open">' +
+			'<td style="width: 15px;" onclick="collapse_grouping(\'offline\')"><img src="' + arrow_img + '" width="12" height="12" style="" /> </td>' + '<td colspan="2"> Offline </td>' + '</tr>';
+		$("#friend-table").append(newrow);
+	
+	// Add my offline friends to the buddy list
+	for(var i = 0; i < sorted_list_offline.length; i++) {
+		friend_netid = sorted_list_offline[i];
+		var status = instance_friends[friend_netid].status;
+		if(status == "online") var imgurl = "/static/imgs/bullet_ball_glass_green.png";
+		else if(status == "offline") var imgurl = "/static/imgs/bullet_ball_glass_red.png";
+		else var imgurl = "/static/imgs/princeton.png";
+		
+		var newrow = '<tr friendname= "' + friend_netid + '" grouping="offline">' +
+			'<td style="width: 15px;"></td> <td style="width: 20px;"> <img src="' + imgurl + '" width="14" height="14" style="" />  </td> ' + '<td>' + friend_netid + '</td>' + '</tr>';
+	
+		$("#friend-table").append(newrow);
+	}
+	
+	
+	
+	
+	
+	 //$('#friend-table td:first-child').hide();
+	
+	// Highlight function
+	 $('#friend-table tr[friendname!="NONE"]').hover(function ()
+      {
+        $(this).toggleClass('Highlight');
+      });
+	
+	// Click Function
+	 $('#friend-table tr[friendname!="NONE"]').click(function ()
+      {
+		  makeNewChatbox($(this).attr("friendname"));
+      });
+	
+	
+}
+
+function collapse_grouping(grouping) {
+	var tr_name = grouping + "_collapse";
+
+
+	// if tt is open
+		// find all rows ith grouping of this group, and hide them
+		// Set it to be closed
+	var status = $('#' + tr_name).attr('status');
+	
+	
+	if(status == 'open') {
+		$('#friend-table tr[grouping="' + grouping + '"]').css({'display' : 'none'});
+		var totalhtml = $('#' + tr_name).html();
+		totalhtml = totalhtml.replace('DownTriangle', 'RightTriangle');
+		$('#' + tr_name).html(totalhtml);
+		$('#' + tr_name).attr('status', 'closed');
+	}
+	
+	if(status == 'closed') {
+		$('#friend-table tr[grouping="' + grouping + '"]').css({'display' : ''});
+		var totalhtml = $('#' + tr_name).html();
+		totalhtml = totalhtml.replace('RightTriangle', 'DownTriangle');
+		$('#' + tr_name).html(totalhtml);
+		$('#' + tr_name).attr('status', 'open');
+	}
+	
+		
+	//if it closed
+		// unhide the rows
+		// set it to be open
+	
 }
 
 
@@ -57,6 +185,11 @@ function populateFriendsList(data) {
 	'<div id="padding"></div>')
 	.appendTo($( "body" ));
 	
+	// Keypress function for search
+	$('#friends_search').keyup(function(e) {
+		repopulateFriendsList();
+	});
+	
 	
 	// Sort the list of friends
 	var sorted_list_online = [];
@@ -75,8 +208,17 @@ function populateFriendsList(data) {
 	sorted_list_online.sort();
 	
 	
-		$("#friend-table").append(newrow);
+//		$("#friend-table").append(newrow);
 	
+	// Row for expanding/collapsing offline buddies
+	// Row for expanding/collapsing offline buddies
+	var arrow_img = "/static/imgs/DownTriangle.png";
+	var newrow = '<tr friendname = "NONE" id= "online_collapse" status="open">' +
+			'<td style="width: 15px;" onclick="collapse_grouping(\'online\')"><img src="' + arrow_img + '" width="12" height="12" style="" /> </td>' + '<td colspan="2"> Online </td>' + '</tr>';
+		$("#friend-table").append(newrow);
+		
+		
+		
 	// Add my online friends to the buddy list
 	for(var i = 0; i < sorted_list_online.length; i++) {
 		friend_netid = sorted_list_online[i];
@@ -85,15 +227,15 @@ function populateFriendsList(data) {
 		else if(status == "offline") var imgurl = "/static/imgs/bullet_ball_glass_red.png";
 		else var imgurl = "/static/imgs/princeton.png";
 		
-		var newrow = '<tr friendname= "' + friend_netid + '">' +
+		var newrow = '<tr friendname= "' + friend_netid + '" grouping="online">' +
 			'<td style="width: 15px;"></td> <td style="width: 20px;"> <img src="' + imgurl + '" width="14" height="14" style="" />  </td> ' + '<td>' + friend_netid + '</td>' + '</tr>';	
 		$("#friend-table").append(newrow);
 	}
 	
 	// Row for expanding/collapsing offline buddies
-	var arrow_img = "/static/imgs/RightTriangle.png";
-	var newrow = '<tr friendname= "offline_collapse" status="open">' +
-			'<td style="width: 15px;" onclick="handle_offline_friends()"><img src="' + arrow_img + '" width="12" height="12" style="" /> </td>' + '<td colspan="2"> Offline </td>' + '</tr>';
+	var arrow_img = "/static/imgs/DownTriangle.png";
+	var newrow = '<tr friendname = "NONE" id= "offline_collapse" status="open">' +
+			'<td style="width: 15px;" onclick="collapse_grouping(\'offline\')"><img src="' + arrow_img + '" width="12" height="12" style="" /> </td>' + '<td colspan="2"> Offline </td>' + '</tr>';
 		$("#friend-table").append(newrow);
 	
 	// Add my offline friends to the buddy list
@@ -104,7 +246,7 @@ function populateFriendsList(data) {
 		else if(status == "offline") var imgurl = "/static/imgs/bullet_ball_glass_red.png";
 		else var imgurl = "/static/imgs/princeton.png";
 		
-		var newrow = '<tr friendname= "' + friend_netid + '">' +
+		var newrow = '<tr friendname= "' + friend_netid + '" grouping="offline">' +
 			'<td style="width: 15px;"></td> <td style="width: 20px;"> <img src="' + imgurl + '" width="14" height="14" style="" />  </td> ' + '<td>' + friend_netid + '</td>' + '</tr>';
 	
 		$("#friend-table").append(newrow);
@@ -114,16 +256,18 @@ function populateFriendsList(data) {
 	
 	
 	
+	
+	
 	 //$('#friend-table td:first-child').hide();
 	
 	// Highlight function
-	 $('#friend-table tr').hover(function ()
+	 $('#friend-table tr[friendname!="NONE"]').hover(function ()
       {
         $(this).toggleClass('Highlight');
       });
 	
 	// Click Function
-	 $('#friend-table tr').click(function ()
+	 $('#friend-table tr[friendname!="NONE"]').click(function ()
       {
 		  makeNewChatbox($(this).attr("friendname"));
       });
@@ -143,18 +287,17 @@ function populateFriendsList(data) {
 	
 }
 
-function handle_offline_friends() {
-	log('In fcn!');
-}
-
 
 function updateBuddyListStatus(sender, status) {
 
 	// return if we're trying to update ourself
 	if(sender == my_user_name) return;
+
+	
+	repopulateFriendsList();
 	
 	// set the appropriate image
-	if(status == "online") var imgurl = '/static/imgs/bullet_ball_glass_green.png';
+	/*if(status == "online") var imgurl = '/static/imgs/bullet_ball_glass_green.png';
 	else if(status == "offline") var imgurl = '/static/imgs/bullet_ball_glass_red.png';
 	else var imgurl = '/static/imgs/princeton.png';
 	
@@ -173,7 +316,7 @@ function updateBuddyListStatus(sender, status) {
     $('#friend-table tr[friendname~="' + sender + '"]').click(function ()
       {
 		  makeNewChatbox($(this).attr("friendname"));
-      });
+      });*/
      
 
 }
