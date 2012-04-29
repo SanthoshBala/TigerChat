@@ -183,7 +183,7 @@ function handle_subscribe_message(newfriend) {
 	 var presType = pres.getAttribute('type'); 
 	 
 	 // Now deal with the different types of presences
-	log('got a presence from ' + sender + ' of type = ' + presType);
+	//log('got a presence from ' + sender + ' of type = ' + presType);
 	 if(sender == my_user_name) return true;
 	 // Set sender to be online
 	 if (presType == null) {
@@ -217,7 +217,7 @@ function handle_subscribe_message(newfriend) {
 		 var newfriend = {};
 		 newfriend.FirstName = "testFirst";
 		 newfriend.LastName = "testLast";
-		 newfriend.status = "offline";
+		 newfriend.status = "online";
 		 instance_friends[sender] = newfriend;
 		 
 		 log("adding to buddy list.");

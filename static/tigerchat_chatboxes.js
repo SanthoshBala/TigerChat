@@ -14,7 +14,12 @@ function getTimeStamp(){
 	var currTime = new Date();
 	//log(currTime.getHours());
 	//log('bye');
-	var timeString = '[' + currTime.getHours() + ":" + currTime.getMinutes() + '] ' ;
+	var hours = currTime.getHours();
+	var minutes = currTime.getMinutes();
+	if(hours > 12) hours = hours - 12;
+	if(hours < 10) hours = '0' + hours;
+	if(minutes < 10) minutes = '0' + minutes;
+	var timeString = '[' + hours + ":" + minutes + '] ' ;
 	//log(timeString);
 	return timeString;
 }
@@ -29,13 +34,14 @@ function getTimeStamp(){
  * *********************************************************************/
 function HandleChatboxEnter(chat_with_name) {
 	var send_text = $('#send_text_' + chat_with_name).val();
+	send_text = send_text.replace('\n', '<br/>');
 	sender_name = my_user_name + '@localhost';
-	$('#send_text_' + chat_with_name).val('');
+	$('#send_text_' + chat_with_name).val('');	
 	if(jQuery.trim(send_text).length <= 0) return;
 	
 	var timestamp = getTimeStamp();
 
-	$('#text_area_' + chat_with_name).append('<span style = "color:#ff6633;" >' + timestamp + sender_name + ": " + '</span> <span style = "color:#000000;" >' + send_text + "</span><br/>");
+	$('#text_area_' + chat_with_name).append('<span style = "color:#ff6633;" >' + timestamp + my_user_name + ": " + '</span> <span style = "color:#000000;" >' + send_text + "</span><br/>");
 	$('#text_area_' + chat_with_name).scrollTop($('#text_area_' + chat_with_name)[0].scrollHeight);
 	sendMessage(send_text, sender_name, chat_with_name);
 }
@@ -45,7 +51,7 @@ function HandleChatboxEnter(chat_with_name) {
 
 /************************************************************************
  * Called when a user decides to begin chatting.  
- * 
+ * ndl
  * The user to begin chatting with is grabbed from a text box.
  ************************************************************************/
 function beginChat() {
@@ -99,6 +105,8 @@ function makeNewChatbox(chat_with_name) {
 	$("#" + new_name).addClass('chatbox_below_title');
 	$("#" + new_name).css({'height' : '250'});
 	$("#" + new_name).parent().css({'position' : 'fixed'});
+	$("#" + new_name).parent().css({'top' : '200px'});
+	$("#" + new_name).parent().css({'left' : '200px'});
 	/*$("#" + new_name).parent().blur( function() {
 												//log('whaaat.');
 												$(this).children(":first").addClass('ui-widget-header-disabled');
@@ -124,9 +132,15 @@ function makeNewChatbox(chat_with_name) {
 	// Bind function for pressing enter
 	$('#send_text_' + chat_with_name).keypress(function(e)
 	{
-         if (e.which == 13) //e = 13 is enter
+	//		 log('WHAT THE ACTUAL FUCK..?');
+         if (e.which == 13 && !e.shiftKey) //e = 13 is ente
          {
+			 e.preventDefault();
 			 HandleChatboxEnter(chat_with_name);
+		 }
+		 else if (e.which == 13 && e.shiftKey) //e = 13 is ente
+         {
+			 
 		 }
 	});
 	
