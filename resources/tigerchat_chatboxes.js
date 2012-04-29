@@ -97,16 +97,14 @@ function makeNewChatbox(chat_with_name) {
 	$("#" + new_name).dialog({
         autoOpen: true,
         closeOnEscape: true,
-        resizable: true,
-        position: [400,400],
-		
+        resizable: true		
     });
     // Add my class, and set default height
 	$("#" + new_name).addClass('chatbox_below_title');
 	$("#" + new_name).css({'height' : '250'});
 	$("#" + new_name).parent().css({'position' : 'fixed'});
 	$("#" + new_name).parent().css({'top' : '200px'});
-	$("#" + new_name).parent().css({'left' : '200px'});
+	$("#" + new_name).parent().css({'left' : '500px'});
 	/*$("#" + new_name).parent().blur( function() {
 												//log('whaaat.');
 												$(this).children(":first").addClass('ui-widget-header-disabled');
