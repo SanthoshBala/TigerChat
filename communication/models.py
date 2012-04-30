@@ -27,13 +27,25 @@ class Friendship(models.Model):
 
 # Way of managing multi-user chat
 class Room(models.Model):
+    name = models.CharField(max_length=30)
     jid = models.CharField(max_length=30)
     members = models.ManyToManyField(Person, related_name='room_members')
-    status = models.CharField(max_length=30, choices=FRIENDSHIP_STATUS_CHOICES)
     admins = models.ManyToManyField(Person, related_name='admins')
-    private = models.BooleanField(default=False)
+    private = models.BooleanField(default=True)
+    persistent = models.BooleanField(default=True)
     
 # Way of managing what friends belong to what groups in buddy list
 class Group(models.Model):
 	owner = models.OneToOneField(Person, related_name='owner')
 	members = models.ManyToManyField(Person, related_name='group_members')
+
+# System invitations
+class SystemInvitation:
+	inviter = models.ManyToManyField(Person, related_name='sys_inviter')
+	invitee_netid = models.CharField(max_length=30)
+
+# Way of managing invitations to a room
+class RoomInvitation:
+	inviter = models.ManyToManyField(Person, related_name='room_inviter')
+	invitee = models.ManyToManyField(Person, related_name='room_invitee')
+	room = models.ManyToManyField(Room, related_name='room')

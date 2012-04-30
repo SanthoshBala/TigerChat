@@ -34,9 +34,10 @@ class Migration(SchemaMigration):
         # Adding model 'Room'
         db.create_table('communication_room', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=30)),
             ('jid', self.gf('django.db.models.fields.CharField')(max_length=30)),
-            ('status', self.gf('django.db.models.fields.CharField')(max_length=30)),
-            ('private', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('private', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('persistent', self.gf('django.db.models.fields.BooleanField')(default=True)),
         ))
         db.send_create_signal('communication', ['Room'])
 
@@ -157,8 +158,9 @@ class Migration(SchemaMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'jid': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'members': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'room_members'", 'symmetrical': 'False', 'to': "orm['communication.Person']"}),
-            'private': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'status': ('django.db.models.fields.CharField', [], {'max_length': '30'})
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
+            'persistent': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'private': ('django.db.models.fields.BooleanField', [], {'default': 'True'})
         },
         'contenttypes.contenttype': {
             'Meta': {'ordering': "('name',)", 'unique_together': "(('app_label', 'model'),)", 'object_name': 'ContentType', 'db_table': "'django_content_type'"},
