@@ -57,6 +57,7 @@ function handlePresences(connection, user, newFriend, presType)
 			var pres_message = $pres();
 		}			
 	}	
+	log(pres_message);
 	connection.send(pres_message.tree());
 	//var recipient_full = newFriend + "@localhost";
 	//var reply = $msg( {to: recipient_full, from: sender, type: 'presence' } ).c("body").t('testmsg');
@@ -115,13 +116,6 @@ function sendIQ() {
 
 
 
-function onIQ(iq) {
-	
-	thistype = iq.getAttribute("type");
-	
-	
-	return true;
-}
 
 
 
@@ -173,6 +167,31 @@ function handle_subscribe_message(newfriend) {
 
 
 
+/************************************************************************
+ * IQ message callback function
+ ***********************************************************************/
+function onIQ(iq) {
+	
+	var sender = iq.getAttribute('from');	
+	thistype = iq.getAttribute("type");
+	log('Got an IQ message');
+	
+	var form_filled = $iq( {from: my_user_name + '@localhost', to:sender, type:'set'}).c('query', {xmlns: 'http://jabber.org/protocol/muc#owner'})
+	.c('x', {xmlns:'jabber:x:data', type:'submit'})
+	.c('field', {var: 'FORM_TYPE'}).c('value').t('http://jabber.org/protocol/muc#roomconfig')
+	.up().up()
+	.c('field', {var: 'muc#roomconfig_roomname'}).c('value').t('My new fucking room.');
+	
+
+	log(form_filled);
+	
+	connection.send(form_filled.tree());
+	
+	return true;
+}
+
+
+
 /***********************************************************************
  * This function indicates that the user is now online
  ***********************************************************************/
@@ -183,10 +202,22 @@ function handle_subscribe_message(newfriend) {
 	 var presType = pres.getAttribute('type'); 
 	 
 	 // Now deal with the different types of presences
-	//log('got a presence from ' + sender + ' of type = ' + presType);
+	log('got a presence from ' + sender + ' of type = ' + presType);
 	if(sender == my_user_name) return true;
 	 // Set sender to be online
 	if (presType == null) {
+		
+		var x_tag = pres.getElementsByTagName('x');
+		if(x_tag.length > 0) {
+			 log('got an x tag.');
+			
+			var conf_get_msg = $iq({from: my_user_name + '@localhost', to: pres.getAttribute('from').split('/')[0], type: 'get'}).c('query', {xmlns:'http://jabber.org/protocol/muc#owner'});
+			log("CONFIGURATION MSG: " + conf_get_msg);
+			connection.send(conf_get_msg.tree());
+			return true;
+		}
+		
+		
 		 // if no type attribute, user is online. update roster
 		 if(instance_friends[sender] != undefined) instance_friends[sender].status = "online";
 		 if ($("#chatbox_" + sender).length > 0) {
@@ -198,6 +229,9 @@ function handle_subscribe_message(newfriend) {
 			}
 		}
 		 updateBuddyListStatus(sender, "online");
+		 
+		 
+		 
 	}
 	 
 	 // Set sender to be offline
@@ -374,12 +408,32 @@ $(document).ready(function () {
 		closeOnEscape: true,
 		resizable: true
 	});
+	
+	$(" <div />" ).attr("id", 'room_creation_dialog')
+		.attr("title", "Create A Room")
+		.html('<div class = "room_creation_box" id="room_creation_box">' + 
+				'Name: <input type="text" id="chatroom_creation_name" class="" style="width: 50%; border-radius: 0px"/><br/><br/>' + 
+				'Public/Private: <input type="text" id="chatroom_creation_privacy" class="friends_search" style="width: 50%; border-radius: 0px"/><br/><br/>' + 
+				'Adhoc/Persistent: <input type="text" id="chatroom_creation_duration" class="friends_search" style="width: 50%; border-radius: 0px"/><br/><br/>' +
+				 '<input type="button" id="create_chatroom_button" value="Create Room" class="friends_search" onclick="create_chatroom()" style="width: 50%; border-radius: 0px"/><br/><br/>' +
+	
+		'</div>')
+		.appendTo($( "body" ));
+	
+	$("#room_creation_dialog").dialog({
+		autoOpen: false,
+		closeOnEscape: true,
+		resizable: true
+	});
 			
     $(window).resize();
     
     window.onbeforeunload = function(){
 		connection.disconnect();
     };
+    
+    
+    
 });
 
 

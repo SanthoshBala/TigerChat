@@ -154,6 +154,7 @@ function makeNewChatbox(chat_with_name) {
 		$(this).parent().parent().children(":first").addClass('ui-widget-header');
 		//$(this).children(":first").addClass('WHATTHEFUCK');
 		$(this).parent().parent().children(":first").removeClass('ui-widget-header-disabled');		         
+		
 	});
 	
 	// Push name to chatboxes, to store!
