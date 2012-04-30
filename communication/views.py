@@ -27,11 +27,16 @@ def create_room(request):
 		room_persistent = True
 	owner = request.user.person
 	room, created = Room.objects.get_or_create(jid=room_jid, name=room_name, private=room_private, persistent=room_persistent)
-	if created:
-		return HttpResponseBadRequest('Room %s with jid %s already exists' % (room_name, room_jid))
+	
+	if not created:
+		response_dict = {'name': room_name, 'created': False, 'jid': room_jid, 'persistent': room_persistent, 'room_private':room_private}
+		response = simplejson.dumps(response_dict, default=json_handler)
+		return HttpResponse(response, mimetype='application/javascript')
 	room.members.add(owner)
 	room.admins.add(owner)
-	return HttpResponse('Successfully created %s with jid %s' % (room_name, room_jid))
+	response_dict = {'name': room_name, 'created': True, 'jid': room_jid, 'persistent': room_persistent, 'room_private':room_private}
+	response = simplejson.dumps(response_dict, default=json_handler)
+	return HttpResponse(response, mimetype='application/javascript')
 
 ## invite_person_to_room(): invite person to a room
 @login_required
@@ -50,8 +55,6 @@ def invite_person_to_room(request):
 		raise Exception('ERROR')
 	else:
 		invitee = invitees[0]
-		if invite not in room.members:
-			
 		invitation = RoomInvitation.objects.create(invitee=invitee, room=room, inviter=inviter)
 		return HttpResponse('OK')
 
