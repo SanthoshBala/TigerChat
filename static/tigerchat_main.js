@@ -91,9 +91,16 @@ function sendInvite(newfriendname) {
 
 function populateSearchBox(searchterm) {
 	//var searchterm = "ramasub";
-	
+	log("starting search.");
+	$("#log").Loadingdotdotdot({
+		"speed": 400,
+		"maxDots": 4,
+		"word": "Loading"
+	});
 	$.get("/search/", {query: searchterm},
    function(data){
+	   $("#log").Loadingdotdotdot("Stop");
+	   log('ending search.');
 	   fillSearchBox(data);
    });
 	
@@ -126,9 +133,10 @@ function openSearchBox() {
 	{
          if (e.which == 13) //e = 13 is enter
          {
-			 searchterm = $('#search_textbox').val();
+			searchterm = $('#search_textbox').val();
 				$('#search_textbox').val('');
 				
+			$('#search-table tr').remove();
 			 populateSearchBox(searchterm);
 		 }
 	});
@@ -139,6 +147,9 @@ function openSearchBox() {
         resizable: true
     });
     $("#search_dialog").css({'height' : '200'});
+    
+    
+    
 }
 
 
