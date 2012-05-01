@@ -12,6 +12,7 @@ from communication.models import *
 def search_ldap(request):
     # Create command from search query term
     query = request.GET.get('query')
+    query = '*'.join(query.split())
    # cmd = '/usr/bin/ldapsearch -x -h ldap.princeton.edu -u -b o=\'Princeton University,c=US\' \"(cn=*%s*)\" uid givenName sn purescollege puclassyear puhomedepartmentnumber' % query
     #fin, fout = os.popen4(cmd)
     # Get all entries from ldapsearch
@@ -77,7 +78,15 @@ def search_ldap(request):
         # check if person is an existing user
         poi_user = User.objects.filter(username=person_name)
         if len(poi_user) == 0: # no matching user
-            POI['friendship_status'] = 'DNE'
+            try:
+                invitations = SystemInvitation.objects.filter(inviter=request.user.person)
+                if len(invitations) == 1:
+                    POI['friendship_status'] = 'Invited'
+                else:
+                    POI['friendship_status'] = 'DNE'
+            except:
+                pass
+
         # result matches existing user
         elif len(poi_user) == 1: 
             poi_user = poi_user[0]

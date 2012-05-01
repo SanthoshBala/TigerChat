@@ -72,6 +72,30 @@ class Migration(SchemaMigration):
         ))
         db.create_unique('communication_group_members', ['group_id', 'person_id'])
 
+        # Adding model 'SystemInvitation'
+        db.create_table('communication_systeminvitation', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('inviter', self.gf('django.db.models.fields.related.ForeignKey')(related_name='sys_inviter', to=orm['communication.Person'])),
+            ('invitee_netid', self.gf('django.db.models.fields.CharField')(max_length=30)),
+        ))
+        db.send_create_signal('communication', ['SystemInvitation'])
+
+        # Adding model 'RoomInvitation'
+        db.create_table('communication_roominvitation', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('inviter', self.gf('django.db.models.fields.related.ForeignKey')(related_name='room_inviter', to=orm['communication.Person'])),
+            ('invitee', self.gf('django.db.models.fields.related.ForeignKey')(related_name='room_invitee', to=orm['communication.Person'])),
+        ))
+        db.send_create_signal('communication', ['RoomInvitation'])
+
+        # Adding M2M table for field room on 'RoomInvitation'
+        db.create_table('communication_roominvitation_room', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('roominvitation', models.ForeignKey(orm['communication.roominvitation'], null=False)),
+            ('room', models.ForeignKey(orm['communication.room'], null=False))
+        ))
+        db.create_unique('communication_roominvitation_room', ['roominvitation_id', 'room_id'])
+
 
     def backwards(self, orm):
         
@@ -95,6 +119,15 @@ class Migration(SchemaMigration):
 
         # Removing M2M table for field members on 'Group'
         db.delete_table('communication_group_members')
+
+        # Deleting model 'SystemInvitation'
+        db.delete_table('communication_systeminvitation')
+
+        # Deleting model 'RoomInvitation'
+        db.delete_table('communication_roominvitation')
+
+        # Removing M2M table for field room on 'RoomInvitation'
+        db.delete_table('communication_roominvitation_room')
 
 
     models = {
@@ -161,6 +194,19 @@ class Migration(SchemaMigration):
             'name': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'persistent': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'private': ('django.db.models.fields.BooleanField', [], {'default': 'True'})
+        },
+        'communication.roominvitation': {
+            'Meta': {'object_name': 'RoomInvitation'},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'invitee': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'room_invitee'", 'to': "orm['communication.Person']"}),
+            'inviter': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'room_inviter'", 'to': "orm['communication.Person']"}),
+            'room': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'room'", 'symmetrical': 'False', 'to': "orm['communication.Room']"})
+        },
+        'communication.systeminvitation': {
+            'Meta': {'object_name': 'SystemInvitation'},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'invitee_netid': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
+            'inviter': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'sys_inviter'", 'to': "orm['communication.Person']"})
         },
         'contenttypes.contenttype': {
             'Meta': {'ordering': "('name',)", 'unique_together': "(('app_label', 'model'),)", 'object_name': 'ContentType', 'db_table': "'django_content_type'"},

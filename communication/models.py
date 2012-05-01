@@ -40,12 +40,12 @@ class Group(models.Model):
 	members = models.ManyToManyField(Person, related_name='group_members')
 
 # System invitations
-class SystemInvitation:
-	inviter = models.ManyToManyField(Person, related_name='sys_inviter')
+class SystemInvitation(models.Model):
+	inviter = models.ForeignKey	(Person, related_name='sys_inviter')
 	invitee_netid = models.CharField(max_length=30)
 
 # Way of managing invitations to a room
-class RoomInvitation:
-	inviter = models.ManyToManyField(Person, related_name='room_inviter')
-	invitee = models.ManyToManyField(Person, related_name='room_invitee')
+class RoomInvitation(models.Model):
+	inviter = models.ForeignKey(Person, related_name='room_inviter')
+	invitee = models.ForeignKey(Person, related_name='room_invitee')
 	room = models.ManyToManyField(Room, related_name='room')

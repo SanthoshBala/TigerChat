@@ -5,7 +5,7 @@ from lib.django_json_handlers import json_handler
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template.loader import render_to_string
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError
 import os
 import simplejson
 import string
@@ -15,8 +15,11 @@ from communication.models import *
 ## create_room(): create a new room
 @login_required
 def create_room(request):
-	room_name = request.GET.get('name')
-	room_jid = request.GET.get('jid')
+	try:
+		room_name = request.GET.get('name')
+		room_jid = request.GET.get('jid')
+	except:
+		return HttpResponseBadRequest()
 	try:
 		room_private = request.GET.get('room_private')
 	except:
@@ -41,31 +44,41 @@ def create_room(request):
 ## invite_person_to_room(): invite person to a room
 @login_required
 def invite_person_to_room(request):
-	inviter = request.user.person
-	invitee_jid = request.GET.get('invitee_jid')
-	room = request.GET.get('room_jid')
+	inviter_person = request.user.person
+	try:
+		invitee_jid = request.GET.get('invitee_jid')
+		room_jid = request.GET.get('room_jid')
+	except:
+		return HttpResponseBadRequest()
 	# verify this is a valid room
 	try:
-		room = Room.objects.get(room)
+		room_object = Room.objects.get(jid=room_jid)
 	except:
-		return HttpResponseBadRequest('room %s does not exist' % room)
+		return HttpResponseBadRequest('room %s does not exist' % room_jid)
 	# see if person with invitee_jid exists
 	invitees = Person.objects.filter(jid=invitee_jid)
 	if len(invitees) is not 1:
-		raise Exception('ERROR')
+		response_dict = {'invited': False, 'error': True}
+		response = simplejson.dumps(response_dict, default=json_handler)
+		return HttpResponse(response, mimetype='application/javascript')
 	else:
-		invitee = invitees[0]
-		invitation = RoomInvitation.objects.create(invitee=invitee, room=room, inviter=inviter)
-		return HttpResponse('OK')
+		invitee_person = invitees[0]
+		invitation = RoomInvitation.objects.create(invitee=invitee_person, room=room_object, inviter=inviter_person)
+		response_dict = {'inviter_jid': inviter.jid, 'invitee_jid': invitee_jid, 'invited':True}
+		response = simplejson.dumps(response_dict, default=json_handler)
+		return HttpResponse(response, mimetype='application/javascript')
 
 ## leave_room(): make person leave room
 @login_required
 def leave_room(request):
 	person = request.user.person
-	room_jid = request.GET.get('room_jid')
+	try:
+		room_jid = request.GET.get('room_jid')
+	except:
+		return HttpResponseBadRequest()
 	rooms = Room.objects.filter(jid=room_jid)
 	if len(rooms) is not 1:
-		raise Exception('Error')
+		return HttpResponseServerError()
 	else:
 		room = rooms[0]
 		room.members.remove(person)
@@ -77,8 +90,11 @@ def leave_room(request):
 ## accept_invitation(): accept_invitation to room
 def accept_invitation(request):
 	person = request.user.person
-	room_jid = request.GET.get('room_jid')
-	inviter = request.GET.get('inviter_jid')
+	try:
+		room_jid = request.GET.get('room_jid')
+		inviter = request.GET.get('inviter_jid')
+	except:
+		return HttpResponseBadRequest()
 	invitation = RoomInvitation.objects.filter(invitee=person)
 	room = Room.objects.get(room_jid='room_jid')
 	room.members.add(person)

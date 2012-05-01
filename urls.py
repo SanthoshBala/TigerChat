@@ -21,6 +21,7 @@ urlpatterns = patterns('',
     
     
     url(r'^friends/$', 'TigerChat.communication.views.get_friends'),
+    url(r'^rooms/$', 'TigerChat.communication.views.get_rooms'),
     url(r'^pending/$', 'TigerChat.communication.views.get_pending'),
     url(r'^requests/$', 'TigerChat.communication.views.get_requests'),
     url(r'^invite/$', 'TigerChat.communication.views.invite_user'),
@@ -31,6 +32,8 @@ urlpatterns = patterns('',
     url(r'^room/create/$', 'TigerChat.communication.views.create_room'),
     url(r'^room/invite/$', 'TigerChat.communication.views.invite_person_to_room'),
     url(r'^room/leave/$', 'TigerChat.communication.views.leave_room'),
+    url(r'^room/requests/$', 'TigerChat.communication.views.get_room_invites'),
+    url(r'^room/join/', 'TigerChat.communication.views.join_room'),
     
     url(r'^register/$', 'TigerChat.registration.views.register_new_user'),
     url(r'^users/$', 'TigerChat.registration.views.users'),
