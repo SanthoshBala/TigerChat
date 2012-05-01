@@ -4,6 +4,36 @@ function openRoomCreation() {
 }
 
 
+function InviteSanthosh() {
+
+
+	invite_to_chatroom('santhosh', 'blah');
+}
+
+function InviteVyas() {
+
+
+	invite_to_chatroom('vramasub', 'blah');
+}
+
+
+
+function TestRoomMembers() {
+
+	for(roomjid in instance_chatrooms) {
+	
+		log(roomjid);
+		for(var i = 0; i < instance_chatrooms[roomjid].occupants.length; i++) {
+		
+			log('participant: ');
+			log(instance_chatrooms[roomjid].occupants[i]);
+		}
+	
+	}
+}
+
+
+
 
 function create_chatroom() {
 
@@ -20,7 +50,6 @@ function create_chatroom() {
 	var roomjid = roomname.replace(/ /g,".");
 	log(roomjid);
 
-	//invite_to_chatroom('naacho', 'mynewchatroom');
 	// check if jid for chatroom already exists
 	
 	// post to database with jid, privacy, room duration, name
@@ -36,6 +65,7 @@ function create_chatroom() {
 function invite_to_chatroom(user, chatroom) {
 
 	log('sending invite to ' + user);
+	//check to confirm that I am capable of inviting to a room
 	$.get('/room/invite/', {room_jid: chatroom, invitee_jid: user}); 
 	sendChatroomInvite(user, chatroom);	
 	// send a special message with type = chatroom_invite

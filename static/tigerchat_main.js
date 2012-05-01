@@ -82,7 +82,13 @@ function fillSearchBox(data) {
 }
 
 
+function open_pending_requests() {
+			$.get("/requests/",
+					function(data){
+						repopulate_pending_requests(data);
+				});
 
+}
 function sendInvite(newfriendname) {
 
 	$.get("/addfriend/", {jid: newfriendname} );
@@ -188,10 +194,10 @@ function addPendingChatroomInvites(data) {
 
 	data = jQuery.parseJSON(data);
 	for(var i = 0; i < data.length; i++) {
-		var newrow = '<tr pendingname= "' + data[i].chatroom_name + '">' +
-		'<td>' + data[i].chatroom_name + ' room</td>' +
-		'<td>' +  "<input type='button' value='Accept' onclick='addReceivedChatroomInvite(\"" + data[i].chatroom_name + "\")'/>" + '</td>' +
-		'<td>' +  "<input type='button' value='Reject' onclick='RejectReceivedChatroomInvite(\"" + data[i].chatroom_name + "\")'/>" + '</td>' +
+		var newrow = '<tr pendingname= "' + data[i].room_name + '">' +
+		'<td>' + data[i].room_name + ' room</td>' +
+		'<td>' +  "<input type='button' value='Accept' onclick='addReceivedChatroomInvite(\"" + data[i].room_jid + "\")'/>" + '</td>' +
+		'<td>' +  "<input type='button' value='Reject' onclick='RejectReceivedChatroomInvite(\"" + data[i].room_jid + "\")'/>" + '</td>' +
 		'</tr>';
 		$("#pending-table").append(newrow);
 	
@@ -199,9 +205,11 @@ function addPendingChatroomInvites(data) {
 
 }
 
-function addReceivedChatroomInvite(name) {
 
-	$.get("/room/join", {chatroom_name: name} );
+
+function addReceivedChatroomInvite(roomjid) {
+
+	$.get("/room/join", {room_jid: roomjid} );
 
 }
 

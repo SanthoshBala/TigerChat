@@ -22,23 +22,43 @@ function InitializeFriendsVariable(data) {
 	
 	
 	
-	populateFriendsList(mydata);
 }
 
 function InitializeChatroomsVariable(data) {
 
 	var mydata = jQuery.parseJSON(data);
+	log(mydata);
 	
 	for(var i = 0; i < mydata.length; i++) {
 		
-		var roomName = mydata[i].roomName;
-		var roomOccupants = mydata[i].occupants;
+		var roomName = mydata[i].room_name;
+		var roomjid = mydata[i].jid;
+		log('room jid: ');
+		log(roomjid);
 		var new_room = {};
-		for(var j = 0; j < roomOccupants.length; j++) {
-			new_room.occupants[j] = roomOccupants[i].username;
-		}
+		new_room.occupants = new Array();
+		new_room.name = mydata[i].name;
+		instance_chatrooms[roomjid] = new_room;
+		log('created room in instance.');
 		
-		instance_chatrooms[roomName] = new_room;
+		//log('calling get.');
+		//$.getJSON('/room/members/', {room_jid: roomjid}, function(data) { log('called.'); } );
+		$.getJSON('/room/members/', {room_jid: roomjid}, function(data) {
+			
+				//log('getting data.');
+				//var newdata = jQuery.parseJSON(data);
+				newdata = data;
+				var thisroomjid = newdata.room_jid;
+				for(var j=0; j < newdata.members.length; j++) {
+					var user_jid = newdata.members[j].jid;
+					//log(user_jid);
+					instance_chatrooms[thisroomjid].occupants[j] = user_jid;
+				}
+				
+			
+				populateFriendsList(mydata);
+		});
+		
 	}
 
 }
@@ -52,6 +72,7 @@ function repopulateFriendsList() {
 	var sorted_list_online = [];
 	var sorted_list_offline = [];
 	var sorted_list_rooms = [];
+	
 	
 	for(chatroom_name in instance_chatrooms) {
 		
@@ -103,7 +124,7 @@ function repopulateFriendsList() {
 		chatroom_name = sorted_list_rooms[i];
 		var imgurl = "/static/imgs/princeton.png";
 		
-		var newrow = '<tr friendname= "chatroom_' + chatroom_name + '" grouping="chatrooms">' +
+		var newrow = '<tr friendname= "' + chatroom_name + '" grouping="chatrooms">' +
 			'<td style="width: 15px;"></td> <td style="width: 20px;"> <img src="' + imgurl + '" width="14" height="14" style="" />  </td> ' + '<td>' + chatroom_name + '</td>' + '</tr>';	
 		$("#friend-table").append(newrow);
 	}
@@ -225,7 +246,8 @@ function populateFriendsList(data) {
 	.html('<div class = "friends_list" id = "my_friends_list" style="height: 100%; margin: auto; position: relative; background-color:#F2F2F2; border-radius: 0px 0px 0px 12px;">' + 
 	
 	'<div class = "friends_header" id = "my_friends_header" style="height: 32px; padding-left: 5px; padding-top: 5px;">' + 
-	'<input type="button" onclick="openSearchBox()" value="Search"/> ' + '<input type="button" onclick="openRoomCreation()" value="Chatrooms"/>' +
+	'<input type="button" onclick="openSearchBox()" value="Search"/> ' + '<input type="button" onclick="openRoomCreation()" value="Chatrooms"/>' + 
+	'<input type="button" onclick="open_pending_requests()" value="pending">' + 
 	'</div>' + 
 	
 	'<div class = "friends_searchbox" id = "my_friends_searchbox" style="height: 32px; text-align: center; padding-left: 5px; padding-right: 11px;">' + 
@@ -254,7 +276,14 @@ function populateFriendsList(data) {
 		repopulateFriendsList();
 	});
 	
+	var sorted_list_rooms = [];
 	
+	log('looking for rooms.');
+	for(chatroom_name in instance_chatrooms) {
+		log('chatroom: ' + chatroom_name);
+		sorted_list_rooms.push(chatroom_name);
+			
+	}
 	// Sort the list of friends
 	var sorted_list_online = [];
 	var sorted_list_offline = [];
@@ -270,6 +299,23 @@ function populateFriendsList(data) {
 	}
     sorted_list_offline.sort();
 	sorted_list_online.sort();
+	sorted_list_rooms.sort();	
+	
+	// Row for expanding/collapsing chatrooms
+	var arrow_img = "/static/imgs/DownTriangle.png";
+	var newrow = '<tr friendname = "NONE" id= "chatrooms_collapse" status="open">' +
+			'<td style="width: 15px;" onclick="collapse_grouping(\'chatrooms\')"><img src="' + arrow_img + '" width="12" height="12" style="" /> </td>' + '<td colspan="2"> Chatrooms </td>' + '</tr>';
+		$("#friend-table").append(newrow);
+		
+	for(var i = 0; i < sorted_list_rooms.length; i++) {
+		chatroom_name = sorted_list_rooms[i];
+		var imgurl = "/static/imgs/princeton.png";
+		
+		var newrow = '<tr friendname= "' + chatroom_name + '" grouping="chatrooms">' +
+			'<td style="width: 15px;"></td> <td style="width: 20px;"> <img src="' + imgurl + '" width="14" height="14" style="" />  </td> ' + '<td>' + chatroom_name + '</td>' + '</tr>';	
+		$("#friend-table").append(newrow);
+	}
+	
 	
 	
 //		$("#friend-table").append(newrow);

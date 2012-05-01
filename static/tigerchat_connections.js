@@ -305,7 +305,18 @@ function onMessage(msg) {
 	
 
     else if(type == "chat" && elems.length > 0) {
+		log('got chat');
+		var msgtype = msg.getAttribute('msgtype');
+		log('msgtype is ' + msgtype);
 		var body = elems[0];
+		if(msgtype == 'chatroom') {
+				log('got chatroom msg');
+			roomname = msg.getAttribute('chatroom_jid');
+			
+		showChatRoomMessage(roomname, Strophe.getText(body), from);
+		return true;
+		}
+		
 		
 		showChatMessage(from, Strophe.getText(body));
     }

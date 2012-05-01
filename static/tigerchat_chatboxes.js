@@ -170,6 +170,22 @@ function makeNewChatbox(chat_with_name) {
  * Message from sender, to recipient, and contents = message_to_send
  * *********************************************************************/
 function sendMessage(message_to_send, sender, recipient) {
+	
+	if(recipient in instance_chatrooms) {
+	// In this case, send a chatroom message
+	//if(tempregex != -1) {
+		var chatroom_name = recipient;
+		var occupants = instance_chatrooms[chatroom_name].occupants;
+		for(var i = 0; i < occupants.length; i++) {
+			log(occupants[i]);
+			if(occupants[i] == my_user_name) continue;
+			var recipient_full = occupants[i] + "@localhost";
+			var reply = $msg( {to: recipient_full, from: sender, type: 'chat', msgtype: 'chatroom', chatroom_jid: chatroom_name } ).c("body").t(message_to_send);
+			connection.send(reply.tree());
+		}
+		return;
+	}
+	
 	var recipient_full = recipient + "@localhost";
 	var reply = $msg( {to: recipient_full, from: sender, type: 'chat' } ).c("body").t(message_to_send);
 	connection.send(reply.tree());
@@ -199,10 +215,26 @@ function sendChatroomInvite(recipient, room_name) {
  * Message from 'from', contents = message
  ************************************************************************/
 function showChatMessage(from, message) {
-	
+	log('got message' + message);
 	makeNewChatbox(from);
 	var timestamp = getTimeStamp();
 	$('#text_area_' + from).append('<span style = "color:#0033cc;" >' + timestamp + from + ": " + '</span> <span style = "color:#000000;" >' + message + "</span><br/>");
+	$('#text_area_' + from).scrollTop($('#text_area_' + from)[0].scrollHeight);
+	
+}
+
+/************************************************************************
+ * Show a message in the users text area. 
+ * 
+ * If no open window exists, open (or create).  
+ * 
+ * Message from 'from', contents = message
+ ************************************************************************/
+function showChatRoomMessage(from, message, sender) {
+	log('got message' + message);
+	makeNewChatbox(from);
+	var timestamp = getTimeStamp();
+	$('#text_area_' + from).append('<span style = "color:#0033cc;" >' + timestamp + sender + ": " + '</span> <span style = "color:#000000;" >' + message + "</span><br/>");
 	$('#text_area_' + from).scrollTop($('#text_area_' + from)[0].scrollHeight);
 	
 }
