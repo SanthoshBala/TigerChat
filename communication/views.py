@@ -57,7 +57,7 @@ def invite_person_to_room(request):
 		return HttpResponseBadRequest('room %s does not exist' % room_jid)
 	
 	# see if inviter person is an adming
-	if inviter_person is not in room_object.admins.all():
+	if inviter_person not in room_object.admins.all():
 		response_dict = {'invited': False, 'admin': False}
 		response = simplejson.dumps(response_dict, default=json_handler)
 		return HttpResponse(response, mimetype='application/javascript')
@@ -113,33 +113,33 @@ def accept_invitation(request):
 ## get_friends() get this user's friend list
 @login_required
 def get_friends(request):
-    user = request.user
-    friendships = Friendship.objects.filter( Q(creator=user.person) |
-                                             Q(receiver=user.person))
-    friendships = friendships.filter(status='Confirmed')
-    results = []
-    for friendship in list(friendships):
+	user = request.user
+	friendships = Friendship.objects.filter( Q(creator=user.person) |
+											 Q(receiver=user.person))
+	friendships = friendships.filter(status='Confirmed')
+	results = []
+	for friendship in list(friendships):
 
-        if (friendship.creator.jid == request.user.username):
-            friend = friendship.receiver
-        else:
-            friend = friendship.creator
-        results.append(friend)
-        
-    data = simplejson.dumps(results, default=json_handler)
-    http_response = HttpResponse(data, mimetype='application/javascript')
-    return http_response
+		if (friendship.creator.jid == request.user.username):
+			friend = friendship.receiver
+		else:
+			friend = friendship.creator
+		results.append(friend)
+		
+	data = simplejson.dumps(results, default=json_handler)
+	http_response = HttpResponse(data, mimetype='application/javascript')
+	return http_response
 
 ## get pending friendships for this user
 @login_required
 def get_pending(request):
-    user = request.user
-    friendships = Friendship.objects.filter( Q(creator=user.person))
-    friendships = friendships.filter(status='Pending')
+	user = request.user
+	friendships = Friendship.objects.filter( Q(creator=user.person))
+	friendships = friendships.filter(status='Pending')
 
-    data = simplejson.dumps(friendships, default=json_handler)
-    http_response = HttpResponse(data, mimetype='application/javascript')
-    return http_response
+	data = simplejson.dumps(friendships, default=json_handler)
+	http_response = HttpResponse(data, mimetype='application/javascript')
+	return http_response
 
 ## get rooms I"m a part of
 @login_required
@@ -200,76 +200,77 @@ def get_room_members(request):
 	except:
 		return HttpResponseBadRequest()
 	members = room.members.all()
-	data = simplejson.dumps(members, default=json_handler)
-	return HttpResponse(data, mimetype='application/javascript')
+	response_dict = {'room_name': room.name, 'room_jid': room.jid, 'members': members}
+	response = simplejson.dumps(response_dict, default=json_handler)
+	return HttpResponse(response, mimetype='application/javascript')
 	
 ## get request sent by this user
 @login_required
 def get_requests(request):
-    user = request.user
-    friendships = Friendship.objects.filter(Q(receiver=user.person))
-    friendships = friendships.filter(status='Pending')
+	user = request.user
+	friendships = Friendship.objects.filter(Q(receiver=user.person))
+	friendships = friendships.filter(status='Pending')
 
-    data = simplejson.dumps(friendships, default=json_handler)
-    http_response = HttpResponse(data, mimetype='application/javascript')
-    return http_response
+	data = simplejson.dumps(friendships, default=json_handler)
+	http_response = HttpResponse(data, mimetype='application/javascript')
+	return http_response
 
 ## set friend request from this user
 @login_required
 def add_friend(request):
-    user = request.user
-    friend_jid = request.GET.get('jid')
+	user = request.user
+	friend_jid = request.GET.get('jid')
 
-    potential_friends = Person.objects.filter(jid=friend_jid)
-    ## If there is no person with this jid, just email them...
-    if (len(potential_friends) == 0):
-        ## send an email
-        invitee = friend_jid
-        inviter = request.user.person
-        send_invitation_email(inviter, invitee)
-        invitation = SystemInvitation.objects.create(inviter=inviter, invitee_netid=invitee)
-        http_response = HttpResponse('Invited')
-    elif (len(potential_friends) > 1):
-        ## error
-        raise Exception('Non-specific jid')
-    else:
-        friend = Person.objects.get(jid=friend_jid)
-    ## see if there are existing friendships with these two
-        friendships = Friendship.objects.filter( Q(creator=user.person, receiver=friend) |
-                                             Q(creator=friend, receiver=user.person))
+	potential_friends = Person.objects.filter(jid=friend_jid)
+	## If there is no person with this jid, just email them...
+	if (len(potential_friends) == 0):
+		## send an email
+		invitee = friend_jid
+		inviter = request.user.person
+		send_invitation_email(inviter, invitee)
+		invitation = SystemInvitation.objects.create(inviter=inviter, invitee_netid=invitee)
+		http_response = HttpResponse('Invited')
+	elif (len(potential_friends) > 1):
+		## error
+		raise Exception('Non-specific jid')
+	else:
+		friend = Person.objects.get(jid=friend_jid)
+	## see if there are existing friendships with these two
+		friendships = Friendship.objects.filter( Q(creator=user.person, receiver=friend) |
+											 Q(creator=friend, receiver=user.person))
 
-    ## if there are no existing friendships, create one
-        if len(friendships) == 0:
-            f = Friendship.objects.create(creator=user.person, receiver=friend)
-            f.status = 'Pending'
-            f.save()
-        elif len(friendships) == 1:
-            f = friendships[0]
-            if f.status == 'Pending' and f.receiver == user.person:
-                f.status = 'Confirmed'
-                f.save()
-                # if f.creator is the user.person, then they've already
-            # sent this friend request, so ignore this message
-            # else friendship already confirmed, so ignore
-                
-    return HttpResponse("Success")
-            
+	## if there are no existing friendships, create one
+		if len(friendships) == 0:
+			f = Friendship.objects.create(creator=user.person, receiver=friend)
+			f.status = 'Pending'
+			f.save()
+		elif len(friendships) == 1:
+			f = friendships[0]
+			if f.status == 'Pending' and f.receiver == user.person:
+				f.status = 'Confirmed'
+				f.save()
+				# if f.creator is the user.person, then they've already
+			# sent this friend request, so ignore this message
+			# else friendship already confirmed, so ignore
+				
+	return HttpResponse("Success")
+			
 ## send email to invited friend
 # inviter: string
 # invitee: Person
 def send_invitation_email(inviter, invitee):
-    subject = 'Hello from Princeton TigerChat!'
-    from_email = 'TigerChat@tigerchat.net'
-    to = '%s@princeton.edu' % invitee
-    if not inviter.first_name:
+	subject = 'Hello from Princeton TigerChat!'
+	from_email = 'TigerChat@tigerchat.net'
+	to = '%s@princeton.edu' % invitee
+	if not inviter.first_name:
 		first_name = 'A'
 		last_name = 'friend'
 	else:
 		first_name = inviter.first_name
 		last_name = inviter.last_name
-    inviter_name = '%s %s' % (first_name, last_name)
-    html_content = render_to_string('invite_email.html', {'to_addr': to, 'inviter': inviter_name})
-    text_content = '%s has invited you to join TigerChat!\nTigerChat is a chat portal built for the Princeton University community. Now you can always stay connected with your fellow Princetonians. Sign up with your University NetID and instantly chat with all of your friends. Join now at www.tigerchat.net.'
-    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-    msg.attach_alternative(html_content, "text/html")
-    msg.send()
+	inviter_name = '%s %s' % (first_name, last_name)
+	html_content = render_to_string('invite_email.html', {'to_addr': to, 'inviter': inviter_name})
+	text_content = '%s has invited you to join TigerChat!\nTigerChat is a chat portal built for the Princeton University community. Now you can always stay connected with your fellow Princetonians. Sign up with your University NetID and instantly chat with all of your friends. Join now at www.tigerchat.net.'
+	msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+	msg.attach_alternative(html_content, "text/html")
+	msg.send()
