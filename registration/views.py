@@ -43,6 +43,7 @@ def register_new_user(request):
 	# set department
 	if 'major' in ldap_record:
 		person.major = ldap_record['major']
+	person.save()
 	return render_to_response('newuser.html', {'user_name': person.jid})
 	#return HttpResponseRedirect('/tigerchat/')
 
