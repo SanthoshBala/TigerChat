@@ -42,6 +42,7 @@ def json_handler(obj):
 			'invitee_jid': obj.invitee.jid,
 			'inviter_jid': obj.inviter.jid,
 			'room_jid': obj.room.jid,
+			'room_name': obj.room.name,
 		}
 		return base_dict
 	elif isinstance(obj, QuerySet):
