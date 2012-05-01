@@ -55,6 +55,12 @@ def invite_person_to_room(request):
 		room_object = Room.objects.get(jid=room_jid)
 	except:
 		return HttpResponseBadRequest('room %s does not exist' % room_jid)
+	
+	# see if inviter person is an adming
+	if inviter_person is not in room_object.admins.all():
+		response_dict = {'invited': False, 'admin': False}
+		response = simplejson.dumps(response_dict, default=json_handler)
+		return HttpResponse(response, mimetype='application/javascript')
 	# see if person with invitee_jid exists
 	invitees = Person.objects.filter(jid=invitee_jid)
 	if len(invitees) is not 1:
@@ -63,8 +69,11 @@ def invite_person_to_room(request):
 		return HttpResponse(response, mimetype='application/javascript')
 	else:
 		invitee_person = invitees[0]
-		invitation = RoomInvitation.objects.create(invitee=invitee_person, room=room_object, inviter=inviter_person)
-		response_dict = {'inviter_jid': inviter_person.jid, 'invitee_jid': invitee_jid, 'invited':True}
+		invitation = RoomInvitation.objects.get_or_create(invitee=invitee_person, room=room_object, inviter=inviter_person)
+		if created:
+			response_dict = {'inviter_jid': inviter_person.jid, 'invitee_jid': invitee_jid, 'invited':True}
+		else:
+			response_dict = {'inviter_jid': inviter_person.jid, 'invitee_jid': invitee_jid, 'invited':False}
 		response = simplejson.dumps(response_dict, default=json_handler)
 		return HttpResponse(response, mimetype='application/javascript')
 
@@ -252,7 +261,13 @@ def send_invitation_email(inviter, invitee):
     subject = 'Hello from Princeton TigerChat!'
     from_email = 'TigerChat@tigerchat.net'
     to = '%s@princeton.edu' % invitee
-    inviter_name = '%s %s' % (inviter.first_name, inviter.last_name)
+    if not inviter.first_name:
+		first_name = 'A'
+		last_name = 'friend'
+	else:
+		first_name = inviter.first_name
+		last_name = inviter.last_name
+    inviter_name = '%s %s' % (first_name, last_name)
     html_content = render_to_string('invite_email.html', {'to_addr': to, 'inviter': inviter_name})
     text_content = '%s has invited you to join TigerChat!\nTigerChat is a chat portal built for the Princeton University community. Now you can always stay connected with your fellow Princetonians. Sign up with your University NetID and instantly chat with all of your friends. Join now at www.tigerchat.net.'
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
