@@ -34,6 +34,7 @@ urlpatterns = patterns('',
     url(r'^room/leave/$', 'TigerChat.communication.views.leave_room'),
     url(r'^room/requests/$', 'TigerChat.communication.views.get_room_invites'),
     url(r'^room/join/', 'TigerChat.communication.views.join_room'),
+    url(r'^room/members/$', 'TigerChat.communication.views.get_room_members'),
     
     url(r'^register/$', 'TigerChat.registration.views.register_new_user'),
     url(r'^users/$', 'TigerChat.registration.views.users'),

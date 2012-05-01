@@ -5,7 +5,7 @@ from lib.django_json_handlers import json_handler
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template.loader import render_to_string
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError
+from django.http import *
 import os
 import simplejson
 import string
@@ -83,7 +83,7 @@ def leave_room(request):
 		room = rooms[0]
 		room.members.remove(person)
 		## WHAT DO WE DO WHEN THE LEAVING PERSON IS ADMIN???
-		if len(room.members) == 0:
+		if len(room.members.all()) == 0:
 			room.delete()
 		return HttpResponse('%s removed from %s' % (person.jid, room_jid))
 
@@ -145,11 +145,55 @@ def get_rooms(request):
 @login_required
 def get_room_invites(request):
 	person = request.user.person
-	room_invites = RoomInvitation.objects.filter(invitee_jid=person.jid)
+	room_invites = RoomInvitation.objects.filter(invitee__jid=person.jid)
 	data = simplejson.dumps(room_invites, default=json_handler)
 	return HttpResponse(data, mimetype='application/javascript')
 
+## join room
+@login_required
+def join_room(request):
+	person = request.user.person
+	room_jid = request.GET.get('room_jid')
+	try:
+		room = Room.objects.get(jid=room_jid)
+	except:
+		response_dict = {'joined': False, 'room_jid': room_jid, 'member': False}
+		response = simplejson.dumps(response_dict, default=json_handler)
+		return HttpResponse(response)
+	
+	# if already a member, return
+	if person in room.members.all():
+		response_dict = {'joined': False, 'room_jid': room_jid, 'member': True }
+		
+	# if private room, check user has an invitation
+	elif room.private:
+		invites = RoomInvitation.objects.filter(room=room, invitee=person)
+		if len(invites) < 1:
+			response_dict = {'joined': False, 'room_jid': room_jid, 'member': False}
+		else:
+			# if private room and has invitation, delete invitation
+			room.members.add(person)
+			invites.delete()
+			response_dict = {'joined': True, 'room_jid': room_jid, 'member': True}
+	else:
+		# if public room, just add person to room
+		room.members.add(person)
+		response_dict = {'joined': True, 'room_jid': room_jid, 'member': True}
+	
+	response = simplejson.dumps(response_dict, default=json_handler)
+	return HttpResponse(response, mimetype='application/javascript')
 
+## get members of this room
+def get_room_members(request):
+	room_jid = request.GET.get('room_jid')
+	try:
+		room = Room.objects.get(jid=room_jid)
+	except:
+		return HttpResponseBadRequest()
+	members = room.members.all()
+	data = simplejson.dumps(members, default=json_handler)
+	return HttpResponse(data, mimetype='application/javascript')
+	
 ## get request sent by this user
 @login_required
 def get_requests(request):

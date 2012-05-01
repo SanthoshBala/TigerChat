@@ -1,8 +1,7 @@
 from communication.models import *
+from django.db.models.query import QuerySet
 
 def json_handler(obj):
-	from django.db.models.query import QuerySet
-
 	# Student
 	if isinstance(obj, Person):
 		base_dict = {
@@ -36,6 +35,13 @@ def json_handler(obj):
 			'jid': obj.jid,
 			'persistent': obj.persistent,
 			'room_private': obj.private,
+		}
+		return base_dict
+	elif isinstance(obj, RoomInvitation):
+		base_dict = {
+			'invitee_jid': obj.invitee.jid,
+			'inviter_jid': obj.inviter.jid,
+			'room_jid': obj.room.jid,
 		}
 		return base_dict
 	elif isinstance(obj, QuerySet):
