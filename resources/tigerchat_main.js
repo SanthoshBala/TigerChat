@@ -171,6 +171,8 @@ function repopulate_pending_requests(data) {
 		$("#pending-table").append(newrow);
 	
 	}
+
+	$.get('/room/requests/', function(data) {addPendingChatroomInvites(data) });
 	
 	// populate pending
 	$('#subscribe_dialog').dialog('open');	
@@ -181,6 +183,27 @@ function repopulate_pending_requests(data) {
 	
 }
 
+function addPendingChatroomInvites(data) {
+
+
+	data = jQuery.parseJSON(data);
+	for(var i = 0; i < data.length; i++) {
+		var newrow = '<tr pendingname= "' + data[i].chatroom_name + '">' +
+		'<td>' + data[i].chatroom_name + ' room</td>' +
+		'<td>' +  "<input type='button' value='Accept' onclick='addReceivedChatroomInvite(\"" + data[i].chatroom_name + "\")'/>" + '</td>' +
+		'<td>' +  "<input type='button' value='Reject' onclick='RejectReceivedChatroomInvite(\"" + data[i].chatroom_name + "\")'/>" + '</td>' +
+		'</tr>';
+		$("#pending-table").append(newrow);
+	
+	}
+
+}
+
+function addReceivedChatroomInvite(name) {
+
+	$.get("/room/join", {chatroom_name: name} );
+
+}
 
 
 

@@ -85,16 +85,9 @@ class Migration(SchemaMigration):
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('inviter', self.gf('django.db.models.fields.related.ForeignKey')(related_name='room_inviter', to=orm['communication.Person'])),
             ('invitee', self.gf('django.db.models.fields.related.ForeignKey')(related_name='room_invitee', to=orm['communication.Person'])),
+            ('room', self.gf('django.db.models.fields.related.ForeignKey')(related_name='room', to=orm['communication.Room'])),
         ))
         db.send_create_signal('communication', ['RoomInvitation'])
-
-        # Adding M2M table for field room on 'RoomInvitation'
-        db.create_table('communication_roominvitation_room', (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('roominvitation', models.ForeignKey(orm['communication.roominvitation'], null=False)),
-            ('room', models.ForeignKey(orm['communication.room'], null=False))
-        ))
-        db.create_unique('communication_roominvitation_room', ['roominvitation_id', 'room_id'])
 
 
     def backwards(self, orm):
@@ -126,9 +119,6 @@ class Migration(SchemaMigration):
         # Deleting model 'RoomInvitation'
         db.delete_table('communication_roominvitation')
 
-        # Removing M2M table for field room on 'RoomInvitation'
-        db.delete_table('communication_roominvitation_room')
-
 
     models = {
         'auth.group': {
@@ -146,7 +136,7 @@ class Migration(SchemaMigration):
         },
         'auth.user': {
             'Meta': {'object_name': 'User'},
-            'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
+            'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 5, 1, 0, 2, 23, 977338)'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
             'groups': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Group']", 'symmetrical': 'False', 'blank': 'True'}),
@@ -154,7 +144,7 @@ class Migration(SchemaMigration):
             'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'is_superuser': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
+            'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 5, 1, 0, 2, 23, 977283)'}),
             'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
             'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
             'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'}),
@@ -200,7 +190,7 @@ class Migration(SchemaMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'invitee': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'room_invitee'", 'to': "orm['communication.Person']"}),
             'inviter': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'room_inviter'", 'to': "orm['communication.Person']"}),
-            'room': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'room'", 'symmetrical': 'False', 'to': "orm['communication.Room']"})
+            'room': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'room'", 'to': "orm['communication.Room']"})
         },
         'communication.systeminvitation': {
             'Meta': {'object_name': 'SystemInvitation'},

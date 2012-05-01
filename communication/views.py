@@ -32,12 +32,12 @@ def create_room(request):
 	room, created = Room.objects.get_or_create(jid=room_jid, name=room_name, private=room_private, persistent=room_persistent)
 	
 	if not created:
-		response_dict = {'name': room_name, 'created': False, 'jid': room_jid, 'persistent': room_persistent, 'room_private':room_private}
+		response_dict = {'name': room_name, 'created': 'False', 'jid': room_jid, 'persistent': room_persistent, 'room_private':room_private}
 		response = simplejson.dumps(response_dict, default=json_handler)
 		return HttpResponse(response, mimetype='application/javascript')
 	room.members.add(owner)
 	room.admins.add(owner)
-	response_dict = {'name': room_name, 'created': True, 'jid': room_jid, 'persistent': room_persistent, 'room_private':room_private}
+	response_dict = {'name': room_name, 'created': 'True', 'jid': room_jid, 'persistent': room_persistent, 'room_private':room_private}
 	response = simplejson.dumps(response_dict, default=json_handler)
 	return HttpResponse(response, mimetype='application/javascript')
 
@@ -64,7 +64,7 @@ def invite_person_to_room(request):
 	else:
 		invitee_person = invitees[0]
 		invitation = RoomInvitation.objects.create(invitee=invitee_person, room=room_object, inviter=inviter_person)
-		response_dict = {'inviter_jid': inviter.jid, 'invitee_jid': invitee_jid, 'invited':True}
+		response_dict = {'inviter_jid': inviter_person.jid, 'invitee_jid': invitee_jid, 'invited':True}
 		response = simplejson.dumps(response_dict, default=json_handler)
 		return HttpResponse(response, mimetype='application/javascript')
 
@@ -131,6 +131,23 @@ def get_pending(request):
     data = simplejson.dumps(friendships, default=json_handler)
     http_response = HttpResponse(data, mimetype='application/javascript')
     return http_response
+
+## get rooms I"m a part of
+@login_required
+def get_rooms(request):
+	person = request.user.person
+	rooms = Room.objects.filter(members=person)
+	
+	data = simplejson.dumps(rooms, default=json_handler)
+	return HttpResponse(data, mimetype='application/javascript')
+	
+## get rooms I"m a part of
+@login_required
+def get_room_invites(request):
+	person = request.user.person
+	room_invites = RoomInvitation.objects.filter(invitee_jid=person.jid)
+	data = simplejson.dumps(room_invites, default=json_handler)
+	return HttpResponse(data, mimetype='application/javascript')
 
 
 ## get request sent by this user

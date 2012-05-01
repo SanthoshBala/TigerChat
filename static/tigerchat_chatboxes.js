@@ -176,6 +176,21 @@ function sendMessage(message_to_send, sender, recipient) {
 }
 
 
+
+/************************************************************************
+ * Send a invite to chatroom message.
+ * 
+ * Message from sender, to recipient, and contents = message_to_send
+ * *********************************************************************/
+function sendChatroomInvite(recipient, room_name) {
+	var recipient_full = recipient + "@localhost";
+	var sender = my_user_name + '@localhost/princeton';
+	var reply = $msg( {to: recipient_full, from: sender, type: 'chat', chatroom_invite:'true', chatroom_name:room_name } ).c("body").t("chatroom invite.");
+	connection.send(reply.tree());
+}
+
+
+
 /************************************************************************
  * Show a message in the users text area. 
  * 

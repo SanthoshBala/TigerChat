@@ -48,4 +48,4 @@ class SystemInvitation(models.Model):
 class RoomInvitation(models.Model):
 	inviter = models.ForeignKey(Person, related_name='room_inviter')
 	invitee = models.ForeignKey(Person, related_name='room_invitee')
-	room = models.ManyToManyField(Room, related_name='room')
+	room = models.ForeignKey(Room, related_name='room')

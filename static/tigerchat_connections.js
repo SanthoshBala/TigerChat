@@ -155,9 +155,9 @@ function handle_subscribe_message(newfriend) {
 				//log('not friends.');
 			
 				$.get("/requests/",
-				function(data){
-				repopulate_pending_requests(data);
-			});
+					function(data){
+						repopulate_pending_requests(data);
+				});
 
 			}
 			
@@ -292,7 +292,19 @@ function onMessage(msg) {
     var type = msg.getAttribute('type');
     var elems = msg.getElementsByTagName('body');
 
-    if (type == "chat" && elems.length > 0) {
+	var chatroom_invite = msg.getAttribute('chatroom_invite');
+	
+	if(chatroom_invite == 'true') {
+		
+		$.get("/requests/",
+					function(data){
+						repopulate_pending_requests(data);
+				});
+	
+	}
+	
+
+    else if(type == "chat" && elems.length > 0) {
 		var body = elems[0];
 		
 		showChatMessage(from, Strophe.getText(body));

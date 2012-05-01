@@ -1,5 +1,6 @@
 
 var instance_friends = {};
+var instance_chatrooms = {};
 
 
 function InitializeFriendsVariable(data) {
@@ -17,9 +18,29 @@ function InitializeFriendsVariable(data) {
 	
 	}
 	
+	$.get('/rooms/', function(data) {InitializeChatroomsVariable(data) });
+	
 	
 	
 	populateFriendsList(mydata);
+}
+
+function InitializeChatroomsVariable(data) {
+
+	var mydata = jQuery.parseJSON(data);
+	
+	for(var i = 0; i < mydata.length; i++) {
+		
+		var roomName = mydata[i].roomName;
+		var roomOccupants = mydata[i].occupants;
+		var new_room = {};
+		for(var j = 0; j < roomOccupants.length; j++) {
+			new_room.occupants[j] = roomOccupants[i].username;
+		}
+		
+		instance_chatrooms[roomName] = new_room;
+	}
+
 }
 
 
@@ -30,6 +51,20 @@ function repopulateFriendsList() {
 	// Sort the list of friends
 	var sorted_list_online = [];
 	var sorted_list_offline = [];
+	var sorted_list_rooms = [];
+	
+	for(chatroom_name in instance_chatrooms) {
+		
+		if ( chatroom_name.search(filter_key) == -1 ) {
+			continue;
+		}
+		
+		sorted_list_rooms.push(chatroom_name);
+			
+	}
+	
+	
+	
 	for(friend_netid in instance_friends) {
 		
 
@@ -51,11 +86,30 @@ function repopulateFriendsList() {
 	}
     sorted_list_offline.sort();
 	sorted_list_online.sort();
+	sorted_list_rooms.sort();
 	
 	
-	$('#friend-table tr').remove();
 	
-	// Row for expanding/collapsing offline buddies
+	$('#friend-table tr').remove();	
+	
+	
+	// Row for expanding/collapsing chatrooms
+	var arrow_img = "/static/imgs/DownTriangle.png";
+	var newrow = '<tr friendname = "NONE" id= "chatrooms_collapse" status="open">' +
+			'<td style="width: 15px;" onclick="collapse_grouping(\'chatrooms\')"><img src="' + arrow_img + '" width="12" height="12" style="" /> </td>' + '<td colspan="2"> Chatrooms </td>' + '</tr>';
+		$("#friend-table").append(newrow);
+		
+	for(var i = 0; i < sorted_list_rooms.length; i++) {
+		chatroom_name = sorted_list_rooms[i];
+		var imgurl = "/static/imgs/princeton.png";
+		
+		var newrow = '<tr friendname= "chatroom_' + chatroom_name + '" grouping="chatrooms">' +
+			'<td style="width: 15px;"></td> <td style="width: 20px;"> <img src="' + imgurl + '" width="14" height="14" style="" />  </td> ' + '<td>' + chatroom_name + '</td>' + '</tr>';	
+		$("#friend-table").append(newrow);
+	}
+	
+	
+	// Row for expanding/collapsing online buddies
 	var arrow_img = "/static/imgs/DownTriangle.png";
 	var newrow = '<tr friendname = "NONE" id= "online_collapse" status="open">' +
 			'<td style="width: 15px;" onclick="collapse_grouping(\'online\')"><img src="' + arrow_img + '" width="12" height="12" style="" /> </td>' + '<td colspan="2"> Online </td>' + '</tr>';
@@ -75,6 +129,8 @@ function repopulateFriendsList() {
 			'<td style="width: 15px;"></td> <td style="width: 20px;"> <img src="' + imgurl + '" width="14" height="14" style="" />  </td> ' + '<td>' + friend_netid + '</td>' + '</tr>';	
 		$("#friend-table").append(newrow);
 	}
+	
+	
 	
 	// Row for expanding/collapsing offline buddies
 	var arrow_img = "/static/imgs/DownTriangle.png";
@@ -113,6 +169,14 @@ function repopulateFriendsList() {
       {
 		  makeNewChatbox($(this).attr("friendname"));
       });
+      
+      
+	 $('#friend-table tr[friendname~="chatroom_"]').click(function ()
+      {
+		  makeNewRoomChatbox($(this).attr("friendname"));
+      });
+      
+      
 	
 	
 }
