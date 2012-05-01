@@ -172,21 +172,6 @@ function handle_subscribe_message(newfriend) {
  ***********************************************************************/
 function onIQ(iq) {
 	
-	var sender = iq.getAttribute('from');	
-	thistype = iq.getAttribute("type");
-	log('Got an IQ message');
-	
-	var form_filled = $iq( {from: my_user_name + '@localhost', to:sender, type:'set'}).c('query', {xmlns: 'http://jabber.org/protocol/muc#owner'})
-	.c('x', {xmlns:'jabber:x:data', type:'submit'})
-	.c('field', {var: 'FORM_TYPE'}).c('value').t('http://jabber.org/protocol/muc#roomconfig')
-	.up().up()
-	.c('field', {var: 'muc#roomconfig_roomname'}).c('value').t('My new fucking room.');
-	
-
-	log(form_filled);
-	
-	connection.send(form_filled.tree());
-	
 	return true;
 }
 
@@ -206,17 +191,6 @@ function onIQ(iq) {
 	if(sender == my_user_name) return true;
 	 // Set sender to be online
 	if (presType == null) {
-		
-		var x_tag = pres.getElementsByTagName('x');
-		if(x_tag.length > 0) {
-			 log('got an x tag.');
-			
-			var conf_get_msg = $iq({from: my_user_name + '@localhost', to: pres.getAttribute('from').split('/')[0], type: 'get'}).c('query', {xmlns:'http://jabber.org/protocol/muc#owner'});
-			log("CONFIGURATION MSG: " + conf_get_msg);
-			connection.send(conf_get_msg.tree());
-			return true;
-		}
-		
 		
 		 // if no type attribute, user is online. update roster
 		 if(instance_friends[sender] != undefined) instance_friends[sender].status = "online";
