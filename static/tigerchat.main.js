@@ -78,3 +78,35 @@ $(document).ready(function () {
 		connection.disconnect();
     };
 });
+
+
+/************************************************************************
+ * Called upon initial connection.
+ ***********************************************************************/
+function onConnect(status)
+{
+	
+    if (status == Strophe.Status.CONNECTING) {
+		//log('Strophe is connecting.');
+    } 
+    else if (status == Strophe.Status.CONNFAIL) {
+		//log('Strophe failed to connect.');
+		$('#connect').get(0).value = 'connect';
+    } 
+    else if (status == Strophe.Status.DISCONNECTING) {
+		//log('Strophe is disconnecting.');
+    } 
+    else if (status == Strophe.Status.DISCONNECTED) {
+		//log('Strophe is disconnected.');
+		$('#connect').get(0).value = 'connect';
+    } 
+    else if (status == Strophe.Status.CONNECTED) {
+		//slog('Strophe is connected.');
+		log('Send a message to ' + connection.jid + 'to talk to me.');
+		connection.addHandler(onMessage, null, 'message', null, null,  null); 
+		connection.addHandler(onPresence, null, 'presence', null, null, null); 
+		connection.addHandler(onIQ, null, 'iq', null, null, null); 
+		connection.send($pres().tree());
+	}
+}
+

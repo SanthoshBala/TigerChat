@@ -100,23 +100,16 @@ function makeNewChatbox(chat_with_name) {
 		}
 	);
 	
-	// Bind function for pressing enter
-	$('#send_text_' + chat_with_name).focus(function()
-	{
+	// Allow the chatbox to change focus if the user clicks on the textbox inside it
+	$('#send_text_' + chat_with_name).focus(
+		function() {
 		$('div[id^="chatbox"]').parent().children(":first-child").removeClass('ui-widget-header');
-		//$('div[id*="chatbox"]').parent(":first-child").children().addClass('TESTCLASS');
 		$('div[id*="chatbox"]').parent().children(":first-child").addClass('ui-widget-header-disabled');
-		//log('changed to ' + new_name
-
-		//$(this).children(":first").removeClass('ui-widget-header-disabled');
 		$(this).parent().parent().children(":first").addClass('ui-widget-header');
-		//$(this).children(":first").addClass('WHATTHEFUCK');
 		$(this).parent().parent().children(":first").removeClass('ui-widget-header-disabled');		         
-		
-	});
+		}
+	);
 	
-	// Push name to chatboxes, to store!
-	chatBoxes.push(chat_with_name);
 	
 	
 }
@@ -129,13 +122,13 @@ function makeNewChatbox(chat_with_name) {
  * *********************************************************************/
 function sendMessage(message_to_send, sender, recipient) {
 	
+	// Check against our instance chatrooms, and if the recipient
+	// is one of them, handle the send as a chatroom send message
 	if(recipient in instance_chatrooms) {
-	// In this case, send a chatroom message
-	//if(tempregex != -1) {
 		var chatroom_name = recipient;
 		var occupants = instance_chatrooms[chatroom_name].occupants;
+		//send to each recipient
 		for(var i = 0; i < occupants.length; i++) {
-			log(occupants[i]);
 			if(occupants[i] == my_user_name) continue;
 			var recipient_full = occupants[i] + "@localhost";
 			var reply = $msg( {to: recipient_full, from: sender, type: 'chat', msgtype: 'chatroom', chatroom_jid: chatroom_name } ).c("body").t(message_to_send);
@@ -169,11 +162,8 @@ function sendChatroomInvite(recipient, room_name) {
  * Show a message in the users text area. 
  * 
  * If no open window exists, open (or create).  
- * 
- * Message from 'from', contents = message
  ************************************************************************/
 function showChatMessage(from, message) {
-	log('got message' + message);
 	makeNewChatbox(from);
 	var timestamp = getTimeStamp();
 	$('#text_area_' + from).append('<span style = "color:#0033cc;" >' + timestamp + from + ": " + '</span> <span style = "color:#000000;" >' + message + "</span><br/>");
@@ -182,22 +172,16 @@ function showChatMessage(from, message) {
 }
 
 /************************************************************************
- * Show a message in the users text area. 
+ * Show a chatroom message in the users text area. 
  * 
- * If no open window exists, open (or create).  
- * 
- * Message from 'from', contents = message
+ * If no open window exists, open (or create).
  ************************************************************************/
 function showChatRoomMessage(from, message, sender) {
-	log('got message' + message);
 	makeNewChatbox(from);
 	var timestamp = getTimeStamp();
 	$('#text_area_' + from).append('<span style = "color:#0033cc;" >' + timestamp + sender + ": " + '</span> <span style = "color:#000000;" >' + message + "</span><br/>");
 	$('#text_area_' + from).scrollTop($('#text_area_' + from)[0].scrollHeight);
-	
 }
-
-
 
 
 /************************************************************************
@@ -213,16 +197,4 @@ function getTimeStamp(){
 	var timeString = '[' + hours + ":" + minutes + '] ' ;
 	return timeString;
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
