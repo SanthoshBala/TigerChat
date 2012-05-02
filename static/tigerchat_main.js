@@ -1,256 +1,81 @@
 
 
-function testFunction() {
-	
-	updateBuddyListStatus('naacho', 'online')
-	
-}
+/**** ALL GLOBAL VARIABLES GO HERE ****/
+var connection = null;			// The strophe connection
+var chatBoxes = new Array();	// An array of chatbox names (possibly unnecessary)
+var my_user_name;				// My user name (jid)
+var instance_friends = {};		// An associative array of my friends/information
+var instance_chatrooms = {};	// An associative array of my chatroom affiliations
 
 
-
+/************************************************************************
+ * Log a message onto the screen (debugging function.)
+ ***********************************************************************/
 function log(msg) 
 {
     $('#log').append('<div></div>').append(document.createTextNode(msg));
 }
 
 
-function fillSearchBox(data) {
-		
+/************************************************************************
+ * On page load, execute the following.
+ ***********************************************************************/
+$(document).ready(function () {
 	
-	var newdata = jQuery.parseJSON(data);
+	// Create a strophe connection, set the username, and connect
+    connection = new Strophe.Connection('/xmpp-httpbind');
+	// Set the global username (#fix - this could be hacked)
+	my_user_name = $('#this_user_name').get(0).value;
 	
-	$('#search-table tr').remove();
-		 
-	for(var i = 0; i < newdata.length; i++) {
-		if(typeof newdata[i].class === "undefined") var classyear = '';
-		else var classyear = newdata[i].class;
-		
-		var username = newdata[i].username;
-		
-		var newrow = '<tr friendname= "' + newdata[i].username + '">' +
-			'<td>' + newdata[i].first_name + ' ' + newdata[i].last_name + '</td>' +
-			'<td>' + classyear + '</td>';
-		
-		// If we are already friends, or we have already requested, then we need to remove the ADD FRIEND button
-		if(newdata[i].friendship_status == 'Confirmed') {
-			//check whether we have added the friend already
-			newrow = newrow + 
-			'<td>' + '<button disabled="disabled" type="button"> Friends </button>' + '</td>' + 
-			'</tr>';
-		}
-		
-		else if(newdata[i].friendship_status == 'Pending') {
-			//check whether we have added the friend already
-			newrow = newrow + 
-			'<td>' + '<button disabled="disabled" type="button"> Added </button>' + '</td>' + 
-			'</tr>';
-		}
-		
-		else if(newdata[i].friendship_status == 'To_Accept') {
-			//check whether we have added the friend already
-			newrow = newrow + 
-			'<td>' + '<button disabled="disabled" type="button"> Accept </button>' + '</td>' + 
-			'</tr>';
-		}
-		
-		else if(newdata[i].friendship_status == 'DNE') {
-			//check whether we have added the friend already
-			newrow = newrow + 
-			'<td>' + '<input type="button" value="Invite" onclick="sendInvite(\'' + newdata[i].username + '\')"/>' + '</td>' + 
-			'</tr>';
-		}
-		
-		
-		// Otherwise, create buttons as usual
-		else {
-			newrow = newrow +
-			'<td>' + '<input type="button" value="Add" onclick="addNewFriend(\'' + newdata[i].username + '\')"/>' + '</td>' + 
-			'</tr>';
-		}
-		
-		
-		$("#search-table").append(newrow);
-	
-	}
-	
-	// Ask to add 
-	//$('#search-table tr').click(function ()
-     // {
-	//	  addNewFriend($(this).attr("friendname"));
-     // });
+	var my_jid = my_user_name + '@localhost/princeton';
+	connection.connect(my_jid, 'pwd', onConnect);
+
+      
+	// Initialize the instance friends variable
+	$.get('/friends/', function(data) {InitializeFriendsVariable(data)} );
+
     
-}
-
-
-function open_pending_requests() {
-			$.get("/requests/",
-					function(data){
-						repopulate_pending_requests(data);
-				});
-
-}
-function sendInvite(newfriendname) {
-
-	$.get("/addfriend/", {jid: newfriendname} );
-	$('#search-table tr[friendname="' + newfriendname + '"] td:eq(2)').replaceWith('<td>' + '<button disabled="disabled" type="button"> Invite Sent </button>' + '</td>');
-}
-
-function populateSearchBox(searchterm) {
-	//var searchterm = "ramasub";
-	log("starting search.");
-	$("#log").Loadingdotdotdot({
-		"speed": 400,
-		"maxDots": 4,
-		"word": "Loading"
-	});
-	$.get("/search/", {query: searchterm},
-   function(data){
-	   $("#log").Loadingdotdotdot("Stop");
-	   log('ending search.');
-	   fillSearchBox(data);
-   });
+    
+  
 	
-}
-
-function openSearchBox() {
-
-	if ($("#search_dialog").length > 0) {
-		 $('#search-table tr').remove();
-		 $('#search_dialog').dialog('open');
-		return;
-	}
-	$(" <div />" ).attr("id", "search_dialog")
-	.attr("title", "Add Friend")
-	.html('<div class = "search_box" id="my_search_box" style="height: 100%; margin: auto; position: relative; background-color:white; border-radius: 0px 0px 0px 12px;">' +
-			
-			'<div class="search_text" id="my_search_text" style="height: 32px; text-align: center; padding-left: 5px; padding-right: 11px; padding-top: 5px;" >' +
-			'<input type="text" id="search_textbox" style="width: 100%; border-radius: 0px">' +
-			'</div>' + 
-			
-			'<div class="search_table" id="my_search_table" style="overflow-y: auto; position: absolute; left: 7px; right: 5px; top:32px; bottom: 20px; background: white;">' +
-			'<table width="100%" cellpadding="0" cellspacing="0" id="search-table">' +
-			'</table>' + 
-			'</div>' +	
-			
-			'</div>')
-	.appendTo($( "body" ));	
+	$(" <div />" ).attr("id", 'room_creation_dialog')
+		.attr("title", "Create A Room")
+		.html('<div class = "room_creation_box" id="room_creation_box">' + 
+				'Name: <input type="text" id="chatroom_creation_name" class="" style="width: 50%; border-radius: 0px"/><br/><br/>' + 
+				'Public/Private: <input type="text" id="chatroom_creation_privacy" class="friends_search" style="width: 50%; border-radius: 0px"/><br/><br/>' + 
+				'Adhoc/Persistent: <input type="text" id="chatroom_creation_duration" class="friends_search" style="width: 50%; border-radius: 0px"/><br/><br/>' +
+				 '<input type="button" id="create_chatroom_button" value="Create Room" class="friends_search" onclick="create_chatroom()" style="width: 50%; border-radius: 0px"/><br/><br/>' +
 	
-	$('#search_textbox').keypress(function(e)
-	{
-         if (e.which == 13) //e = 13 is enter
-         {
-			searchterm = $('#search_textbox').val();
-				$('#search_textbox').val('');
-				
-			$('#search-table tr').remove();
-			 populateSearchBox(searchterm);
-		 }
+		'</div>')
+		.appendTo($( "body" ));
+	
+	$("#room_creation_dialog").dialog({
+		autoOpen: false,
+		closeOnEscape: true,
+		resizable: true
 	});
 	
-	$("#search_dialog").dialog({
-        autoOpen: true,
-        closeOnEscape: true,
-        resizable: true
-    });
-    $("#search_dialog").css({'height' : '200'});
+	
+	
+	$(" <div />" ).attr("id", 'room_management_dialog')
+		.attr("title", "Manage Room")
+		.html('<div class = "room_manage_box" id="room_manage_box">' + 
+		'<select id="chatroom_management_selector"></select>' + 
+		
+		'</div>')
+		.appendTo($( "body" ));
+	
+	$("#room_management_dialog").dialog({
+		autoOpen: false,
+		closeOnEscape: true,
+		resizable: true
+	});
+	
+	//  Figure out exact purpose of this...		
+    $(window).resize();
     
-    
-    
-}
-
-
-function repopulate_pending_requests(data) {
-
-	
-	data = jQuery.parseJSON(data);
-	
-	
-	// clear pending
-	$('#pending-table tr').remove();
-	
-	for(var i = 0; i < data.length; i++) {
-		var newrow = '<tr pendingname= "' + data[i].creator + '">' +
-		'<td>' + data[i].creator + '</td>' +
-		'<td>' +  "<input type='button' value='Accept' onclick='addReceivedFriend(\"" + data[i].creator + "\")'/>" + '</td>' +
-		'<td>' +  "<input type='button' value='Reject' onclick='RejectFriend(\"" + data[i].creator + "\")'/>" + '</td>' +
-		'</tr>';
-		$("#pending-table").append(newrow);
-	
-	}
-
-	$.get('/room/requests/', function(data) {addPendingChatroomInvites(data) });
-	
-	// populate pending
-	$('#subscribe_dialog').dialog('open');	
-	
-	// Open dialog
-	
-	
-	
-}
-
-function addPendingChatroomInvites(data) {
-
-
-	data = jQuery.parseJSON(data);
-	for(var i = 0; i < data.length; i++) {
-		var newrow = '<tr pendingname= "' + data[i].room_name + '">' +
-		'<td>' + data[i].room_name + ' room</td>' +
-		'<td>' +  "<input type='button' value='Accept' onclick='addReceivedChatroomInvite(\"" + data[i].room_jid + "\")'/>" + '</td>' +
-		'<td>' +  "<input type='button' value='Reject' onclick='RejectReceivedChatroomInvite(\"" + data[i].room_jid + "\")'/>" + '</td>' +
-		'</tr>';
-		$("#pending-table").append(newrow);
-	
-	}
-
-}
-
-
-
-function addReceivedChatroomInvite(roomjid) {
-
-	$.get("/room/join", {room_jid: roomjid} );
-
-}
-
-
-
-
-
-
-
-function addNewFriend(newfriendname) {
-
-	$.get("/addfriend/", {jid: newfriendname} );
-	sendRequest(connection, my_user_name, newfriendname);
-	$('#search-table tr[friendname="' + newfriendname + '"] td:eq(2)').replaceWith('<td>' + '<button disabled="disabled" type="button"> Added </button>' + '</td>');
-}
-
-function addReceivedFriend(newfriendname) {
-	// Add to database
-	log('hello');
-	log(newfriendname);
-	$.get("/addfriend/", {jid: newfriendname} );
-	
-	// send a subscribed
-	acceptRequest(connection, my_user_name, newfriendname);
-	// send a subscribe
-	sendRequest(connection, my_user_name, newfriendname);
-	
-	
-	$('#pending-table tr[pendingname= "' + newfriendname + '"]').remove();
-	
-	
-	/*$.get("/requests/",
-				function(data){
-				repopulate_pending_requests(data);
-			});*/
-}
-
-
-function RejectFriend(newfriendname) {
-	rejectRequest(connection, my_user_name, newfriendname);
-}
-
-
-
+    // If we leave the page, disconnect our ejabberd connection
+    window.onbeforeunload = function(){
+		connection.disconnect();
+    };
+});

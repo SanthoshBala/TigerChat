@@ -1,78 +1,44 @@
-var connection = null;
-var chatBoxes = new Array();
-var my_user_name;
 
 
-function log(msg) 
-{
-    $('#log').append('<div></div>').append(document.createTextNode(msg));
-}
 
-
-function getTimeStamp(){
-	//log('hello.');
-	var currTime = new Date();
-	//log(currTime.getHours());
-	//log('bye');
-	var hours = currTime.getHours();
-	var minutes = currTime.getMinutes();
-	if(hours > 12) hours = hours - 12;
-	if(hours < 10) hours = '0' + hours;
-	if(minutes < 10) minutes = '0' + minutes;
-	var timeString = '[' + hours + ":" + minutes + '] ' ;
-	//log(timeString);
-	return timeString;
-}
 
 
 /************************************************************************
  * This function handles when a user presses enter while inside a 
- * chatbox. 
- * 
- * Argument: chat_with_name -> name of person that message needs to be
- * 								sent to (without server, i.e. localhost)
+ * chatbox. $chat_with_name is the jid that our user is sending the 
+ * message to.
  * *********************************************************************/
 function HandleChatboxEnter(chat_with_name) {
+	
+	// Get the text to send, and replace newlines with <br/>
 	var send_text = $('#send_text_' + chat_with_name).val();
 	send_text = send_text.replace('\n', '<br/>');
-	sender_name = my_user_name + '@localhost';
 	$('#send_text_' + chat_with_name).val('');	
+	
+	sender_name = my_user_name + '@localhost/princeton';
+	
+	// If it is a blank message (only spaces), do nothing, and return
 	if(jQuery.trim(send_text).length <= 0) return;
 	
+	// Get timestamp, append my own message to the chatbox, and scroll to the bottom
 	var timestamp = getTimeStamp();
-
+	
 	$('#text_area_' + chat_with_name).append('<span style = "color:#ff6633;" >' + timestamp + my_user_name + ": " + '</span> <span style = "color:#000000;" >' + send_text + "</span><br/>");
 	$('#text_area_' + chat_with_name).scrollTop($('#text_area_' + chat_with_name)[0].scrollHeight);
 	sendMessage(send_text, sender_name, chat_with_name);
 }
 
 
-
-
-/************************************************************************
- * Called when a user decides to begin chatting.  
- * ndl
- * The user to begin chatting with is grabbed from a text box.
- ************************************************************************/
-function beginChat() {
-	var chat_with_name = document.getElementById('chatbox_id').value;
-	makeNewChatbox(chat_with_name);
-}
-
-
 /************************************************************************
  * Makes a new chatbox, or reopens one that had already been made.
- * 
- * Argument: chat_with_name -> name of person to chat with (no server)
- * *********************************************************************/
+************************************************************************/
 function makeNewChatbox(chat_with_name) {
 	
-	
-	//var chat_with_name = document.getElementById('chatbox_id').value;  // The name of the person to begin chatting with
 	var new_name = "chatbox_" + chat_with_name;  // Creating the ID (chatbox_name)
 	
-	// If it has already been created
+	// If it has already been created, just open it
 	if ($("#" + new_name).length > 0) {
+		
 		// If it's open
 		if ($('#' + new_name).dialog('isOpen') == true) {
 			return;
@@ -105,42 +71,34 @@ function makeNewChatbox(chat_with_name) {
 	$("#" + new_name).parent().css({'position' : 'fixed'});
 	$("#" + new_name).parent().css({'top' : '200px'});
 	$("#" + new_name).parent().css({'left' : '500px'});
-	/*$("#" + new_name).parent().blur( function() {
-												//log('whaaat.');
-												$(this).children(":first").addClass('ui-widget-header-disabled');
-												$(this).children(":first").removeClass('ui-widget-header');
-											}
-											);*/
-			$("#" + new_name).parent().focus( function() {
-												//log('whaaat.');
-												$('div[id^="chatbox"]').parent().children(":first-child").removeClass('ui-widget-header');
-												//$('div[id*="chatbox"]').parent(":first-child").children().addClass('TESTCLASS');
-												$('div[id*="chatbox"]').parent().children(":first-child").addClass('ui-widget-header-disabled');
-												//log('changed to ' + new_name);
-
-												//$(this).children(":first").removeClass('ui-widget-header-disabled');
-												$(this).children(":first").addClass('ui-widget-header');
-												//$(this).children(":first").addClass('WHATTHEFUCK');
-												$(this).children(":first").removeClass('ui-widget-header-disabled');
-											}
-											);
+	
+	// Focus function makes sure that only a single chatbox has the orange header
+	$("#" + new_name).parent().focus( 
+		function() {
+			$('div[id^="chatbox"]').parent().children(":first-child").removeClass('ui-widget-header');
+			$('div[id*="chatbox"]').parent().children(":first-child").addClass('ui-widget-header-disabled');
+			$(this).children(":first").addClass('ui-widget-header');
+			$(this).children(":first").removeClass('ui-widget-header-disabled');
+		}
+	);
+	
+	// Set some css for the sent text
 	$("#send_text_" + chat_with_name).css({'font-family': 'Tahoma,Arial,sans-serif'}); 
 	$("#send_text_" + chat_with_name).css({'font-size': '13px'});
 	
-	// Bind function for pressing enter
-	$('#send_text_' + chat_with_name).keypress(function(e)
-	{
-	//		 log('WHAT THE ACTUAL FUCK..?');
-         if (e.which == 13 && !e.shiftKey) //e = 13 is ente
-         {
-			 e.preventDefault();
-			 HandleChatboxEnter(chat_with_name);
-		 }
-		 else if (e.which == 13 && e.shiftKey) //e = 13 is ente
-         {
+	// Bind function for pressing enter on the chatbox
+	$('#send_text_' + chat_with_name).keypress(
+		function(e) {
+			// If we press enter, send
+			 if (e.which == 13 && !e.shiftKey) {
+				 e.preventDefault();
+				 HandleChatboxEnter(chat_with_name);
+			 }
 			 
-		 }
-	});
+			 else if (e.which == 13 && e.shiftKey) { 
+			 }
+		}
+	);
 	
 	// Bind function for pressing enter
 	$('#send_text_' + chat_with_name).focus(function()
@@ -241,6 +199,20 @@ function showChatRoomMessage(from, message, sender) {
 
 
 
+
+/************************************************************************
+ * Returns a properly formatted time stamp.
+ * *********************************************************************/
+function getTimeStamp(){
+	var currTime = new Date();
+	var hours = currTime.getHours();
+	var minutes = currTime.getMinutes();
+	if(hours > 12) hours = hours - 12;
+	if(hours < 10) hours = '0' + hours;
+	if(minutes < 10) minutes = '0' + minutes;
+	var timeString = '[' + hours + ":" + minutes + '] ' ;
+	return timeString;
+}
 
 
 

@@ -1,0 +1,16 @@
+Notes:
+
+come up with another word for "invite"
+
+should not be able to send email invitation multiple times
+
+add loading ... in searchbox
+
+fix rejecting a friend
+
+could the fact that we pass in the user name through a textbox be hacked?
+
+fillSearchBox()
+	
+	allow a friend request acceptance from here
+	

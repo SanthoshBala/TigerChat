@@ -1,8 +1,3 @@
-
-var instance_friends = {};
-var instance_chatrooms = {};
-
-
 function InitializeFriendsVariable(data) {
 
 	var mydata = jQuery.parseJSON(data);
@@ -246,8 +241,9 @@ function populateFriendsList(data) {
 	.html('<div class = "friends_list" id = "my_friends_list" style="height: 100%; margin: auto; position: relative; background-color:#F2F2F2; border-radius: 0px 0px 0px 12px;">' + 
 	
 	'<div class = "friends_header" id = "my_friends_header" style="height: 32px; padding-left: 5px; padding-top: 5px;">' + 
-	'<input type="button" onclick="openSearchBox()" value="Search"/> ' + '<input type="button" onclick="openRoomCreation()" value="Chatrooms"/>' + 
+	'<input type="button" onclick="openSearchBox()" value="Search"/> ' + '<input type="button" onclick="openRoomCreation()" value="Rooms"/>' + 
 	'<input type="button" onclick="open_pending_requests()" value="pending">' + 
+	'<input type="button" onclick="Manage_Chatrooms()" value="manage">' + 
 	'</div>' + 
 	
 	'<div class = "friends_searchbox" id = "my_friends_searchbox" style="height: 32px; text-align: center; padding-left: 5px; padding-right: 11px;">' + 
