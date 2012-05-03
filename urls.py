@@ -21,7 +21,7 @@ urlpatterns = patterns('',
     
     
     url(r'^friends/$', 'TigerChat.communication.views.get_friends'),
-    url(r'^rooms/$', 'TigerChat.communication.views.get_rooms'),
+    url(r'^rooms/$', 'TigerChat.communication.views.get_person_rooms'),
     url(r'^pending/$', 'TigerChat.communication.views.get_pending'),
     url(r'^requests/$', 'TigerChat.communication.views.get_requests'),
     url(r'^invite/$', 'TigerChat.communication.views.invite_user'),
