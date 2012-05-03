@@ -4,11 +4,19 @@ function openRoomCreation() {
 }
 
 
-function TestInvite() {
+function PleaseInviteSanthosh() {
 
 
-	invite_to_chatroom('naacho', 'blah');
+	invite_to_chatroom('santhosh', 'blah');
 }
+
+function PleaseInviteVyas() {
+
+
+	invite_to_chatroom('vramasub', 'blah');
+}
+
+
 
 function TestRoomMembers() {
 

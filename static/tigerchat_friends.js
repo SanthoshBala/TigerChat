@@ -17,18 +17,21 @@ function InitializeFriendsVariable(data) {
 		instance_friends[netID] = new_friend;
 	
 	}
-	
+    log('initializing friends.');
 	$.get('/rooms/', function(data) {InitializeChatroomsVariable(data) });
-	
+    
 	
 	
 }
 
 function InitializeChatroomsVariable(data) {
-
+    log('initializing chatrooms.');
 	var mydata = jQuery.parseJSON(data);
-	log(mydata);
+	//log(mydata);
 	
+    if(mydata.length == 0) {
+	populateFriendsList(mydata);
+    }
 	for(var i = 0; i < mydata.length; i++) {
 		
 		var roomName = mydata[i].room_name;
@@ -60,6 +63,7 @@ function InitializeChatroomsVariable(data) {
 		});
 		
 	}
+        
 
 }
 
@@ -240,7 +244,7 @@ function collapse_grouping(grouping) {
 
 // Show the friends list in the UI
 function populateFriendsList(data) {
-	
+    log('populating friends list.');
 	$(" <div />" ).attr("id", "friends_dialog")
 	.attr("title", "Buddy List")
 	.html('<div class = "friends_list" id = "my_friends_list" style="height: 100%; margin: auto; position: relative; background-color:#F2F2F2; border-radius: 0px 0px 0px 12px;">' + 
@@ -381,7 +385,7 @@ function populateFriendsList(data) {
       {
 		  makeNewChatbox($(this).attr("friendname"));
       });
-	
+    log('creating dialog');
 	$("#friends_dialog").dialog({
 		position: 'right',
         autoOpen: true,
