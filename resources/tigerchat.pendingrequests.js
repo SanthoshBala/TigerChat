@@ -7,12 +7,14 @@
  ***********************************************************************/
 function open_pending_requests() {
 	
+	log('opening pending requests.');
 	// If the pending dialog has already been created, then just open and
 	// populate it
 	if ($("#subscribe_dialog").length > 0) {
 		$('#search_dialog').dialog('open');
+		log('whaat.');
 		
-		$.get("/requests/",
+		$.getJSON("/requests/",
 			function(data){
 				repopulate_pending_requests(data);
 			}
@@ -34,7 +36,7 @@ function open_pending_requests() {
 		resizable: true
 	});
 	
-	$.get("/requests/",
+	$.getJSON("/requests/",
 		function(data){
 			repopulate_pending_requests(data);
 		}
@@ -46,25 +48,39 @@ function open_pending_requests() {
  * Populate the pending requests.
  ***********************************************************************/
 function repopulate_pending_requests(data) {
-	
+	log('hello.');
+	log(data);
 	// Parse the JSON
-	data = jQuery.parseJSON(data);
+	//data = jQuery.parseJSON(data);
 	
 	// clear pending table
 	$('#pending-table tr').remove();
 	
 	// For every request, create a row
-	for(var i = 0; i < data.length; i++) {
-		var newrow = '<tr pendingname= "' + data[i].creator + '">' +
-		'<td>' + data[i].creator + '</td>' +
-		'<td>' +  "<input type='button' value='Accept' onclick='addReceivedFriend(\"" + data[i].creator + "\")'/>" + '</td>' +
-		'<td>' +  "<input type='button' value='Reject' onclick='RejectFriend(\"" + data[i].creator + "\")'/>" + '</td>' +
+	log('populating requests.');
+	log(data.friend_requests);
+	for(var i = 0; i < data.friend_requests.length; i++) {
+		var newrow = '<tr pendingname= "' + data.friend_requests[i].creator + '">' +
+		'<td>' + data.friend_requests[i].creator + '</td>' +
+		'<td>' +  "<input type='button' value='Accept' onclick='addReceivedFriend(\"" + data.friend_requests[i].creator + "\")'/>" + '</td>' +
+		'<td>' +  "<input type='button' value='Reject' onclick='RejectFriend(\"" + data.friend_requests[i].creator + "\")'/>" + '</td>' +
+		'</tr>';
+		$("#pending-table").append(newrow);
+	}
+	
+	for(var i = 0; i < data.room_invites.length; i++) {
+		var newrow = '<tr pendingname= "' + data.room_invites[i].room_name + '">' +
+		'<td>' + data.room_invites[i].room_name + ' room</td>' +
+		'<td>' +  "<input type='button' value='Accept' onclick='AcceptReceivedChatroomInvite(\"" + data.room_invites[i].room_jid + "\")'/>" + '</td>' +
+		'<td>' +  "<input type='button' value='Reject' onclick='RejectReceivedChatroomInvite(\"" + data.room_invites[i].room_jid + "\")'/>" + '</td>' +
 		'</tr>';
 		$("#pending-table").append(newrow);
 	}
 
+	$('#subscribe_dialog').dialog('open');	
+
 	// Add room requests to the pending table
-	$.get('/room/requests/', function(data) {addPendingChatroomInvites(data) });
+	//$.get('/room/requests/', function(data) {addPendingChatroomInvites(data) });
 }
 
 
@@ -132,6 +148,7 @@ function addReceivedFriend(newfriendname) {
 	
 	// Remove from the pending dialog table
 	$('#pending-table tr[pendingname= "' + newfriendname + '"]').remove();
+	$('#search-table tr[friendname="' + newfriendname + '"] td:eq(2)').replaceWith('<td>' + '<button disabled="disabled" type="button"> Friends </button>' + '</td>');
 	
 }
 
