@@ -75,8 +75,8 @@ def search_ldap(request):
 		data.append(result)
 
 	# request for a room
-	try:
-		room_jid = request.GET.get('room_jid')
+	room_jid = request.GET.get('room_jid')
+	if (room_jid):
 		rooms = Room.objects.filter(jid=room_jid)
 		if len(rooms) == 0:
 			return HttpResponseBadRequest('Room does not exist')
@@ -104,7 +104,7 @@ def search_ldap(request):
 				else:
 					raise Exception('more than one user with username')
 	# request for a friend
-	except:
+	else:
 		for POI in data:
 			person_name = POI.get("username")
 			# check if person is an existing user
