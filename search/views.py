@@ -1,11 +1,13 @@
 # Create your views here.
 from django.db.models import Q
 from commands import getoutput
-from django.http import HttpResponse
+from django.http import *
 import string
 import simplejson
 from lib.django_json_handlers import json_handler
 from communication.models import *
+
+
 
 ## search(): Returns list of all people that match query term
 ## at the moment, cannot search by individual fields
@@ -72,40 +74,70 @@ def search_ldap(request):
 #	   data['results'].append(result)
 		data.append(result)
 
-
-	for POI in data:
-		person_name = POI.get("username")
-		# check if person is an existing user
-		poi_user = User.objects.filter(username=person_name)
-		if len(poi_user) == 0: # no matching user
-			try:
-				invitations = SystemInvitation.objects.filter(inviter=request.user.person, invitee_netid=person_name)
-				if len(invitations) == 1:
-					POI['friendship_status'] = 'Invited'
-				else:
-					POI['friendship_status'] = 'DNE'
-			except:
-				pass
-
-		# result matches existing user
-		elif len(poi_user) == 1: 
-			poi_user = poi_user[0]
-			# check if person is a friend
-			friendship = Friendship.objects.filter( Q(creator=request.user.person, receiver=poi_user.person) |
-													Q(creator=poi_user.person, receiver=request.user.person))
-			if len(friendship) == 0:
-				POI['friendship_status'] = 'None'
-			elif len(friendship) == 1:
-				# check if I have sent a request to person
-				if friendship[0].status == 'Confirmed':
-					POI['friendship_status'] = 'Confirmed'
-				else:	   # check if I have sent a request
-					if friendship[0].creator == request.user.person:
-						POI['friendship_status'] = 'Pending'
+	# request for a room
+	try:
+		room_jid = request.GET.get('room_jid')
+		rooms = Room.objects.filter(jid=room_jid)
+		if len(rooms) == 0:
+			return HttpResponseBadRequest('Room does not exist')
+		else:
+			room = rooms[0]
+		for POI in data:
+			person_name = POI.get("username")
+			# check if person is an existing user
+			poi_user = User.objects.filter(username=person_name)
+			if len(poi_user) == 0: # no matching user so can't invite to room
+				continue
+			# result matches existing user
+			elif len(poi_user) == 1: 
+				poi_user = poi_user[0]
+				# check if person is a friend
+				friendship = RoomInvitation.objects.filter(invitee=poi_user.person, room = room)
+				if len(invites) == 0:
+					# check if member of room
+					if poi_user in room.members.all():
+						POI['friendship_status'] = 'Confirmed'
 					else:
-							POI['friendship_status'] = 'To_Accept'
-			else:
-				raise Exception('more than one user with username')
+						POI['friendship_status'] = 'None'
+				elif len(invites) == 1:
+					POI['friendship_status'] = 'Pending'
+				else:
+					raise Exception('more than one user with username')
+	# request for a friend
+	except:
+		for POI in data:
+			person_name = POI.get("username")
+			# check if person is an existing user
+			poi_user = User.objects.filter(username=person_name)
+			if len(poi_user) == 0: # no matching user
+				try:
+					invitations = SystemInvitation.objects.filter(inviter=request.user.person, invitee_netid=person_name)
+					if len(invitations) == 1:
+						POI['friendship_status'] = 'Invited'
+					else:
+						POI['friendship_status'] = 'DNE'
+				except:
+					pass
+
+			# result matches existing user
+			elif len(poi_user) == 1: 
+				poi_user = poi_user[0]
+				# check if person is a friend
+				friendship = Friendship.objects.filter( Q(creator=request.user.person, receiver=poi_user.person) |
+														Q(creator=poi_user.person, receiver=request.user.person))
+				if len(friendship) == 0:
+					POI['friendship_status'] = 'None'
+				elif len(friendship) == 1:
+					# check if I have sent a request to person
+					if friendship[0].status == 'Confirmed':
+						POI['friendship_status'] = 'Confirmed'
+					else:	   # check if I have sent a request
+						if friendship[0].creator == request.user.person:
+							POI['friendship_status'] = 'Pending'
+						else:
+								POI['friendship_status'] = 'To_Accept'
+				else:
+					raise Exception('more than one user with username')
 
 	response = simplejson.dumps(data, default=json_handler)
 	return HttpResponse(response, mimetype='application/javascript')
@@ -166,4 +198,16 @@ def get_ldap_record(user_netid):
 			continue
 	return result
 
-## search_rooms():
+## get_vcard():
+def get_vcard(request):
+	try:
+		jid = request.GET.get('jid')
+	except:
+		return HttpResponseBadRequest()
+	persons = Person.objects.filter(jid=jid)
+	if len(persons) == 0:
+		return HttpResponse({})
+	else:
+		person = persons[0]
+		data = simplejson.dumps(person, default=json_handler)
+		return HttpResponse(data, mimetype='application/javascript')

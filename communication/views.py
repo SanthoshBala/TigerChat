@@ -40,12 +40,12 @@ def create_room(request):
 	room, created = Room.objects.get_or_create(jid=room_jid, name=room_name, private=room_private, persistent=room_persistent)
 	
 	if not created:
-		response_dict = {'name_conflict': False, 'name': room_name, 'created': 'False', 'jid': room_jid, 'persistent': room_persistent, 'room_private':room_private}
+		response_dict = {'name_conflict': True, 'room_name': room_name, 'created': 'False', 'room_jid': room_jid, 'persistent': room_persistent, 'room_private':room_private}
 		response = simplejson.dumps(response_dict, default=json_handler)
 		return HttpResponse(response, mimetype='application/javascript')
 	room.members.add(owner)
 	room.admins.add(owner)
-	response_dict = {'name_conflict', False, 'name': room_name, 'created': 'True', 'jid': room_jid, 'persistent': room_persistent, 'room_private':room_private}
+	response_dict = {'name_conflict', False, 'room_name': room_name, 'created': 'True', 'room_jid': room_jid, 'persistent': room_persistent, 'room_private':room_private}
 	response = simplejson.dumps(response_dict, default=json_handler)
 	return HttpResponse(response, mimetype='application/javascript')
 
@@ -174,28 +174,28 @@ def join_room(request):
 	try:
 		room = Room.objects.get(jid=room_jid)
 	except:
-		response_dict = {'joined': False, 'room_jid': room_jid, 'member': False}
+		response_dict = {'joined': False, 'room_jid': room_jid, 'room_name': room.name, 'member': False}
 		response = simplejson.dumps(response_dict, default=json_handler)
 		return HttpResponse(response)
 	
 	# if already a member, return
 	if person in room.members.all():
-		response_dict = {'joined': False, 'room_jid': room_jid, 'member': True }
+		response_dict = {'joined': False, 'room_jid': room_jid, 'room_name': room.name, 'member': True }
 		
 	# if private room, check user has an invitation
 	elif room.private:
 		invites = RoomInvitation.objects.filter(room=room, invitee=person)
 		if len(invites) < 1:
-			response_dict = {'joined': False, 'room_jid': room_jid, 'member': False}
+			response_dict = {'joined': False, 'room_jid': room_jid, 'room_name': room.name, 'member': False}
 		else:
 			# if private room and has invitation, delete invitation
 			room.members.add(person)
 			invites.delete()
-			response_dict = {'joined': True, 'room_jid': room_jid, 'member': True}
+			response_dict = {'joined': True, 'room_jid': room_jid, 'room_name': room.name, 'member': True}
 	else:
 		# if public room, just add person to room
 		room.members.add(person)
-		response_dict = {'joined': True, 'room_jid': room_jid, 'member': True}
+		response_dict = {'joined': True, 'room_jid': room_jid, 'room_name': room.name, 'member': True}
 	
 	response = simplejson.dumps(response_dict, default=json_handler)
 	return HttpResponse(response, mimetype='application/javascript')

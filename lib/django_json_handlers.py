@@ -31,8 +31,8 @@ def json_handler(obj):
 		return base_dict
 	elif isinstance(obj, Room):
 		base_dict = {
-			'name': obj.name,
-			'jid': obj.jid,
+			'room_name': obj.name,
+			'room_jid': obj.jid,
 			'persistent': obj.persistent,
 			'room_private': obj.private,
 		}

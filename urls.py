@@ -18,6 +18,7 @@ urlpatterns = patterns('',
     url(r'^search/$', 'TigerChat.search.views.search_ldap'),
     url(r'^search/students/$', 'TigerChat.search.views.search_students'),
     url(r'^search/rooms/$', 'TigerChat.search.views.search_rooms'),
+    url(r'^vcard/$', 'TigerChat.search.views.get_vcard'),
     
     
     url(r'^friends/$', 'TigerChat.communication.views.get_friends'),
