@@ -4,20 +4,6 @@ function openRoomCreation() {
 }
 
 
-function InviteSanthosh() {
-
-
-	invite_to_chatroom('santhosh', 'blah');
-}
-
-function InviteVyas() {
-
-
-	invite_to_chatroom('vramasub', 'blah');
-}
-
-
-
 function TestRoomMembers() {
 
 	for(roomjid in instance_chatrooms) {
@@ -119,7 +105,7 @@ function fillRoomSearchBox(searchterm) {
 	});
 }
 
-
+// never returns DNE #fix
 function populateRoomSearchBox(data) {
 		
 	
@@ -137,12 +123,21 @@ function populateRoomSearchBox(data) {
 			'<td>' + newdata[i].first_name + ' ' + newdata[i].last_name + '</td>' +
 			'<td>' + classyear + '</td>';
 		
-		if(newdata[i].friendship_status == 'DNE') {
-			//check whether we have added the friend already
-			newrow = newrow + 
-			'<td>' + '<input type="button" value="sendEmail" onclick="sendInvite(\'' + newdata[i].username + '\')"/>' + '</td>' + 
-			'</tr>';
+		
+		// If we have received a friend request from them, have a disabled "accept" button
+		if(newdata[i].friendship_status == 'Pending') {
+			newrow = 	newrow + 
+						'<td>' + '<button disabled="disabled" type="button"> Invited </button>' + '</td>' + 
+						'</tr>';
 		}
+		
+		// If we have received a friend request from them, have a disabled "accept" button
+		else if(newdata[i].friendship_status == 'Confirmed') {
+			newrow = 	newrow + 
+						'<td>' + '<button disabled="disabled" type="button"> Member </button>' + '</td>' + 
+						'</tr>';
+		}
+		
 		
 		
 		// Otherwise, create buttons as usual
@@ -157,11 +152,6 @@ function populateRoomSearchBox(data) {
 	
 	}
 	
-	// Ask to add 
-	//$('#search-table tr').click(function ()
-     // {
-	//	  addNewFriend($(this).attr("friendname"));
-     // });
     
 }
 
@@ -202,11 +192,35 @@ function create_chatroom() {
 	// check if jid for chatroom already exists
 	
 	// post to database with jid, privacy, room duration, name
-	$.get('/room/create/', {name: roomname, jid: roomjid, room_private: room_private_val, persistent: room_persistent});
+	$.get('/room/create/', {name: roomname, jid: roomjid, room_private: room_private_val, persistent: room_persistent}, 
 	
-	// if returned "created = false" tell the user that they need to pick another name
+		function(data) {
+			
+			data = jQuery.parseJSON(data);
+			if (data.name_conflict == "True") {
+				log('We have a name conflict.  Please select a new name.');
+			}
+			else {
+				var roomjid = data.room_jid;
+				var roomname = data.room_name;
+				addRoomToBuddyList(roomjid, roomname);
+			}
+		}
+	);
 	
+	
+}
 
+function addRoomToBuddyList(roomjid, roomname) {
+
+
+	var new_room = {};
+	new_room.occupants = new Array();
+	new_room.occupants[0] = my_user_name;
+	new_room.name = roomname;
+	instance_chatrooms[roomjid] = new_room;
+	
+	repopulateFriendsList();
 
 }
 

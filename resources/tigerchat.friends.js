@@ -316,35 +316,27 @@ function updateBuddyListStatus(sender, status) {
 function addToBuddyList(friend_netid) {
 	
 	var newfriend = {};
-	newfriend.FirstName = "testFirst"; // #fix
-	newfriend.LastName = "testLast"; //#fix
-	newfriend.status = "online"; //#fix - we assume the buddy is online
-	instance_friends[friend_netid] = newfriend;
-		 
-	var status = instance_friends[friend_netid].status;
-	if(status == "online") var imgurl = "/static/imgs/bullet_ball_glass_green.png";
-	else if(status == "offline") var imgurl = "/static/imgs/bullet_ball_glass_red.png";
-	else var imgurl = "/static/imgs/princeton.png"; //#fix - we should have a different default
 	
-	repopulateFriendsList();
+	$.get('/vcard/', {jid: friend_netid}, 
+		function(data) {
+			
+			data = jQuery.parseJSON(data);
+			
+			newfriend.FirstName = data.first_name; // #fix
+			newfriend.LastName = data.last_name; //#fix
+			newfriend.status = "online"; //#fix - we assume the buddy is online
+			instance_friends[friend_netid] = newfriend;
+				 
+			var status = instance_friends[friend_netid].status;
+			if(status == "online") var imgurl = "/static/imgs/bullet_ball_glass_green.png";
+			else if(status == "offline") var imgurl = "/static/imgs/bullet_ball_glass_red.png";
+			else var imgurl = "/static/imgs/princeton.png"; //#fix - we should have a different default
+			
+			repopulateFriendsList();
+		}
+	);
 	
-	// remove this once we test it works #fix
-	/*
-	var newrow = '<tr friendname= "' + friend_netid + '">' +
-		'<td style="width: 2px;"></td> <td style="width: 20px;"> <img src="' + imgurl + '" width="14" height="14" style="" />  </td> ' + '<td>' + friend_netid + '</td>' + '</tr>';
 	
-	$("#friend-table").append(newrow);
-		
-	$('#friend-table tr').hover(function ()
-      {
-        $(this).toggleClass('Highlight');
-      });
 	
-	// Click Function
-	 $('#friend-table tr').click(function ()
-      {
-		  makeNewChatbox($(this).attr("friendname"));
-      });
-      * */
       
 }

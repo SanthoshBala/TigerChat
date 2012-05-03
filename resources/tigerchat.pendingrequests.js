@@ -95,7 +95,23 @@ function addPendingChatroomInvites(data) {
  * Accept a received chatroom invitation.
  ***********************************************************************/
 function AcceptReceivedChatroomInvite(roomjid) {
-	$.get("/room/join", {room_jid: roomjid} );
+
+
+	$.get("/room/join", {room_jid: roomjid} 
+		function(data) {
+			
+			data = jQuery.parseJSON(data);
+			
+			roomjid = data.room_jid;
+			roomname= data.room_name;
+			
+			addRoomToBuddyList(roomjid, roomname);
+			
+			
+			
+		}
+	
+
 }
 
 
