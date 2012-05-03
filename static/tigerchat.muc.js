@@ -9,6 +9,7 @@ function TestRoomMembers() {
 	for(roomjid in instance_chatrooms) {
 	
 		log(roomjid);
+		log('name: ' + instance_chatrooms[roomjid].name);
 		for(var i = 0; i < instance_chatrooms[roomjid].occupants.length; i++) {
 			log('participant: ');
 			log(instance_chatrooms[roomjid].occupants[i]);
@@ -194,11 +195,23 @@ function create_chatroom() {
 	room_private_val = true;
 	room_persistent = true;
 	
+	
+	// check if jid for chatroom already exists
+	if(isLegalRoomName(roomname) == false) {
+		log("illegal room name.");
+		return;
+	}
+
+	if(jQuery.trim(roomname).length <= 0) {
+		log('Please enter a room name.');
+		return;
+	}
+
+	
 	// replacing spaces with dots for jid
-	var roomjid = roomname.replace(/ /g,".");
+	var roomjid = roomname.replace(/ /g,"_");
 	
 	 
-	// check if jid for chatroom already exists
 	
 	// post to database with jid, privacy, room duration, name
 	$.getJSON('/room/create/', {name: roomname, jid: roomjid, room_private: room_private_val, persistent: room_persistent}, 
@@ -206,7 +219,8 @@ function create_chatroom() {
 		function(data) {
 			log('return function after creation.');
 			//data = jQuery.parseJSON(data);
-			if (data.name_conflict == "True") {
+			
+			if (data.name_conflict == true) {
 				log('We have a name conflict.  Please select a new name.');
 			}
 			else {
@@ -218,6 +232,16 @@ function create_chatroom() {
 	);
 	
 	
+}
+
+function isLegalRoomName(roomname) {
+	var iChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?_";
+	for (var i = 0; i < roomname.length; i++) {
+		if (iChars.indexOf(roomname.charAt(i)) != -1) {
+			return false;
+		}
+	}
+	return true;
 }
 
 function addRoomToBuddyList(roomjid, roomname) {

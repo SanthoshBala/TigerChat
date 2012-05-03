@@ -28,8 +28,8 @@ def register_new_user(request):
 	
 	person = request.user.person
 	ldap_record = get_ldap_record(person.jid)
-	# set first_name
-	try ldap_record:
+	try:
+		# set first_name
 		if 'first_name' in ldap_record:
 			person.first_name = ldap_record['first_name']
 		# set last_name
@@ -76,4 +76,6 @@ def remove_everything(request):
     Friendship.objects.all().delete()
     Person.objects.all().delete()
     User.objects.all().delete()
+    Room.objects.all().delete()
+    RoomInvitation.objects.all().delete()
     return HttpResponse('Everything Cleared');
