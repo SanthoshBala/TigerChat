@@ -30,6 +30,11 @@ function InitializeChatroomsVariable(data) {
 
 	var mydata = jQuery.parseJSON(data);
 	
+	if(mydata.length == 0) {
+		populateFriendsList();
+
+	}
+	
 	for(var i = 0; i < mydata.length; i++) {
 		
 		var roomjid = mydata[i].jid;
@@ -69,6 +74,8 @@ function InitializeChatroomsVariable(data) {
 			);
 		}
 	}
+	
+	i
 	
 }
 

@@ -18,3 +18,4 @@ fillSearchBox()
 	
 	allow a friend request acceptance from here
 	
+get from pending requests - return chatroom + friend invites

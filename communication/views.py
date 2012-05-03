@@ -69,7 +69,7 @@ def invite_person_to_room(request):
 		return HttpResponse(response, mimetype='application/javascript')
 	else:
 		invitee_person = invitees[0]
-		invitation = RoomInvitation.objects.get_or_create(invitee=invitee_person, room=room_object, inviter=inviter_person)
+		invitation, created = RoomInvitation.objects.get_or_create(invitee=invitee_person, room=room_object, inviter=inviter_person)
 		if created:
 			response_dict = {'inviter_jid': inviter_person.jid, 'invitee_jid': invitee_jid, 'invited':True}
 		else:
