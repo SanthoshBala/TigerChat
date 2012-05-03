@@ -19,3 +19,10 @@ fillSearchBox()
 	allow a friend request acceptance from here
 	
 get from pending requests - return chatroom + friend invites
+
+confirm that user has not entered blank for chatroom name
+
+use names, not jids
+
+
+minimize javascript
