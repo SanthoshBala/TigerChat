@@ -213,14 +213,19 @@ def get_room_members(request):
 	response = simplejson.dumps(response_dict, default=json_handler)
 	return HttpResponse(response, mimetype='application/javascript')
 	
-## get request sent by this user
+## get request sent to this user
 @login_required
 def get_requests(request):
-	user = request.user
-	friendships = Friendship.objects.filter(Q(receiver=user.person))
+	person = request.user.person
+	friendships = Friendship.objects.filter(Q(receiver=person))
 	friendships = friendships.filter(status='Pending')
-
-	data = simplejson.dumps(friendships, default=json_handler)
+	
+	# get room invites
+	room_invites = RoomInvitation.objects.filter(invitee = person)
+	
+	response_dict = {'friend_requests': friendships, 'room_invites': room_invites}
+	
+	data = simplejson.dumps(response_dict, default=json_handler)
 	http_response = HttpResponse(data, mimetype='application/javascript')
 	return http_response
 
