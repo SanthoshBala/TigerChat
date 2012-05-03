@@ -207,9 +207,18 @@ function onMessage(msg) {
 	// Handle if we receive a chatroom invitation
 	if(chatroom_invite == 'true') {
 		// Just repopulate the requests
+		var chatroom_newuser = msg.getAttribute('chatroom_newuser');
+		var chatroom_jid = msg.getAttribute('chatroom_name');
+		if(chatroom_newuser == 'true') {
+		
+			
+			instance_chatrooms[chatroom_jid].occupants.push(user_jid);
+			
+		}
+	
 		$.get("/requests/",
 			function(data){
-				repopulate_pending_requests(data);
+				open_pending_requests(data);
 			}
 		);
 	

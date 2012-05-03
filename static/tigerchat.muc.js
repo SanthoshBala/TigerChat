@@ -229,8 +229,20 @@ function addRoomToBuddyList(roomjid, roomname) {
 	new_room.name = roomname;
 	instance_chatrooms[roomjid] = new_room;
 	
-	repopulateFriendsList();
+	$.getJSON('/room/members/', {room_jid: roomjid}, 
+				function(data) {
+					var thisroomjid = data.room_jid;
+					
+					for(var j=0; j < data.members.length; j++) {
+						var user_jid = data.members[j].jid;
+						instance_chatrooms[thisroomjid].occupants[j] = user_jid;
+					}
+					
+					repopulateFriendsList();
 
+				}
+			);
+	
 }
 
 
