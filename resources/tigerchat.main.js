@@ -72,6 +72,10 @@ $(document).ready(function () {
 	//  Figure out exact purpose of this...		
     $(window).resize();
     
+
+
+    
+    
     // If we leave the page, disconnect our ejabberd connection
     window.onbeforeunload = function(){
 		connection.disconnect();

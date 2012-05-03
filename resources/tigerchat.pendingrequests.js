@@ -112,6 +112,7 @@ function addPendingChatroomInvites(data) {
  ***********************************************************************/
 function AcceptReceivedChatroomInvite(roomjid) {
 
+	$('#pending-table tr[pendingname= "' + roomjid + '"]').remove();
 
 	$.getJSON("/room/join", {room_jid: roomjid}, 
 		function(data) {
