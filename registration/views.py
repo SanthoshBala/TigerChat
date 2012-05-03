@@ -73,4 +73,6 @@ def remove_everything(request):
     Friendship.objects.all().delete()
     Person.objects.all().delete()
     User.objects.all().delete()
+    Room.objects.all().delete()
+    RoomInvitation.objects.all().delete()
     return HttpResponse('Everything Cleared');
