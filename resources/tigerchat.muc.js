@@ -24,7 +24,6 @@ function TestRoomMembers() {
 	
 		log(roomjid);
 		for(var i = 0; i < instance_chatrooms[roomjid].occupants.length; i++) {
-		
 			log('participant: ');
 			log(instance_chatrooms[roomjid].occupants[i]);
 		}
@@ -39,21 +38,94 @@ function TestRoomMembers() {
  ***********************************************************************/
 function Manage_Chatrooms() {
 
-	$('#room_management_dialog').dialog('open');	
-	searchterm = 
+	// If the chatroom management dialog has already been created, then just open it
+	if ($("#room_management_dialog").length > 0) {
+		// Clear lines from the table
+		$('#chatroom_search-table tr').remove();
+		$('#room_management_dialog').dialog('open');
+		$('#chatroom_management_selector').html('');
+		option = '<option>' + 'Select A Room' + '</option>';
+		$('#chatroom_management_selector').append(option);
+		for (chatroomname in instance_chatrooms) {
+			
+			option = '<option>' + chatroomname + '</option>';
+			$('#chatroom_management_selector').append(option);
+		}
+		return;
+	}
+
+	
+	$(" <div />" ).attr("id", 'room_management_dialog')
+		.attr("title", "Manage Room")
+		.html('<div class = "room_manage_box" id="room_manage_box" style="height: 100%; margin: auto; position: relative; background-color:white; border-radius: 0px 0px 0px 12px;">' +
+			
+			'<div class="selector_text" id="my_selector_text" style="height: 32px; text-align: center; padding-left: 5px; padding-right: 11px; padding-top: 5px;" >' +
+			'<select id="chatroom_management_selector"></select>' + 
+			'</div>' + 
+			
+			'<div class="search_text" id="my_search_text" style="height: 32px; text-align: center; padding-left: 5px; padding-right: 11px; padding-top: 5px;" >' +
+		
+			'<input type="text" id="chatroom_search_textbox" style="width: 100%; border-radius: 0px">' +
+			'</div>' + 
+			
+			'<div class="chatroom_search_table" id="chatroom_search_table" style="overflow-y: auto; position: absolute; left: 7px; right: 5px; top:65px; bottom: 20px; background: white;">' +
+			'<table width="100%" cellpadding="0" cellspacing="0" id="chatroom-search-table">' +
+			'</table>' + 
+			'</div>' +	
+			
+			'</div>')
+		.appendTo($( "body" ));
+	
+	$('#chatroom_search_textbox').keypress(function(e)
+	{
+		// 13 is enter key
+		if (e.which == 13){
+			searchterm = $('#chatroom_search_textbox').val();
+			$('#chatroom_search_textbox').val('');	// clear the search box
+			$('#chatroom-search-table tr').remove();	// clear the table
+			fillRoomSearchBox(searchterm);
+		}
+	});
+	
+	$("#room_management_dialog").dialog({
+		autoOpen: true,
+		closeOnEscape: true,
+		resizable: true
+	});
+	
+	
+    $("#room_management_dialog").css({'height' : '250'});
+    $("#room_management_dialog").css({'width' : '300'});
+
+
+	$('#room_management_dialog').dialog('open');
+	$('#chatroom_management_selector').html('');
+	option = '<option>' + 'Select A Room' + '</option>';
+	$('#chatroom_management_selector').append(option);
+	for (chatroomname in instance_chatrooms) {
+		
+		option = '<option>' + chatroomname + '</option>';
+		$('#chatroom_management_selector').append(option);
+	}
+		
+	
+}
+
+function fillRoomSearchBox(searchterm) {
+	
 	$.get("/search/", {query: searchterm},
 	function(data){
-	   fillRoomInvitationBox(data);
+	   populateRoomSearchBox(data);
 	});
 }
 
 
-function fillRoomInvitationBox(data) {
+function populateRoomSearchBox(data) {
 		
 	
 	var newdata = jQuery.parseJSON(data);
 	
-	$('#search-table tr').remove();
+	$('#chatroom-search-table tr').remove();
 		 
 	for(var i = 0; i < newdata.length; i++) {
 		if(typeof newdata[i].class === "undefined") var classyear = '';
@@ -65,32 +137,10 @@ function fillRoomInvitationBox(data) {
 			'<td>' + newdata[i].first_name + ' ' + newdata[i].last_name + '</td>' +
 			'<td>' + classyear + '</td>';
 		
-		// If we are already friends, or we have already requested, then we need to remove the ADD FRIEND button
-		if(newdata[i].friendship_status == 'Confirmed') {
+		if(newdata[i].friendship_status == 'DNE') {
 			//check whether we have added the friend already
 			newrow = newrow + 
-			'<td>' + '<button disabled="disabled" type="button"> Friends </button>' + '</td>' + 
-			'</tr>';
-		}
-		
-		else if(newdata[i].friendship_status == 'Pending') {
-			//check whether we have added the friend already
-			newrow = newrow + 
-			'<td>' + '<button disabled="disabled" type="button"> Added </button>' + '</td>' + 
-			'</tr>';
-		}
-		
-		else if(newdata[i].friendship_status == 'To_Accept') {
-			//check whether we have added the friend already
-			newrow = newrow + 
-			'<td>' + '<button disabled="disabled" type="button"> Accept </button>' + '</td>' + 
-			'</tr>';
-		}
-		
-		else if(newdata[i].friendship_status == 'DNE') {
-			//check whether we have added the friend already
-			newrow = newrow + 
-			'<td>' + '<input type="button" value="Invite" onclick="sendInvite(\'' + newdata[i].username + '\')"/>' + '</td>' + 
+			'<td>' + '<input type="button" value="sendEmail" onclick="sendInvite(\'' + newdata[i].username + '\')"/>' + '</td>' + 
 			'</tr>';
 		}
 		
@@ -98,12 +148,12 @@ function fillRoomInvitationBox(data) {
 		// Otherwise, create buttons as usual
 		else {
 			newrow = newrow +
-			'<td>' + '<input type="button" value="Add" onclick="addNewFriend(\'' + newdata[i].username + '\')"/>' + '</td>' + 
+			'<td>' + '<input type="button" value="Invite" onclick="inviteChatroomFriend(\'' + newdata[i].username + '\')"/>' + '</td>' + 
 			'</tr>';
 		}
 		
 		
-		$("#search-table").append(newrow);
+		$("#chatroom-search-table").append(newrow);
 	
 	}
 	
@@ -114,6 +164,20 @@ function fillRoomInvitationBox(data) {
      // });
     
 }
+
+
+
+function inviteChatroomFriend(friendname) {
+	
+	var roomname = $("#chatroom_management_selector").val();
+	log(roomname  + ' and ' + friendname);
+	invite_to_chatroom(friendname, roomname);
+	$('#chatroom-search-table tr[friendname="' + friendname + '"] td:eq(2)').replaceWith('<td>' + '<button disabled="disabled" type="button"> Invited </button>' + '</td>');
+
+
+}
+
+
 
 
 

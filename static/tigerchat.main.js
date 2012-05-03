@@ -56,19 +56,18 @@ $(document).ready(function () {
 	
 	
 	
-	$(" <div />" ).attr("id", 'room_management_dialog')
+	$/*(" <div />" ).attr("id", 'room_management_dialog')
 		.attr("title", "Manage Room")
 		.html('<div class = "room_manage_box" id="room_manage_box">' + 
 		'<select id="chatroom_management_selector"></select>' + 
+		'<input type="text" id="chatroom_search_textbox" style="width: 90%; border-radius: 0px">' +
+			
 		
 		'</div>')
-		.appendTo($( "body" ));
-	
-	$("#room_management_dialog").dialog({
-		autoOpen: false,
-		closeOnEscape: true,
-		resizable: true
-	});
+		.appendTo($( "body" ));*/
+
+
+
 	
 	//  Figure out exact purpose of this...		
     $(window).resize();
