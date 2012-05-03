@@ -1,0 +1,21 @@
+Notes:
+
+come up with another word for "invite"
+
+should not be able to send email invitation multiple times
+
+add loading ... in searchbox
+
+fix rejecting a friend
+
+could the fact that we pass in the user name through a textbox be hacked?
+
+Add first and last names to the instance friends variable on initialization
+
+fix fact that on new buddy addition, we assume they are online
+ALSO fix that we need to correctly add their first and last name
+fillSearchBox()
+	
+	allow a friend request acceptance from here
+	
+get from pending requests - return chatroom + friend invites
