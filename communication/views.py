@@ -11,6 +11,7 @@ import simplejson
 import string
 from commands import getoutput
 from communication.models import *
+from search.views import get_ldap_record
 
 ## create_room(): create a new room
 @login_required
@@ -28,16 +29,23 @@ def create_room(request):
 		room_persistent = request.GET.get('persistent')
 	except:
 		room_persistent = True
+
+	# check that name won't conflict with real princetonian
+	record = get_ldap_record(room_jid)
+	if record is not None:
+		response_dict = {'name_conflict': True, 'name': room_name, 'jid': 'room_jid'}
+		response = simplejson.dumps(response_dict, default=json_handler)
+		return HttpResponse(response, mimetype='application/javascript')
 	owner = request.user.person
 	room, created = Room.objects.get_or_create(jid=room_jid, name=room_name, private=room_private, persistent=room_persistent)
 	
 	if not created:
-		response_dict = {'name': room_name, 'created': 'False', 'jid': room_jid, 'persistent': room_persistent, 'room_private':room_private}
+		response_dict = {'name_conflict': True, 'room_name': room_name, 'created': 'False', 'room_jid': room_jid, 'persistent': room_persistent, 'room_private':room_private}
 		response = simplejson.dumps(response_dict, default=json_handler)
 		return HttpResponse(response, mimetype='application/javascript')
 	room.members.add(owner)
 	room.admins.add(owner)
-	response_dict = {'name': room_name, 'created': 'True', 'jid': room_jid, 'persistent': room_persistent, 'room_private':room_private}
+	response_dict = {'name_conflict', False, 'room_name': room_name, 'created': 'True', 'room_jid': room_jid, 'persistent': room_persistent, 'room_private':room_private}
 	response = simplejson.dumps(response_dict, default=json_handler)
 	return HttpResponse(response, mimetype='application/javascript')
 
@@ -143,7 +151,7 @@ def get_pending(request):
 
 ## get rooms I"m a part of
 @login_required
-def get_rooms(request):
+def get_person_rooms(request):
 	person = request.user.person
 	rooms = Room.objects.filter(members=person)
 	
@@ -166,28 +174,28 @@ def join_room(request):
 	try:
 		room = Room.objects.get(jid=room_jid)
 	except:
-		response_dict = {'joined': False, 'room_jid': room_jid, 'member': False}
+		response_dict = {'joined': False, 'room_jid': room_jid, 'room_name': room.name, 'member': False}
 		response = simplejson.dumps(response_dict, default=json_handler)
 		return HttpResponse(response)
 	
 	# if already a member, return
 	if person in room.members.all():
-		response_dict = {'joined': False, 'room_jid': room_jid, 'member': True }
+		response_dict = {'joined': False, 'room_jid': room_jid, 'room_name': room.name, 'member': True }
 		
 	# if private room, check user has an invitation
 	elif room.private:
 		invites = RoomInvitation.objects.filter(room=room, invitee=person)
 		if len(invites) < 1:
-			response_dict = {'joined': False, 'room_jid': room_jid, 'member': False}
+			response_dict = {'joined': False, 'room_jid': room_jid, 'room_name': room.name, 'member': False}
 		else:
 			# if private room and has invitation, delete invitation
 			room.members.add(person)
 			invites.delete()
-			response_dict = {'joined': True, 'room_jid': room_jid, 'member': True}
+			response_dict = {'joined': True, 'room_jid': room_jid, 'room_name': room.name, 'member': True}
 	else:
 		# if public room, just add person to room
 		room.members.add(person)
-		response_dict = {'joined': True, 'room_jid': room_jid, 'member': True}
+		response_dict = {'joined': True, 'room_jid': room_jid, 'room_name': room.name, 'member': True}
 	
 	response = simplejson.dumps(response_dict, default=json_handler)
 	return HttpResponse(response, mimetype='application/javascript')
