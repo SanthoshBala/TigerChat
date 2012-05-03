@@ -28,21 +28,24 @@ def register_new_user(request):
 	
 	person = request.user.person
 	ldap_record = get_ldap_record(person.jid)
-	# set first_name
-	if 'first_name' in ldap_record:
-		person.first_name = ldap_record['first_name']
-	# set last_name
-	if 'last_name' in ldap_record:
-		person.last_name = ldap_record['last_name']
-	# set dorm
-	if 'dorm' in ldap_record:
-		person.dorm = ldap_record['dorm']
-	# set classyear
-	if 'year' in ldap_record:
-		person.year = ldap_record['year']
-	# set department
-	if 'major' in ldap_record:
-		person.major = ldap_record['major']
+	try:
+		# set first_name
+		if 'first_name' in ldap_record:
+			person.first_name = ldap_record['first_name']
+		# set last_name
+		if 'last_name' in ldap_record:
+			person.last_name = ldap_record['last_name']
+		# set dorm
+		if 'dorm' in ldap_record:
+			person.dorm = ldap_record['dorm']
+		# set classyear
+		if 'year' in ldap_record:
+			person.year = ldap_record['year']
+		# set department
+		if 'major' in ldap_record:
+			person.major = ldap_record['major']
+	except:
+		person.first_name = person.jid
 	person.save()
 	return render_to_response('newuser.html', {'user_name': person.jid})
 	#return HttpResponseRedirect('/tigerchat/')

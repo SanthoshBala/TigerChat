@@ -12,14 +12,14 @@ function InitializeFriendsVariable(data) {
 	for(var i = 0; i < mydata.length; i++) {
 		var netID = mydata[i].username;
 		var new_friend = {};
-		new_friend.FirstName = ""; // #fix
-		new_friend.LastName = "";  //#fix
+		new_friend.FirstName = mydata[i].first_name; // #fix
+		new_friend.LastName = mydata[i].last_name;  //#fix
 		new_friend.status = "offline";
 		instance_friends[netID] = new_friend;
 	}
 	
 	// Initialize the chatrooms variable
-	$.get('/rooms/', function(data) {InitializeChatroomsVariable(data) });	
+	$.getJSON('/rooms/', function(data) {InitializeChatroomsVariable(data) });	
 }
 
 
@@ -28,8 +28,8 @@ function InitializeFriendsVariable(data) {
  ***********************************************************************/
 function InitializeChatroomsVariable(data) {
 
-	var mydata = jQuery.parseJSON(data);
-	
+	//var mydata = jQuery.parseJSON(data);
+	mydata = data;
 	if(mydata.length == 0) {
 		populateFriendsList();
 
@@ -40,7 +40,7 @@ function InitializeChatroomsVariable(data) {
 		var roomjid = mydata[i].room_jid;
 		var new_room = {};
 		new_room.occupants = new Array();
-		new_room.name = mydata[i].name;
+		new_room.name = mydata[i].room_name;
 		instance_chatrooms[roomjid] = new_room;
 		
 		// Populate the members of this room
@@ -217,12 +217,14 @@ function repopulateFriendsList() {
 	for(var i = 0; i < sorted_list_online.length; i++) {
 		friend_netid = sorted_list_online[i];
 		var status = instance_friends[friend_netid].status;
+		var firstname = instance_friends[friend_netid].FirstName;
+		var lastname = instance_friends[friend_netid].LastName;
 		if(status == "online") var imgurl = "/static/imgs/bullet_ball_glass_green.png";
 		else if(status == "offline") var imgurl = "/static/imgs/bullet_ball_glass_red.png";
 		else var imgurl = "/static/imgs/princeton.png";
 		
 		var newrow = '<tr friendname= "' + friend_netid + '" grouping="online">' +
-			'<td style="width: 15px;"></td> <td style="width: 20px;"> <img src="' + imgurl + '" width="14" height="14" style="" />  </td> ' + '<td>' + friend_netid + '</td>' + '</tr>';	
+			'<td style="width: 15px;"></td> <td style="width: 20px;"> <img src="' + imgurl + '" width="14" height="14" style="" />  </td> ' + '<td>' + firstname + ' ' + lastname + '</td>' + '</tr>';	
 		$("#friend-table").append(newrow);
 	}
 	
@@ -238,12 +240,14 @@ function repopulateFriendsList() {
 	for(var i = 0; i < sorted_list_offline.length; i++) {
 		friend_netid = sorted_list_offline[i];
 		var status = instance_friends[friend_netid].status;
+		var firstname = instance_friends[friend_netid].FirstName;
+		var lastname = instance_friends[friend_netid].LastName;
 		if(status == "online") var imgurl = "/static/imgs/bullet_ball_glass_green.png";
 		else if(status == "offline") var imgurl = "/static/imgs/bullet_ball_glass_red.png";
 		else var imgurl = "/static/imgs/princeton.png";
 		
 		var newrow = '<tr friendname= "' + friend_netid + '" grouping="offline">' +
-			'<td style="width: 15px;"></td> <td style="width: 20px;"> <img src="' + imgurl + '" width="14" height="14" style="" />  </td> ' + '<td>' + friend_netid + '</td>' + '</tr>';
+			'<td style="width: 15px;"></td> <td style="width: 20px;"> <img src="' + imgurl + '" width="14" height="14" style="" />  </td> ' + '<td>' + firstname + ' ' + lastname + '</td>' + '</tr>';
 	
 		$("#friend-table").append(newrow);
 	}
@@ -317,11 +321,10 @@ function updateBuddyListStatus(sender, status) {
 function addToBuddyList(friend_netid) {
 	
 	var newfriend = {};
-	
-	$.get('/vcard/', {jid: friend_netid}, 
+	$.getJSON('/vcard/', {jid: friend_netid}, 
 		function(data) {
 			
-			data = jQuery.parseJSON(data);
+			//data = jQuery.parseJSON(data);
 			
 			newfriend.FirstName = data.first_name; // #fix
 			newfriend.LastName = data.last_name; //#fix

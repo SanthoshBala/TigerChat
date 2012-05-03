@@ -110,12 +110,12 @@ function fillSearchBox(data) {
 		}
 		
 		
-		// If we have received a friend request from them, have a disabled "accept" button
-		// WE NEED TO UPDATE THIS TO ALLOW AN ACCEPTANCE FROM HERE (#fix)
+		// If we have received a friend request from them, have an "accept" button
 		else if(newdata[i].friendship_status == 'To_Accept') {
 			newrow = 	newrow + 
-						'<td>' + '<button disabled="disabled" type="button"> Accept </button>' + '</td>' + 
+						'<td>' + '<input type="button" value="Add" onclick="addReceivedFriend(\'' + newdata[i].username + '\')"/>' + '</td>' + 
 						'</tr>';
+
 		}
 		
 		// If we have received a friend request from them, have a disabled "accept" button

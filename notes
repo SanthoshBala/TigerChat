@@ -2,27 +2,34 @@ Notes:
 
 come up with another word for "invite"
 
-should not be able to send email invitation multiple times
+should not be able to send email invitation multiple times - database
 
-add loading ... in searchbox
+add loading ... in searchbox - UI
 
 fix rejecting a friend
 
 could the fact that we pass in the user name through a textbox be hacked?
 
-Add first and last names to the instance friends variable on initialization
 
 fix fact that on new buddy addition, we assume they are online
-ALSO fix that we need to correctly add their first and last name
-fillSearchBox()
-	
-	allow a friend request acceptance from here
-	
-get from pending requests - return chatroom + friend invites
 
-confirm that user has not entered blank for chatroom name
+	
+	
 
-use names, not jids
+
 
 
 minimize javascript
+
+
+
+
+
+DONE:
+
+sync between pending requests and search - adding a pending in search removes/changes the related rows in tables
+using first name in chat header and in friends list
+adding a friend from search that has sent you a request
+added illegal room name checking
+confirm that user has not entered blank for chatroom name
+had to replace spaces with underscore (not dot) for some funky reason

@@ -95,7 +95,6 @@ function onPresence(pres) {
 	var presType = pres.getAttribute('type'); 
 
 	// Now deal with the different types of presences
-	//log('got a presence from ' + sender + ' of type = ' + presType);
 	
 	// if I get a presence from myself, do nothing
 	if(sender == my_user_name) return true;
@@ -161,11 +160,10 @@ function onPresence(pres) {
 function handle_subscribe_message(newfriend) {
 	
 
-	$.get("/friends/",
+	$.getJSON("/friends/",
 		function(data){
 			
-			data = jQuery.parseJSON(data);
-			
+			//data = jQuery.parseJSON(data);
 			// If we are friends, that means a requestee has accepted
 			for(var i = 0; i < data.length; i++) {
 				if(data[i].username == newfriend) {
@@ -175,9 +173,9 @@ function handle_subscribe_message(newfriend) {
 			}
 			
 			// Otherwise, we have sent a request
-			$.get("/requests/",
+			$.getJSON("/requests/",
 				function(data){
-					repopulate_pending_requests(data);
+					open_pending_requests(data);
 				}
 			);
 		}
@@ -217,7 +215,7 @@ function onMessage(msg) {
 		}
 	
 		else {
-			$.get("/requests/",
+			$.getJSON("/requests/",
 				function(data){
 					open_pending_requests(data);
 				}

@@ -153,6 +153,7 @@ function addReceivedFriend(newfriendname) {
 	
 	// Remove from the pending dialog table
 	$('#pending-table tr[pendingname= "' + newfriendname + '"]').remove();
+	$('#search-table tr[friendname="' + newfriendname + '"] td:eq(2)').replaceWith('<td>' + '<button disabled="disabled" type="button"> Friends </button>' + '</td>');
 	
 }
 
