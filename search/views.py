@@ -112,7 +112,7 @@ def search_ldap(request):
 			poi_user = User.objects.filter(username=person_name)
 			if len(poi_user) == 0: # no matching user
 				try:
-					invitations = SystemInvitation.objects.filter(inviter=request.user.person, invitee_netid=person_name)
+					invitations = SystemInvitation.objects.filter(invitee_netid=person_name)
 					if len(invitations) == 1:
 						POI['friendship_status'] = 'Invited'
 					else:
