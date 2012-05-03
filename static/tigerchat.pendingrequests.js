@@ -97,10 +97,10 @@ function addPendingChatroomInvites(data) {
 function AcceptReceivedChatroomInvite(roomjid) {
 
 
-	$.get("/room/join", {room_jid: roomjid}, 
+	$.getJSON("/room/join", {room_jid: roomjid}, 
 		function(data) {
 			
-			data = jQuery.parseJSON(data);
+			//data = jQuery.parseJSON(data);
 			
 			roomjid = data.room_jid;
 			roomname= data.room_name;

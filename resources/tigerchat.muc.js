@@ -69,7 +69,10 @@ function Manage_Chatrooms() {
 			searchterm = $('#chatroom_search_textbox').val();
 			$('#chatroom_search_textbox').val('');	// clear the search box
 			$('#chatroom-search-table tr').remove();	// clear the table
-			fillRoomSearchBox(searchterm);
+				
+			var roomjid = $("#chatroom_management_selector").val();
+
+			fillRoomSearchBox(searchterm, roomjid);
 		}
 	});
 	
@@ -97,9 +100,10 @@ function Manage_Chatrooms() {
 	
 }
 
-function fillRoomSearchBox(searchterm) {
+function fillRoomSearchBox(searchterm, roomjid) {
 	
-	$.get("/search/", {query: searchterm},
+	
+	$.get("/search/", {query: searchterm, room_jid: roomjid},
 		function(data){
 			populateRoomSearchBox(data);
 		}
@@ -137,6 +141,10 @@ function populateRoomSearchBox(data) {
 			newrow = 	newrow + 
 						'<td>' + '<button disabled="disabled" type="button"> Member </button>' + '</td>' + 
 						'</tr>';
+		}
+		
+		else if(newdata[i].friendship_status == 'DNE') {
+			continue;
 		}
 		
 		
@@ -193,11 +201,11 @@ function create_chatroom() {
 	// check if jid for chatroom already exists
 	
 	// post to database with jid, privacy, room duration, name
-	$.get('/room/create/', {name: roomname, jid: roomjid, room_private: room_private_val, persistent: room_persistent}, 
+	$.getJSON('/room/create/', {name: roomname, jid: roomjid, room_private: room_private_val, persistent: room_persistent}, 
 	
 		function(data) {
-			
-			data = jQuery.parseJSON(data);
+			log('return function after creation.');
+			//data = jQuery.parseJSON(data);
 			if (data.name_conflict == "True") {
 				log('We have a name conflict.  Please select a new name.');
 			}
@@ -213,7 +221,7 @@ function create_chatroom() {
 }
 
 function addRoomToBuddyList(roomjid, roomname) {
-
+	log('adding a room ' + roomjid + ' to my buddy list.');
 
 	var new_room = {};
 	new_room.occupants = new Array();
