@@ -212,15 +212,17 @@ function onMessage(msg) {
 		if(chatroom_newuser == 'true') {
 		
 			
-			instance_chatrooms[chatroom_jid].occupants.push(user_jid);
+			instance_chatrooms[chatroom_jid].occupants.push(from);
 			
 		}
 	
-		$.get("/requests/",
-			function(data){
-				open_pending_requests(data);
-			}
-		);
+		else {
+			$.get("/requests/",
+				function(data){
+					open_pending_requests(data);
+				}
+			);
+		}	
 	
 	}
 	
