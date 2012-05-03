@@ -156,6 +156,29 @@ function sendChatroomInvite(recipient, room_name) {
 	connection.send(reply.tree());
 }
 
+function sendChatroomPresence(roomjid) {
+
+		
+	$.getJSON('/room/members/', {room_jid: roomjid}, 
+				function(data) {
+					var thisroomjid = data.room_jid;
+					
+					for(var j=0; j < data.members.length; j++) {
+						var user_jid = data.members[j].jid;
+						var recipient_full = user_jid + "@localhost";
+						var sender = my_user_name + '@localhost/princeton';
+						var reply = $msg( {to: recipient_full, from: sender, type: 'chat', chatroom_invite:'true', chatroom_name:thisroomjid, chatroom_newuser: 'true' } ).c("body").t("chatroom invite.");
+						connection.send(reply.tree());
+						
+					}
+					
+					repopulateFriendsList();
+
+				}
+			);
+
+
+}
 
 
 /************************************************************************

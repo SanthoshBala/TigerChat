@@ -63,7 +63,7 @@ def search_ldap(request):
 				try:
 					result['class'] = fields[1]
 				except:
-					continue
+					 continue
 			elif fields[0] == 'puhomedepartmentnumber:':
 				try:
 					result['dept'] = fields[1]
@@ -87,12 +87,13 @@ def search_ldap(request):
 			# check if person is an existing user
 			poi_user = User.objects.filter(username=person_name)
 			if len(poi_user) == 0: # no matching user so can't invite to room
+				POI['friendship_status'] = 'DNE'
 				continue
 			# result matches existing user
 			elif len(poi_user) == 1: 
 				poi_user = poi_user[0]
 				# check if person is a friend
-				friendship = RoomInvitation.objects.filter(invitee=poi_user.person, room = room)
+				invites = RoomInvitation.objects.filter(invitee=poi_user.person, room = room)
 				if len(invites) == 0:
 					# check if member of room
 					if poi_user in room.members.all():
