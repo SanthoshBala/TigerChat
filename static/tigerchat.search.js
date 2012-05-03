@@ -118,12 +118,20 @@ function fillSearchBox(data) {
 						'</tr>';
 		}
 		
+		// If we have received a friend request from them, have a disabled "accept" button
+		else if(newdata[i].friendship_status == 'Invited') {
+			newrow = 	newrow + 
+						'<td>' + '<button disabled="disabled" type="button"> Invited </button>' + '</td>' + 
+						'</tr>';
+		}
+		
 		// If friend does not exist in our database, send an email invite
 		else if(newdata[i].friendship_status == 'DNE') {
 			newrow = 	newrow + 
 						'<td>' + '<input type="button" value="Invite" onclick="sendInvite(\'' + newdata[i].username + '\')"/>' + '</td>' + 
 						'</tr>';
 		}
+
 		
 		
 		// Otherwise, create buttons as usual

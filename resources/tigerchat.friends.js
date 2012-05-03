@@ -37,7 +37,7 @@ function InitializeChatroomsVariable(data) {
 	
 	for(var i = 0; i < mydata.length; i++) {
 		
-		var roomjid = mydata[i].jid;
+		var roomjid = mydata[i].room_jid;
 		var new_room = {};
 		new_room.occupants = new Array();
 		new_room.name = mydata[i].name;
@@ -45,6 +45,7 @@ function InitializeChatroomsVariable(data) {
 		
 		// Populate the members of this room
 		
+		log('roomjid is : ' + roomjid);
 		if(i != mydata.length - 1) {
 			$.getJSON('/room/members/', {room_jid: roomjid}, 
 				function(data) {
@@ -75,7 +76,7 @@ function InitializeChatroomsVariable(data) {
 		}
 	}
 	
-	i
+	
 	
 }
 

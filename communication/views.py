@@ -45,7 +45,8 @@ def create_room(request):
 		return HttpResponse(response, mimetype='application/javascript')
 	room.members.add(owner)
 	room.admins.add(owner)
-	response_dict = {'name_conflict', False, 'room_name': room_name, 'created': 'True', 'room_jid': room_jid, 'persistent': room_persistent, 'room_private':room_private}
+	
+	response_dict = {'name_conflict': False, 'room_name': room_name, 'created': 'True', 'room_jid': room_jid, 'persistent': room_persistent, 'room_private':room_private}
 	response = simplejson.dumps(response_dict, default=json_handler)
 	return HttpResponse(response, mimetype='application/javascript')
 

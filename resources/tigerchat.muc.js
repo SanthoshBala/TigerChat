@@ -100,9 +100,10 @@ function Manage_Chatrooms() {
 function fillRoomSearchBox(searchterm) {
 	
 	$.get("/search/", {query: searchterm},
-	function(data){
-	   populateRoomSearchBox(data);
-	});
+		function(data){
+			populateRoomSearchBox(data);
+		}
+	);
 }
 
 // never returns DNE #fix
