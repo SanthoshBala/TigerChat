@@ -16,17 +16,10 @@ def home(request):
 
 @login_required   
 def tigerchat_main(request):
-	# Create Person profile if one does not already exist
-	person, created = Person.objects.get_or_create(jid=request.user.username)
-
-	# Create ejabberd user if necessary
-	if (not person.has_jabber_acct):
-		person.user = request.user
-		person.has_jabber_acct = True
-		person.save()
-		# redirect to /register/ for ejabberd creation
-		http_response = HttpResponseRedirect('/register/')
-		return http_response
+	try:
+		person = Person.objects.get(jid=request.user.username)
+	except:
+		return HttpResponseRedirect('/register/')
 
 	return render_to_response('tigerchathome.html', {'this_user_name': person.jid})
 

@@ -133,12 +133,7 @@ function AcceptReceivedChatroomInvite(roomjid) {
 }
 
 
-function sendChatroomPresence(roomjid) {
 
-	//send a special chat message to all the people in this chatroom saying i have joined
-	
-
-}
 
 /************************************************************************
  * Add a friend who has sent you a friend request.

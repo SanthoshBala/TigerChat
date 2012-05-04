@@ -1,3 +1,5 @@
 sudo ejabberdctl unregister bansal localhost
 sudo ejabberdctl unregister premed localhost
 sudo ejabberdctl unregister naacho localhost 
+sudo ejabberdctl unregister santhosh localhost
+sudo ejabberdctl unregister vramasub localhost
