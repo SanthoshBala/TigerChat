@@ -227,6 +227,23 @@ function onMessage(msg) {
 	// Otherwise, we have gotten a chat message
 	else if(type == "chat" && elems.length > 0) {
 		
+		if(page_has_focus == false) {
+			
+			$.getJSON('/vcard/', {jid: friend_netid}, 
+				function(data) {
+					
+					
+					new_msg_from = data.first_name;
+						
+					interval_id = setInterval(BlinkMessage, 1500);
+				}
+			);
+			
+			//setInterval(BlinkMessage, 3000);
+			//
+		}
+		
+		
 		// Check if this is a chatroom message
 		var msgtype = msg.getAttribute('msgtype');
 		if(msgtype == 'chatroom') {
