@@ -413,6 +413,6 @@
 .chatbox_text { overflow: auto; width: 90%; word-wrap: break-word; position: absolute; bottom: 15px; left: 8px;}
 .chatbox_below_title {height: 250px; position: relative;}
 .Highlight { background-color: #dcfac9; cursor: pointer; }
-.friends_search { background-attachment: scroll; background-clip: border-box; background-color: white; background-image: url("/static/imgs/magnifying_glass.png"); background-origin: padding-box; background-position: 0 0; background-repeat: no-repeat; background-size: 20px auto; border-radius: 0 0 0 0; color: #000000; width: 100%;}
-
+/*.friends_search { background-attachment: scroll; background-clip: border-box; background-color: white; background-image: url("/static/imgs/magnifying_glass.png"); background-origin: padding-box; background-position: 0 0; background-repeat: no-repeat; background-size: 20px auto; border-radius: 0 0 0 0; color: #000000; width: 100%;}
+*/
 
