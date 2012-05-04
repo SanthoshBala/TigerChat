@@ -26,7 +26,14 @@ def register_new_user(request):
 	
 	#  return render_to_response('new_user.html', {'form', form})
 	
-	person = request.user.person
+	person, created = Person.objects.get_or_create(jid=request.user.username)
+
+	if (created):
+		person.user = request.user
+		person.has_jabber_acct = True
+	else:
+		return HttpResponseRedirect('/tigerchat/')
+
 	ldap_record = get_ldap_record(person.jid)
 	try:
 		# set first_name
