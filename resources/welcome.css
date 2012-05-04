@@ -62,6 +62,7 @@ div#login {
 
 /* To fill up extra space */
 div#fillspace {
+	position: absolute;
 	height:100px;
 }
 
