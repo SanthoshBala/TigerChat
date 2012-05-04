@@ -37,11 +37,11 @@ function makeNewChatbox(chat_with_name) {
 	var new_name = "chatbox_" + chat_with_name;  // Creating the ID (chatbox_name)
 	
 	if(chat_with_name in instance_chatrooms) {
-			log('opening chatroom box.');
+			//log('opening chatroom box.');
 			var fullname = instance_chatrooms[chat_with_name].name;
 	}
 	else {
-		log('opening friend box.');
+		//log('opening friend box.');
 		var fullname = instance_friends[chat_with_name].FirstName + ' ' +  instance_friends[chat_with_name].LastName;
 	}
 	

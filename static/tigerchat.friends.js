@@ -104,7 +104,11 @@ function populateFriendsList() {
 	'</div>' + 
 	
 	'<div class = "friends_searchbox" id = "my_friends_searchbox" style="height: 32px; text-align: center; padding-left: 5px; padding-right: 11px;">' + 
-	'<input type="text" id="friends_search" class="friends_search" style="width: 100%; border-radius: 0px"/>' + 
+	
+		
+	'<input type="text" id="friends_search" class="friends_search" style="border: none; width: 100%; border-radius: 0px; color: #BBBBBB" value="Filter friends..." />' + 
+	
+	
 	'</div>' + 
 	
 	'<div class = "friends_table" id = "my_friends_table" style="overflow-y: auto; position: absolute; left: 7px; right: 5px; top:70px; bottom: 20px; background: white;">' +
@@ -122,6 +126,25 @@ function populateFriendsList() {
 	$('#friends_search').keyup(function(e) {
 		repopulateFriendsList();
 	});
+	
+	$('#friends_search').focus(
+		function() {
+			$('#friends_search').val('');
+			$('#friends_search').css({'color': '#000000'});
+			repopulateFriendsList();
+		}
+	);
+	
+	
+	$('#friends_search').blur(
+		function() {
+			//$('#friends_search').css({'color': '#BBBBBB'});
+			//$('#friends_search').val('Filter friends...');
+			//repopulateFriendsList();
+		}
+	);
+
+
 
 	$("#friends_dialog").dialog({
 		position: 'right',
@@ -148,11 +171,12 @@ function repopulateFriendsList() {
 	}
 	
 	var filter_key = $('#friends_search').val();
-
+	if(filter_key == 'Filter friends...') filter_key = '';
 	// Sort the list of friends
 	var sorted_list_online = [];
 	var sorted_list_offline = [];
 	var sorted_list_rooms = [];
+	
 	
 	for(chatroom_name in instance_chatrooms) {
 		// skip if doesnt match filter

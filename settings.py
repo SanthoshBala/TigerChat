@@ -104,7 +104,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 CAS_SERVER_URL =  'https://fed.princeton.edu/cas/login'
-CAS_REDIRECT_URL = '/tigerchat/'
+CAS_REDIRECT_URL = '/register/'
 CAS_VERSION = '1'
 LOGIN_URL = '/login/'
 

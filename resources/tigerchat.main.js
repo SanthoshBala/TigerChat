@@ -5,6 +5,9 @@ var connection = null;			// The strophe connection
 var my_user_name;				// My user name (jid)
 var instance_friends = {};		// An associative array of my friends/information
 var instance_chatrooms = {};	// An associative array of my chatroom affiliations
+var page_has_focus = true;
+var new_msg_from = '';
+var interval_id = 0;
 
 
 /************************************************************************
@@ -72,13 +75,44 @@ $(document).ready(function () {
 	//  Figure out exact purpose of this...		
     $(window).resize();
     
+    window.onblur = disableStuff;
+	window.onfocus = enableStuff;
+
+
+
+
+    
+    
     // If we leave the page, disconnect our ejabberd connection
     window.onbeforeunload = function(){
 		connection.disconnect();
     };
 });
 
+function disableStuff() {
+	page_has_focus = false;
+}
+function enableStuff() {
+	page_has_focus = true;
+	if(new_msg_from != '') {
+		clearInterval(interval_id);
+		$(document).attr('title', 'TigerChat');
+		new_msg_from = '';
+	}
+}
 
+function BlinkMessage() {
+	
+	//log(from);
+	if(	$(document).attr('title') == 'TigerChat') {
+		$(document).attr('title', new_msg_from + ' says...');
+	}
+	else {
+		
+		$(document).attr('title', 'TigerChat');
+	}
+	
+}
 /************************************************************************
  * Called upon initial connection.
  ***********************************************************************/

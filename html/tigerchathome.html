@@ -6,6 +6,8 @@
 	
 	<title>TigerChat</title>
 	<link rel="stylesheet" href="/static/myjquery-ui.css" type="text/css" />
+	<link rel="stylesheet" href="/static/Backgrounds.css" type='text/css' />
+	<link href='/static/bootstrap/css/bootstrap.css' rel='stylesheet' />
 	
 	<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
 	<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js'></script>
@@ -20,20 +22,60 @@
 	<script type='text/javascript' src='/static/tigerchat.pendingrequests.js'></script>
 	<script type='text/javascript' src='/static/tigerchat.main.js'></script>
 
+
+
 </head>
 
+<body class='backgroundschemes'>
 
 
-<body background="/static/jquery-ui-imgs/black_bg.jpg">
-	
+<div align="center" style="margin:auto; top:225px; left:0px; position:relative;">
+  <img src="/static/imgs/tigerchat-bubble-logo.png" width="40%" style="background:none; border-color:transparent"/>
+</div>\
+
+
+<div class='navbar navbar-fixed-top'>
+    <div class='navbar-inner'>
+      <div class='container'>
+        <a class='brand' href='/tigerchat/'>TigerChat</a>
+        <ul class='nav pull-right'>
+          <li>
+            <a href="/logout/"> Sign Out </a> 
+          </li>
+          <li>
+            <a href="/preferences/"> Preferences </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+</div>
+
+<div class='navbar navbar-fixed-bottom'>
+    <div class='navbar-inner'>
+      <div class='container'>
+        <ul class='nav' class='nav pull-left'>
+          <li>
+            <a href='#about'>About Us</a>
+          </li>
+          <li>
+            <a href='#privacy'>Privacy Information</a>
+          </li>
+          <li>
+            <a href="#terms">Terms of Service </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+</div>
+
 
 	<div id='log' style="color: green;"></div>
 	
 	<input  type="hidden" id="this_user_name" value={{this_user_name}} />
     
         <div id='boxes' style="color: green;"></div>
-    
-   
+
+
 </body>
 
 </html>

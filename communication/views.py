@@ -241,8 +241,12 @@ def add_friend(request):
 		## send an email
 		invitee = friend_jid
 		inviter = request.user.person
-		send_invitation_email(inviter, invitee)
-		invitation = SystemInvitation.objects.create(inviter=inviter, invitee_netid=invitee)
+		invitations = SystemInvitation.objects.filter(invitee_netid=invitee)
+		if len(invitations) > 0:
+			pass
+		else:
+			invitation = SystemInvitation.objects.create(inviter=inviter, invitee_netid=invitee)
+			send_invitation_email(inviter, invitee)
 		http_response = HttpResponse('Invited')
 	elif (len(potential_friends) > 1):
 		## error

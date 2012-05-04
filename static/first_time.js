@@ -19,7 +19,7 @@ $(document).ready(function () {
 				connection.register.submit();
 		    } 
 		    else if (status === Strophe.Status.REGISTERED) {
-		        log("registered!");
+		        alert("registered!");
 		        connection.authenticate();
 		    } 
 		    else if (status === Strophe.Status.CONNECTED) {
@@ -35,5 +35,30 @@ $(document).ready(function () {
 
 
 function goToTigerchat() {
-	  document.location.href= "/tigerchat"
+	  document.location.href= "/tigerchat/"
+}
+
+
+// JavaScript Document
+
+var thislist = new Array();
+thislist[0] = 'a';
+thislist[1] = 'b';
+thislist[2] = 'c';
+thislist[3] = 'd';
+thislist[4] = 'e';
+thislist[5] = 'f';
+var counter = 0;
+
+function changeText(){
+	document.getElementById('loadingtitles').innerHTML = thislist[counter];
+	counter++;
+	if(counter < thislist.length)
+		setTimeout('changeText()', 100);
+}
+
+function setSwitch(){
+	setTimeout('changeText()', 1000);
+	return false;
+
 }
