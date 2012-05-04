@@ -4,17 +4,27 @@
 /* The general stylesheet for all our pages */
 
 
+
+/* To ensure that everything applied to the whole page is properly applied */
+html, body {
+	min-height: 100%;
+	min-width: 100%;
+	max-height: 100%;
+	max-width: 100%;
+}
+
 /* Background style */
 .backgroundschemes {
-
 	/* Default color for unsupported browsers */
 	background: #EA6A0D;
 		
 	/* gecko based browsers e.g. Firefox */
-	background: -moz-radial-gradient(center, circle, #FFFFFF, #EA6A0D);
+	background: -moz-radial-gradient(center, circle, #666, #000);
 
 	/* webkit based browsers e.g. Chrome */	
-	background: -webkit-radial-gradient(center, circle, #FFFFFF, #EA6A0D);
+	background: -webkit-radial-gradient(center, circle, #666, #000);
+
+	/*background-image:url(black_bg.jpg); */
 }
 
 /* For any big titles */
@@ -30,4 +40,29 @@
 	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
 	font-size:200%;
 	z-index:100;
+}
+
+/* For the bar appearing at the bottom of each page */
+.bottombar {
+	position:absolute;
+	bottom:0px;
+	background:inherit;
+	color:color:#000;
+	min-height:5%;
+	width:100%;
+	z-index:100;
+}
+
+/* For the bar containing links to whatever we need */
+.infobar {
+	position:absolute;
+	right:80px;
+	top:30px;
+	color:#666;
+	z-index:-90;	
+}
+
+/* To fill up extra space */
+div.fillspace {
+	height:50px;
 }
