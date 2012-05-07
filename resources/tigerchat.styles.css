@@ -98,8 +98,13 @@
 
 }
 
+
+
 .maintext {
 	color:#000000;
 }
 
+input {
+	margin-bottom: 0px;
+}
 

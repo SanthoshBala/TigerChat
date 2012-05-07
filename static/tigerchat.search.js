@@ -11,22 +11,29 @@ function openSearchBox() {
 		// Clear lines from the table
 		$('#search-table tr').remove();
 		$('#search_dialog').dialog('open');
+		$("#search_dialog").css({'height' : '200'});    
 		return;
 	}
 	
 	// Otherwise, create the dialog box
 	$(" <div />" ).attr("id", "search_dialog")
 	.attr("title", "Add Friend")
-	.html(	'<div class = "search_box" id="my_search_box" style="height: 100%; margin: auto; position: relative; background-color:white; border-radius: 0px 0px 0px 12px;">' +
+	.html(	'<div class = "search_box" id="my_search_box" style="height: 100%; margin: auto; position: relative; background-color:white; border-radius: 0px 0px 8px 8px;">' +
 			
-			'<div class="search_text" id="my_search_text" style="height: 32px; text-align: center; padding-left: 5px; padding-right: 11px; padding-top: 5px;" >' +
+			'<div class="search_toptext" id="my_search_toptext"> ' +
+			'<table width="100%" cellpadding="10" cellspacing="10" id="search_toptext_table">' + 
+			'<tr> <td width="50px"> <img src="/static/imgs/rsz_picture3.png"/> </td> <td> Enter a friend\'s name or netid in the search box below.  </td> </tr> </table>' +
+			'</div>' +
+			
+			'<div class="search_text" id="my_search_text" style="height: 32px; text-align: center; padding-left: 18px; padding-right: 30px; padding-top: 5px;" >' +
 			'<input type="text" id="search_textbox" style="width: 100%; border-radius: 0px">' +
 			'</div>' + 
 			
-			'<div class="search_table" id="my_search_table" style="overflow-y: auto; position: absolute; left: 7px; right: 5px; top:32px; bottom: 20px; background: white;">' +
-			'<table width="100%" cellpadding="0" cellspacing="0" id="search-table">' +
+			'<div class="search_table" id="my_search_table" style="overflow-y: auto; position: absolute; left: 15px; right: 20px; top:100px; bottom: 20px; background: white;">' +
+			'<table width="100%" cellpadding="3" cellspacing="3" id="search-table">' +
 			'</table>' + 
 			'</div>' +	
+			'</div>' +
 			
 			'</div>')
 	.appendTo($( "body" ));	
@@ -52,6 +59,8 @@ function openSearchBox() {
     
     // Set the height of the dialog
     $("#search_dialog").css({'height' : '200'});    
+    $("#search_dialog").css({'min-width' : '250px'});  
+    $("#search_dialog").parent().css({'min-width' : '250px'});    
 }
 
 /************************************************************************
