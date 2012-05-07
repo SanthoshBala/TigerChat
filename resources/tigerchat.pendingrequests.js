@@ -12,8 +12,6 @@ function open_pending_requests() {
 	// populate it
 	if ($("#subscribe_dialog").length > 0) {
 		$('#search_dialog').dialog('open');
-		log('whaat.');
-		
 		$.getJSON("/requests/",
 			function(data){
 				repopulate_pending_requests(data);
@@ -26,15 +24,22 @@ function open_pending_requests() {
 	$(" <div />" ).attr("id", 'subscribe_dialog')
 		.attr("title", "Pending Requests")
 		.html('<div class = "subscribe_box" id="subscribe_box">' + 
-		'<table width="100%" cellpadding="0" cellspacing="0" id="pending-table">' +
+		'<div id="pending_title_friends" class="pending_title_hdr"> Friends <hr style="margin: 1px 15px 10px 0px;" > </div>' +
+		'<table width="100%" cellpadding="3" cellspacing="3" id="pending-table"></table>' +
+		'<div id="pending_title_chatrooms" class="pending_title_hdr" style="margin-top: 25px;"> Chatrooms <hr style="margin: 1px 15px 10px 0px;" > </div>' +
+		'<table width="100%" cellpadding="3" cellspacing="3" id="pending-table-rooms"></table>' +
 		'</div>')
 		.appendTo($( "body" ));
+		
+	$("#subscribe_dialog").css({'margin': '15px'});
 	
 	$("#subscribe_dialog").dialog({
 		autoOpen: true,
 		closeOnEscape: true,
 		resizable: true
 	});
+	
+	$("#subscribe_dialog").css({'height': '200px'});
 	
 	$.getJSON("/requests/",
 		function(data){
@@ -48,7 +53,6 @@ function open_pending_requests() {
  * Populate the pending requests.
  ***********************************************************************/
 function repopulate_pending_requests(data) {
-	log('hello.');
 	log(data);
 	// Parse the JSON
 	//data = jQuery.parseJSON(data);
@@ -57,15 +61,28 @@ function repopulate_pending_requests(data) {
 	$('#pending-table tr').remove();
 	
 	// For every request, create a row
-	log('populating requests.');
 	log(data.friend_requests);
 	for(var i = 0; i < data.friend_requests.length; i++) {
-		var newrow = '<tr pendingname= "' + data.friend_requests[i].creator + '">' +
-		'<td>' + data.friend_requests[i].creator + '</td>' +
-		'<td>' +  "<input type='button' value='Accept' onclick='addReceivedFriend(\"" + data.friend_requests[i].creator + "\")'/>" + '</td>' +
-		'<td>' +  "<input type='button' value='Reject' onclick='RejectFriend(\"" + data.friend_requests[i].creator + "\")'/>" + '</td>' +
-		'</tr>';
-		$("#pending-table").append(newrow);
+		
+		var sender_jid = data.friend_requests[i].creator;
+		
+		$.getJSON('/vcard/', {jid: sender_jid}, 
+			function(data) {
+							
+				FirstName = data.first_name;
+				LastName = data.last_name; 
+				var newrow = '<tr pendingname= "' + sender_jid + '">' +
+				'<td>' + FirstName + ' ' + LastName + '</td>' +
+				'<td>' +  "<input type='button' value='Accept' onclick='addReceivedFriend(\"" + sender_jid + "\")'/>" + '</td>' +
+				'<td>' +  "<input type='button' value='Reject' onclick='RejectFriend(\"" + sender_jid + "\")'/>" + '</td>' +
+				'</tr>';
+				$("#pending-table").append(newrow);
+				
+			}
+		);
+		
+		
+		
 	}
 	
 	for(var i = 0; i < data.room_invites.length; i++) {

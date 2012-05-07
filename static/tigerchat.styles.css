@@ -34,9 +34,11 @@
 	background: white;
 }
 
-.friend_table_rows {
+.friend_table_first_row {
 	width: 15px;
 }
+
+.friend_table_second_row
 
 .chatbox_below_title {
 	height: 250px;
@@ -88,5 +90,21 @@
 	background: white;
 }
 
+.username {
+	color:#ff6633;
+}
 
+.contactname {
+
+}
+
+
+
+.maintext {
+	color:#000000;
+}
+
+input {
+	margin-bottom: 0px;
+}
 

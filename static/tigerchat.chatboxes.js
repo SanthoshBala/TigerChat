@@ -23,7 +23,7 @@ function HandleChatboxEnter(chat_with_name) {
 	// Get timestamp, append my own message to the chatbox, and scroll to the bottom
 	var timestamp = getTimeStamp();
 	
-	$('#text_area_' + chat_with_name).append('<span style = "color:#ff6633;" >' + timestamp + my_user_name + ": " + '</span> <span style = "color:#000000;" >' + send_text + "</span><br/>");
+	$('#text_area_' + chat_with_name).append('<span class="username" style = "color:#ff6633;" >' + timestamp + my_user_name + ": " + '</span> <span class="maintext" style = "color:#000000;" >' + send_text + "</span><br/>");
 	$('#text_area_' + chat_with_name).scrollTop($('#text_area_' + chat_with_name)[0].scrollHeight);
 	sendMessage(send_text, sender_name, chat_with_name);
 }
@@ -198,7 +198,7 @@ function sendChatroomPresence(roomjid) {
 function showChatMessage(from, message) {
 	makeNewChatbox(from);
 	var timestamp = getTimeStamp();
-	$('#text_area_' + from).append('<span style = "color:#0033cc;" >' + timestamp + from + ": " + '</span> <span style = "color:#000000;" >' + message + "</span><br/>");
+	$('#text_area_' + from).append('<span class="contactname" style = "color:#0033cc;" >' + timestamp + from + ": " + '</span> <span class="maintext" style = "color:#000000;" >' + message + "</span><br/>");
 	$('#text_area_' + from).scrollTop($('#text_area_' + from)[0].scrollHeight);
 	
 }
@@ -211,7 +211,7 @@ function showChatMessage(from, message) {
 function showChatRoomMessage(from, message, sender) {
 	makeNewChatbox(from);
 	var timestamp = getTimeStamp();
-	$('#text_area_' + from).append('<span style = "color:#0033cc;" >' + timestamp + sender + ": " + '</span> <span style = "color:#000000;" >' + message + "</span><br/>");
+	$('#text_area_' + from).append('<span class="contactname" style = "color:#0033cc;" >' + timestamp + sender + ": " + '</span> <span class="maintext" style = "color:#000000;" >' + message + "</span><br/>");
 	$('#text_area_' + from).scrollTop($('#text_area_' + from)[0].scrollHeight);
 }
 
