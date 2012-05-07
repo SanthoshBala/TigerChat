@@ -13,7 +13,17 @@ from commands import getoutput
 from communication.models import *
 from search.views import get_ldap_record
 
-## create_room(): create a new room
+
+########################################################################
+## MANAGE FRIENDS
+########################################################################
+
+########################################################################
+## MANAGE ROOMS
+########################################################################
+
+## create_room(): create a new room and make current user an admin
+## of that room
 @login_required
 def create_room(request):
 	try:
@@ -33,20 +43,38 @@ def create_room(request):
 	# check that name won't conflict with real princetonian
 	record = get_ldap_record(room_jid)
 	if record is not None:
-		response_dict = {'name_conflict': True, 'name': room_name, 'jid': 'room_jid'}
+		response_dict = {
+						'name_conflict': True, 
+						'name': room_name,
+						'jid': 'room_jid'
+						}
 		response = simplejson.dumps(response_dict, default=json_handler)
 		return HttpResponse(response, mimetype='application/javascript')
 	owner = request.user.person
 	room, created = Room.objects.get_or_create(jid=room_jid, name=room_name, private=room_private, persistent=room_persistent)
 	
 	if not created:
-		response_dict = {'name_conflict': True, 'room_name': room_name, 'created': 'False', 'room_jid': room_jid, 'persistent': room_persistent, 'room_private':room_private}
+		response_dict = {
+						'name_conflict': True,
+						'room_name': room_name,
+						'created': 'False',
+						'room_jid': room_jid,
+						'persistent': room_persistent,
+						'room_private':room_private
+						}
 		response = simplejson.dumps(response_dict, default=json_handler)
 		return HttpResponse(response, mimetype='application/javascript')
 	room.members.add(owner)
 	room.admins.add(owner)
 	
-	response_dict = {'name_conflict': False, 'room_name': room_name, 'created': 'True', 'room_jid': room_jid, 'persistent': room_persistent, 'room_private':room_private}
+	response_dict = {
+						'name_conflict': False,
+						'room_name': room_name,
+						'created': 'True',
+						'room_jid': room_jid,
+						'persistent': room_persistent,
+						'room_private':room_private
+					}
 	response = simplejson.dumps(response_dict, default=json_handler)
 	return HttpResponse(response, mimetype='application/javascript')
 
@@ -80,9 +108,16 @@ def invite_person_to_room(request):
 		invitee_person = invitees[0]
 		invitation, created = RoomInvitation.objects.get_or_create(invitee=invitee_person, room=room_object, inviter=inviter_person)
 		if created:
-			response_dict = {'inviter_jid': inviter_person.jid, 'invitee_jid': invitee_jid, 'invited':True}
+			response_dict = {
+								'inviter_jid': inviter_person.jid,
+								'invitee_jid': invitee_jid,
+								'invited':True}
 		else:
-			response_dict = {'inviter_jid': inviter_person.jid, 'invitee_jid': invitee_jid, 'invited':False}
+			response_dict = {
+								'inviter_jid': inviter_person.jid,
+								'invitee_jid': invitee_jid,
+								'invited':False
+							}
 		response = simplejson.dumps(response_dict, default=json_handler)
 		return HttpResponse(response, mimetype='application/javascript')
 
@@ -228,6 +263,52 @@ def get_requests(request):
 	data = simplejson.dumps(response_dict, default=json_handler)
 	http_response = HttpResponse(data, mimetype='application/javascript')
 	return http_response
+
+## ignore friend request
+@login_required
+def ignore_friend(request):
+	person = request.user.person
+	inviter_jid = request.GET.get('jid')
+	inviter = Person.objects.get(jid=inviter_jid)
+	friendships = Friendship.objects.filter(receiver=person,sender=inviter)
+	if len(friendships) is not 1:
+		return HttpResponseServerError()
+	else:
+		friendship = friendships[0]
+		friendship.status = 'Ignored'
+		friendship.save()
+	return HttpResponse()
+
+## get_ignored_requests
+@login_required
+def get_ignored_requests(request):
+	person = request.user.person
+	friendships = Friendship.objects.filter(receiver=person, status='Ignored')
+	data = simplejson.dumps(friendships, default=json_handler)
+	return HttpResponse(data, mimetype='application/javascript')
+
+## reject room invite
+@login_required
+def reject_room_invite(request):
+	person = request.user.person
+	room_jid = request.GET.get('room_jid')
+	room = Room.objects.get(jid=room_jid)
+	invites = RoomInvitation.objects.filter(invitee=person, room=room)
+	if len(invites) is not 1:
+		return HttpResponseServerError()
+	else:
+		invite = invites[0]
+		invite.delete()
+	return HttpResponse()
+
+## destroy_room
+@login_required
+def destroy_room(request):
+	person = request.user.person
+	room_jid = request.GET.get('room_jid')
+	room = Room.objects.get(jid = room_jid)
+	room.delete()
+	return HttpResponse()
 
 ## set friend request from this user
 @login_required

@@ -35,6 +35,7 @@ def json_handler(obj):
 			'room_jid': obj.jid,
 			'persistent': obj.persistent,
 			'room_private': obj.private,
+			'admin': obj.admins.all(),
 		}
 		return base_dict
 	elif isinstance(obj, RoomInvitation):
