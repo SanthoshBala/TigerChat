@@ -80,6 +80,15 @@ function InitializeChatroomsVariable(data) {
 	}
 	
 	
+	$.getJSON("/requests/",
+			function(data){
+				log('ssssss');
+				repopulate_pending_requests(data);
+			}
+	);
+    
+	
+	
 	
 }
 
@@ -119,15 +128,43 @@ function populateFriendsList() {
 	'</div>' +
 	'</table>' + 
 	'<div id="padding"></div>')*/
-	
 	$(" <div />" ).attr("id", "friends_dialog")
 	.attr("title", "Buddy List")
 	.html('<div class = "friends_list" id = "my_friends_list" style="height: 100%; margin: auto; position: relative; background-color:#F2F2F2; border-radius: 0px 0px 0px 12px;">' + 
 	
 	'<div class = "friends_header" id = "my_friends_header" style="height: 32px; padding-left: 5px; padding-top: 5px;">' + 
-	'<img src="/static/imgs/add_friend.png" height=10px onclick="openSearchBox()" /> ' + '<img src="/static/imgs/add_group.png" height=10px onclick="openRoomCreation()" />' + 
-	'<img src="/static/imgs/pending_envelope.png" height=10px  onclick="open_pending_requests()" />' + 
-	'<img src="/static/imgs/pending_envelope_exclamation.png" height=10px onclick="Manage_Chatrooms()" />' + 
+	'<table>' +
+	'<tr>' + 
+	'<td>' +
+	'<img src="/static/imgs/add_friend.png" height=25px onclick="openSearchBox()"/> ' +
+	'</td>' + 
+	'<td>' + 
+	'<img src="/static/imgs/add_group.png" height=25px onclick="openRoomCreation()" />' + 
+	'</td>' + 
+	'<td id="pending_requests_img">' + 
+	'<img src="/static/imgs/pending_envelope.png" height=25px  onclick="open_pending_requests()" style="position:relative; top:-3px;"/>' + 
+	'</td>' + 
+	'<td>' + 
+	'<img src="/static/imgs/pending_envelope_exclamation.png" height=25px onclick="Manage_Chatrooms()" style="position:relative; top:-3px;"/>' + 
+	'</td>' +
+	
+	
+	
+	'<td class="dropdown" id="menu1">' +
+	'<a class="dropdown-toggle" data-toggle="dropdown" href="#menu1">' +
+	'hello' +
+	'<b class="caret"></b>' +
+	'</a>' +
+	'<ul class="dropdown-menu">' +
+	'<li><a href="#">action</a></li>' +
+	'<li><a href="#">action2></a></li>' +
+	'</ul>' +
+	'</td>' +
+	
+	
+	
+	'</tr>' + 
+	'</table>' +
 	'</div>' + 
 	
 	'<div class = "friends_searchbox" id = "my_friends_searchbox" style="height: 32px; text-align: center; padding-left: 5px; padding-right: 11px;">' + 

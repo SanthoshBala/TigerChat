@@ -65,8 +65,6 @@ $(document).ready(function () {
 		resizable: true
 	});
 	
-	
-	
 	/*$(" <div />" ).attr("id", 'room_management_dialog')
 		.attr("title", "Manage Room")
 		.html('<div class = "room_manage_box" id="room_manage_box">' + 
@@ -91,13 +89,24 @@ $(document).ready(function () {
 	$(window).resize();*/
 	
 	// start the dropdowns
-	$('.dropdown-toggle').dropdown();
+	//$('.dropdown-toggle').dropdown();
+    
+    
+	
     
     window.onblur = disableStuff;
 	window.onfocus = enableStuff;
 
 
-
+	log('whaat.');
+	$.getJSON("/requests/",
+			function(data){
+				log('ssssss');
+				repopulate_pending_requests(data);
+			}
+	);
+    
+	log('whaat done.');
 
     
     

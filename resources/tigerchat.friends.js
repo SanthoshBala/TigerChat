@@ -80,6 +80,15 @@ function InitializeChatroomsVariable(data) {
 	}
 	
 	
+	$.getJSON("/requests/",
+			function(data){
+				log('ssssss');
+				repopulate_pending_requests(data);
+			}
+	);
+    
+	
+	
 	
 }
 
@@ -119,7 +128,6 @@ function populateFriendsList() {
 	'</div>' +
 	'</table>' + 
 	'<div id="padding"></div>')*/
-	
 	$(" <div />" ).attr("id", "friends_dialog")
 	.attr("title", "Buddy List")
 	.html('<div class = "friends_list" id = "my_friends_list" style="height: 100%; margin: auto; position: relative; background-color:#F2F2F2; border-radius: 0px 0px 0px 12px;">' + 
@@ -133,7 +141,7 @@ function populateFriendsList() {
 	'<td>' + 
 	'<img src="/static/imgs/add_group.png" height=25px onclick="openRoomCreation()" />' + 
 	'</td>' + 
-	'<td>' + 
+	'<td id="pending_requests_img">' + 
 	'<img src="/static/imgs/pending_envelope.png" height=25px  onclick="open_pending_requests()" style="position:relative; top:-3px;"/>' + 
 	'</td>' + 
 	'<td>' + 
