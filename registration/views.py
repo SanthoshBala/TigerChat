@@ -1,4 +1,5 @@
-## IMPORTS
+### REGISTRATION/VIEWS.PY
+
 import os
 import simplejson
 import string
@@ -34,6 +35,9 @@ def register_new_user(request):
 	else:
 		return HttpResponseRedirect('/tigerchat/')
 
+	# Check if a system invitation exists for this person
+	invites = SystemInvitation.objects.filter(invitee_jid)
+
 	ldap_record = get_ldap_record(person.jid)
 	try:
 		# set first_name
@@ -56,11 +60,6 @@ def register_new_user(request):
 	person.save()
 	return render_to_response('newuser.html', {'user_name': person.jid})
 	#return HttpResponseRedirect('/tigerchat/')
-
-## create_room(): Create a new room - set user as admin
-#@login_required
-#def create_room(request):
-#	
 
 ##### ADMIN VIEWS #####
 
