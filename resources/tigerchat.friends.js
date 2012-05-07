@@ -41,6 +41,9 @@ function InitializeChatroomsVariable(data) {
 		var new_room = {};
 		new_room.occupants = new Array();
 		new_room.name = mydata[i].room_name;
+		
+		new_room.admin = mydata[i].admin[0].jid;
+		
 		instance_chatrooms[roomjid] = new_room;
 		
 		// Populate the members of this room
@@ -99,8 +102,8 @@ function populateFriendsList() {
 	
 	'<div class = "friends_header" id = "my_friends_header" style="height: 32px; padding-left: 5px; padding-top: 5px;">' + 
 	'<input type="button" onclick="openSearchBox()" value="Search"/> ' + '<input type="button" onclick="openRoomCreation()" value="Rooms"/>' + 
-	'<input type="button" onclick="open_pending_requests()" value="pending">' + 
-	'<input type="button" onclick="Manage_Chatrooms()" value="manage">' + 
+	'<input type="button" onclick="open_pending_requests()" value="pending"/>' + 
+	'<input type="button" onclick="Manage_Chatrooms()" value="manage"/>' + 
 	'</div>' + 
 	
 	'<div class = "friends_searchbox" id = "my_friends_searchbox" style="height: 32px; text-align: center; padding-left: 5px; padding-right: 11px;">' + 

@@ -121,8 +121,9 @@ function AcceptReceivedChatroomInvite(roomjid) {
 			
 			roomjid = data.room_jid;
 			roomname= data.room_name;
+			admin = data.room_admin;
 			
-			addRoomToBuddyList(roomjid, roomname);
+			addRoomToBuddyList(roomjid, roomname, admin);
 			
 			sendChatroomPresence(roomjid);
 			
@@ -159,6 +160,7 @@ function addReceivedFriend(newfriendname) {
  * THIS FUNCTION NEEDS TO BE PROPERLY IMPLEMENTED. #fix
  ***********************************************************************/
 function RejectFriend(newfriendname) {
-	rejectRequest(connection, my_user_name, newfriendname);
+	$.getJSON("/friend/ignore/", {jid: newfriendname});
+	$('#pending-table tr[pendingname= "' + newfriendname + '"]').remove();
 }
 
