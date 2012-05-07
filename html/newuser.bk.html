@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" style= 'min-height:100%' class='backgroundschemes'>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Untitled Document</title>
+  <link rel="stylesheet" href="/static/Backgrounds.css" type='text/css' />
+  <script type='text/javascript'
+	  src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
+  <script type='text/javascript'
+	  src='/static/strophe.js'></script>
+  <script type='text/javascript'
+	  src='/static/strophe.register.js'></script>
+  <script type='text/javascript'
+	  src='/static/first_time.js'></script>
+</head>
+
+
+<body>
+<div>
+<img src="P_Stripes.jpg" alt="TIGERCHAT" width="100" height="100" style="float:right"/>
+
+</div>
+<p > Welcome to TigerChat. Please provide us your name and user information so we can better connect you to others on the network. </p>
+
+<form id="userinfo">
+
+<div style="line-height: 60px; height: 240px; text-align:left">
+First Name: <input type="text" id='firstname' / style=""><br/>
+Last Name: <input type="text" id='lastname' /><br/>&nbsp
+Class: <input type="text" id='class' /><br/>&nbsp
+Residential College: <input type="text" id='college' /><br/>&nbsp;
+</div>
+
+</form>
+
+<input type="button" value="Go To Tigerchat" onClick="goToTigerchat()">
+
+
+<div id='log'></div>
+
+    <input  type="hidden" id="user_name" value={{user_name}} />
+
+</body>
+</html>

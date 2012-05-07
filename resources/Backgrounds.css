@@ -26,9 +26,6 @@ html, body {
 }
 
 .welcome-backgroundschemes {
-	margin-left:0; 
-	margin-right:0;
-	min-height: 100%
 	/* Default color for unsupported browsers */
 	background: #EA6A0D;
 		
@@ -77,4 +74,12 @@ html, body {
 /* To fill up extra space */
 div.fillspace {
 	height:50px;
+}
+
+.centerimage {
+	background:none; 
+	border-color:transparent;
+}
+
+.centerimagecontainer {
 }

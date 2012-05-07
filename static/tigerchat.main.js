@@ -74,6 +74,7 @@ $(document).ready(function () {
 	
 	//  Figure out exact purpose of this...		
     $(window).resize();
+
     
     window.onblur = disableStuff;
 	window.onfocus = enableStuff;
@@ -87,6 +88,7 @@ $(document).ready(function () {
     window.onbeforeunload = function(){
 		connection.disconnect();
     };
+    
 });
 
 function disableStuff() {
@@ -142,4 +144,14 @@ function onConnect(status)
 		connection.send($pres().tree());
 	}
 }
+
+$(window).resize(function(){
+	 
+	    $('.centerimagecontainer').css({
+	        position:'absolute',
+	        left: ($(window).width() - $('.centerimagecontainer').outerWidth())/2,
+	        top: ($(window).height() - $('.centerimagecontainer').outerHeight())/2
+	    });
+	 
+	});
 

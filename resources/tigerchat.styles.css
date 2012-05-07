@@ -1,0 +1,105 @@
+.friends_list {
+	height: 100%; 
+	margin: auto; 
+	position: relative; 
+	background-color:#F2F2F2; 
+	border-radius: 0px 0px 0px 12px;"
+}
+
+.friends_header {
+	height: 32px; 
+	padding-left: 5px; 
+	padding-top: 5px;
+}
+
+.friends_searchbox {
+	style="height: 32px; 
+	text-align: center; 
+	padding-left: 5px; 
+	padding-right: 11px;
+}
+
+.friends_search {
+	 width: 100%; 
+	 border-radius: 0px
+}
+
+.friends_table {
+	overflow-y: auto; 
+	position: absolute; 
+	left: 7px; 
+	right: 5px; 
+	top:70px; 
+	bottom: 20px; 
+	background: white;
+}
+
+.friend_table_first_row {
+	width: 15px;
+}
+
+.friend_table_second_row
+
+.chatbox_below_title {
+	height: 250px;
+	
+}
+
+.chatbox_dialog {
+	position: fixed;
+	top: 200px;
+	left: 500px;
+}
+
+.chatbox_text {
+	font-family: Tahoma,Arial,sans-serif;
+	font-size: 13px;
+}
+
+.room_manage_box {
+	height: 100%; 
+	margin: auto; 
+	position: relative; 
+	background-color:white; 
+	border-radius: 0px 0px 0px 12px;
+}
+
+.selector_text {
+	height: 32px;
+	text-align: center; 
+	padding-left: 5px; 
+	padding-right: 11px; 
+	padding-top: 5px;
+}
+
+.search_text {
+	height: 32px; 
+	text-align: center; 
+	padding-left: 5px; 
+	padding-right: 11px; 
+	padding-top: 5px;
+}
+
+.chatroom_search_table {
+	overflow-y: auto; 
+	position: absolute; 
+	left: 7px; 
+	right: 5px; 
+	top:65px; 
+	bottom: 20px; 
+	background: white;
+}
+
+.username {
+	color:#ff6633;
+}
+
+.contactname {
+
+}
+
+.maintext {
+	color:#000000;
+}
+
+
