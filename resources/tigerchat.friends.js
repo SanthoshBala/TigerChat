@@ -125,9 +125,9 @@ function populateFriendsList() {
 	.html('<div class = "friends_list" id = "my_friends_list" style="height: 100%; margin: auto; position: relative; background-color:#F2F2F2; border-radius: 0px 0px 0px 12px;">' + 
 	
 	'<div class = "friends_header" id = "my_friends_header" style="height: 32px; padding-left: 5px; padding-top: 5px;">' + 
-	'<img src="/static/imgs/add_friend.png" height=10px onclick="openSearchBox()" /> ' + '<img src="/static/imgs/add_group.png" height=10px onclick="openRoomCreation()" />' + 
-	'<img src="/static/imgs/pending_envelope.png" height=10px  onclick="open_pending_requests()" />' + 
-	'<img src="/static/imgs/pending_envelope_exclamation.png" height=10px onclick="Manage_Chatrooms()" />' + 
+	'<img src="/static/imgs/add_friend.png" height=20px onclick="openSearchBox()" /> ' + '<img src="/static/imgs/add_group.png" height=10px onclick="openRoomCreation()" />' + 
+	'<img src="/static/imgs/pending_envelope.png" height=20px  onclick="open_pending_requests()" />' + 
+	'<img src="/static/imgs/pending_envelope_exclamation.png" height=20px onclick="Manage_Chatrooms()" />' + 
 	'</div>' + 
 	
 	'<div class = "friends_searchbox" id = "my_friends_searchbox" style="height: 32px; text-align: center; padding-left: 5px; padding-right: 11px;">' + 
