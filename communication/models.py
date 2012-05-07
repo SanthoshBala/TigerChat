@@ -1,9 +1,11 @@
+### COMMUNICATION/MODELS.PY
+
 from django.db import models
 from django.contrib.auth.models import User
-# Create your models here.
 
 FRIENDSHIP_STATUS_CHOICES = (('C', 'Confirmed'),
-                             ('P', 'Pending'))
+                             ('P', 'Pending'),
+                             ('I', 'Ignored'))
 
 GROUP_STATUS_CHOICES = (('C', 'Confirmed'),
                              ('P', 'Pending'))

@@ -60,7 +60,11 @@ div#login {
 
 /* To fill up extra space */
 div#fillspace {
+<<<<<<< HEAD
 	position:absolute;
+=======
+	position: absolute;
+>>>>>>> 4dbebe28c674b3424b4d8a4eae59fdf175d4b05d
 	height:100px;
 }
 
