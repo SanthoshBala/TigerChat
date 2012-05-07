@@ -1,3 +1,5 @@
+### VIEWS.PY
+
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.conf import settings
@@ -7,7 +9,6 @@ from communication.models import *
 import datetime
 import os
 import subprocess
-
 
 def home(request):
 	if request.user.is_authenticated():
@@ -22,9 +23,3 @@ def tigerchat_main(request):
 		return HttpResponseRedirect('/register/')
 
 	return render_to_response('tigerchathome.html', {'this_user_name': person.jid})
-
-
-
-def datetime(request):
-	now = datetime.datetime.now()
-	return render_to_response('datetime_template.html', {'current_date': now});

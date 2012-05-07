@@ -1,4 +1,5 @@
-# Create your views here.
+### SEARCH/VIEWS.PY
+
 from django.db.models import Q
 from commands import getoutput
 from django.http import *
@@ -7,7 +8,7 @@ import simplejson
 from lib.django_json_handlers import json_handler
 from communication.models import *
 
-
+### VIEW DEFINITIONS ###
 
 ## search(): Returns list of all people that match query term
 ## at the moment, cannot search by individual fields
@@ -15,16 +16,12 @@ def search_ldap(request):
 	# Create command from search query term
 	query = request.GET.get('query')
 	query = '*'.join(query.split())
-   # cmd = '/usr/bin/ldapsearch -x -h ldap.princeton.edu -u -b o=\'Princeton University,c=US\' \"(cn=*%s*)\" uid givenName sn purescollege puclassyear puhomedepartmentnumber' % query
-	#fin, fout = os.popen4(cmd)
-	# Get all entries from ldapsearch
-	
-	#entries = fout.read().split('#')[8:-3]
+ 
+ 	# Get all entries from ldapsearch
 	fout = getoutput('/usr/bin/ldapsearch -x -h ldap.princeton.edu -u -b o="Princeton University, c=US" "(cn=*%s*)"' % query)
 	entries = fout.split('#')[8:-3]
-#   data = {}
 	data = []
-#   data['results'] = []
+
 	# Parse each entry to create dict
 	for entry in entries:
 		result = {}
@@ -71,7 +68,6 @@ def search_ldap(request):
 					continue
 			else:
 				continue
-#	   data['results'].append(result)
 		data.append(result)
 
 	# request for a room
@@ -199,7 +195,7 @@ def get_ldap_record(user_netid):
 			continue
 	return result
 
-## get_vcard():
+## get_vcard(): Get profile information for given jid
 def get_vcard(request):
 	try:
 		jid = request.GET.get('jid')

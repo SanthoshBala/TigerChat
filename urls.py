@@ -7,20 +7,21 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
+    # BASE URLS
     url(r'^$', 'TigerChat.views.home', name='home'),
-    url(r'^time/$', 'TigerChat.views.datetime'),
     url(r'^tigerchat/$', 'TigerChat.views.tigerchat_main'),
     
+    # AUTHENTICATION URLS
     url(r'^login/$', 'django_cas.views.login'),
     url(r'^logout/$', 'django_cas.views.logout'),
     
+    # SEARCH URLS
     url(r'^search/$', 'TigerChat.search.views.search_ldap'),
     url(r'^search/students/$', 'TigerChat.search.views.search_students'),
     url(r'^search/rooms/$', 'TigerChat.search.views.search_rooms'),
     url(r'^vcard/$', 'TigerChat.search.views.get_vcard'),
     
-    
+    # COMMUNICATION URLS
     url(r'^friends/$', 'TigerChat.communication.views.get_friends'),
     url(r'^rooms/$', 'TigerChat.communication.views.get_person_rooms'),
     url(r'^pending/$', 'TigerChat.communication.views.get_pending'),
@@ -41,6 +42,7 @@ urlpatterns = patterns('',
     url(r'^room/members/$', 'TigerChat.communication.views.get_room_members'),
     url(r'^room/deny/$', 'TigerChat.communication.views.reject_room_invite'),
     
+    # REGISTRATION URLS
     url(r'^register/$', 'TigerChat.registration.views.register_new_user'),
     url(r'^users/$', 'TigerChat.registration.views.users'),
     url(r'^people/$', 'TigerChat.registration.views.people'),
