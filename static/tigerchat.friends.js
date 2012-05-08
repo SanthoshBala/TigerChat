@@ -100,6 +100,21 @@ function populateFriendsList() {
 	// Do not want to create multiple times
 	if ($("#friends_dialog").length > 0) {
 		$("#friends_dialog").dialog('open');
+		
+		var posx = $(window).width() - 250;
+		var posy = 100;
+		if($(window).height() < 800){
+			
+			 var friendheight = $(window).height() - 175;
+		 }
+		else var friendheight = 600;
+
+			$('#friends_dialog').dialog("option", "position", [posx, posy]);
+			$('#friends_dialog').dialog("option", "width", 220);
+			$('#friends_dialog').dialog("option", "height", friendheight);
+			
+		
+		
 		return;
 	}
 	
@@ -139,14 +154,14 @@ function populateFriendsList() {
 	'<div><img class="friends_button" src="/static/imgs/add_friend.png" style="height:27px; padding: 2px 5px 2px; border: 1px solid #F2F2F2;" onclick="openSearchBox()"></img></div>' +
 	'</td>' + 
 	/*'<td width="0px"></td>' +*/
-	'<td class="friends_button_td" width="27px" height="50px" style="text-align:center; padding: 0px 0px 6px 0px;">' + 
+	'<td class="friends_button_td" width="50px" height="50px" style="text-align:center; padding: 0px 0px 6px 0px;">' + 
 	'<div id="roombutton" class="btn-group"><a class="dropdown-toggle" data-toggle="dropdown" style="box-shadow: none;"><img class="friends_button" src="/static/imgs/add_group.png" style="height:27px; padding: 2px 5px 2px; border: 1px solid #F2F2F2;"></img></a>' +
 	
 	' <ul class="dropdown-menu"><li><a style="cursor: pointer; text-align: left" onclick="openRoomCreation()">Create Room</a></li><li><a style="cursor: pointer; text-align: left" onclick="Manage_Chatrooms()">Manage Rooms</a></li></ul></div>' + 
 	'</td>' + 
 	/**/
 	/*'<td width="0px"></td>' +*/
-	'<td class="friends_button_td" width="25px" height="50px" id="pending_requests_img" style="text-align:center; padding: 0px 0px 6px 0px;">' + 
+	'<td class="friends_button_td" width="50px" height="50px" id="pending_requests_img" style="text-align:center; padding: 0px 0px 6px 0px;">' + 
 	'<div><img id="pending_requests_img" class="friends_button" src="/static/imgs/pending_envelope.png" height=25px  onclick="open_pending_requests()" style="padding: 2px 5px 2px; position:relative; top:-3px; border: 1px solid #F2F2F2;"></img></div>' + 
 	'</td>' + 
 	/*'<td width="0px"></td>' +*/
@@ -248,7 +263,10 @@ function populateFriendsList() {
 
 	var posx = $(window).width() - 250;
 	var posy = 100;
-	if($(window).height() < 650) var friendheight = $(window).height() - 150;
+	if($(window).height() < 800){
+		
+		 var friendheight = $(window).height() - 175;
+	 }
 	else var friendheight = 600;
 	
 	$("#friends_dialog").dialog({

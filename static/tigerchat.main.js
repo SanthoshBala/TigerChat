@@ -28,8 +28,11 @@ $(window).resize(function(){
 	var winwidth = $(window).width();
 	var winheight = $(window).height();
 	var friendwidth = $('#friends_dialog').dialog("option", "width");
+	var friendheight = $('#friends_dialog').dialog("option", "height");
 	var friendx = $('#friends_dialog').dialog("option", "position")[0];
 	var friendy = $('#friends_dialog').dialog("option", "position")[1];
+	
+	//log('winheight : ' + winheight);
 	
 	if( (friendx + friendwidth + 50 > winwidth) ) {
 		var newx = winwidth - 51 - friendwidth;
@@ -37,8 +40,21 @@ $(window).resize(function(){
 		//log('close to the edge.');
 	}
 	
+	if(friendheight + 175 > winheight && winheight > 600) {
+		$('#friends_dialog').dialog("option", "height", winheight-175);
+	}
 	
-	
+	if( (friendy + friendheight + 50 > winheight && winheight > 600) ) {
+		var newy = winheight - 51 - friendheight;
+		var currx = $('#friends_dialog').dialog("option", "position")[0];
+		$('#friends_dialog').dialog("option", "position", [currx, newy]);
+		//log('close to the edge.');
+	}
+	/*
+	var curry = $('#friends_dialog').dialog("option", "position")[1];
+	var currx = $('#friends_dialog').dialog("option", "position")[0];
+	if(curry < 75) 	log('TOO HIGH.'); //$('#friends_dialog').dialog("option", "position", [currx, 75]);
+	*/
 });
 
 
@@ -125,8 +141,8 @@ $(document).ready(function () {
    
    	$('.centerimagecontainer').css({
 	    position:'absolute',
-	    left: ($(window).width() - $('.centerimagecontainer').outerWidth())/2,
-	    top: ($(window).height() - $('.centerimagecontainer').outerHeight())/2
+	    left: ($(window).width())/2,
+	    top: ($(window).height()).2
 	}); 
 });
 
