@@ -136,20 +136,23 @@ function populateFriendsList() {
 	'<table cellpadding="3" cellspacing="3" >' +
 	'<tr>' + 
 
-	'<td class="friends_button_td" width="25px" height="50px" style="text-align:center;">' +
-	'<img class="friends_button" src="/static/imgs/add_friend.png" style="height:27px; padding: 2px 5px 2px; border: 1px solid #F2F2F2;" onclick="openSearchBox()"/> ' +
+	'<td class="friends_button_td" width="25px" height="50px" style="text-align:center;padding: 0px 0px 6px 0px;">' +
+	'<div><img class="friends_button" src="/static/imgs/add_friend.png" style="height:27px; padding: 2px 5px 2px; border: 1px solid #F2F2F2;" onclick="openSearchBox()"></img></div>' +
 	'</td>' + 
 	/*'<td width="0px"></td>' +*/
-	'<td class="friends_button_td" width="27px" height="50px" style="text-align:center">' + 
-	'<img  class="friends_button" src="/static/imgs/add_group.png" style="height:27px; padding: 2px 5px 2px; border: 1px solid #F2F2F2;" onclick="openRoomCreation()" />' + 
+	'<td class="friends_button_td" width="27px" height="50px" style="text-align:center; padding: 0px 0px 6px 0px;">' + 
+	'<div id="roombutton" class="btn-group"><a class="dropdown-toggle" data-toggle="dropdown" style="box-shadow: none;"><img class="friends_button" src="/static/imgs/add_group.png" style="height:27px; padding: 2px 5px 2px; border: 1px solid #F2F2F2;"></img></a>' +
+	
+	' <ul class="dropdown-menu"><li><a style="text-align: left" onclick="openRoomCreation()">Create Room</a></li><li><a style="text-align: left" onclick="Manage_Chatrooms()">Manage Rooms</a></li></ul></div>' + 
+	'</td>' + 
+	/**/
+	/*'<td width="0px"></td>' +*/
+	'<td class="friends_button_td" width="25px" height="50px" id="pending_requests_img" style="text-align:center; padding: 0px 0px 6px 0px;">' + 
+	'<div><img  class="friends_button" src="/static/imgs/pending_envelope.png" height=25px  onclick="open_pending_requests()" style="padding: 2px 5px 2px; position:relative; top:-3px; border: 1px solid #F2F2F2;"></img></div>' + 
 	'</td>' + 
 	/*'<td width="0px"></td>' +*/
-	'<td class="friends_button_td" width="25px" height="50px" id="pending_requests_img" style="text-align:center">' + 
-	'<img  class="friends_button" src="/static/imgs/pending_envelope.png" height=25px  onclick="open_pending_requests()" style="padding: 2px 5px 2px; position:relative; top:-3px; border: 1px solid #F2F2F2;"/>' + 
-	'</td>' + 
-	/*'<td width="0px"></td>' +*/
-	'<td class="friends_button_td" width="25px" height="50px" style="text-align:center;">' + 
-	'<img class="friends_button" src="/static/imgs/pending_envelope_exclamation.png" height=25px onclick="Manage_Chatrooms()" style="padding: 2px 1px 2px 1px; position:relative; top:-3px; border: 1px solid #F2F2F2;"/>' + 
+	'<td class="friends_button_td" width="25px" height="50px" style="text-align:center; padding: 0px 0px 6px 0px;">' + 
+	'<div><img class="friends_button" src="/static/imgs/pending_envelope_exclamation.png" height=25px onclick="Manage_Chatrooms()" style="padding: 2px 1px 2px 1px; position:relative; top:-3px; border: 1px solid #F2F2F2;"></img></div>' + 
 	'</td>' +
 	
 	
@@ -212,11 +215,11 @@ function populateFriendsList() {
 			$(this).css({'border' : '1px solid #cccccc'});
 		},
 		function() {
-			
 			$(this).removeClass('btn');
 			$(this).css({'border' : '1px solid #F2F2F2'});
 		}
 	);
+	
 	
 	
 	// This SHOULD populate the table

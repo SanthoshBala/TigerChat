@@ -23,7 +23,7 @@ function change_selected_room(room_name) {
 	$('#curr_selected_room').html(room_name);
 	
 	
-	var roomjid = $("#chatroom_management_selector").val();
+	
 	roomjid = room_name;
 			
 			//log('changed selection to ' + roomjid);
@@ -114,35 +114,7 @@ function Manage_Chatrooms() {
 	
 	
 	
-	// Set stuff when an option is selected
-	$('#chatroom_management_selector').change(
-		function(e){
-			
-			var roomjid = $("#chatroom_management_selector").val();
-			
-			//log('changed selection to ' + roomjid);
-			if(roomjid == 'Select A Room') {
-				$('#room_delete_div').html('');
-				$('#my_search_text').html('');
-				return;
-			}
-			
-			else if(instance_chatrooms[roomjid].admin == my_user_name) {
-				//log(' I am the admin');
-				$('#room_delete_div').html('<input id="manage_rooms_delete" type="button" value="Remove" onclick="removeChatroom()"/>');
-				$('#my_search_text').html('<input type="text" id="chatroom_search_textbox" style="width: 100%; border-radius: 0px">');
-
-			}
-			
-			else {
-				//log(' I am not the admin');
-				$('#room_delete_div').html('<input id="manage_rooms_delete" type="button" value="Remove" onclick="removeChatroom()"/>');
-				$('#my_search_text').html('Please ask the administrator to add users');
-
-			}
-			
-		}
-	);
+	
 	
 	$('#chatroom_search_textbox').keypress(function(e)
 	{
@@ -152,8 +124,8 @@ function Manage_Chatrooms() {
 			$('#chatroom_search_textbox').val('');	// clear the search box
 			$('#chatroom-search-table tr').remove();	// clear the table
 				
-			var roomjid = $("#chatroom_management_selector").val();
-
+			//var roomjid = $("#chatroom_management_selector").val();
+			roomjid = $('curr_selected_room').html();
 			fillRoomSearchBox(searchterm, roomjid);
 		}
 	});
@@ -173,13 +145,9 @@ function Manage_Chatrooms() {
     
 	$('.room_selection_item').remove();
 	$('#room_management_dialog').dialog('open');
-	$('#chatroom_management_selector').html('');
-	option = '<option>' + 'Select A Room' + '</option>';
-	$('#chatroom_management_selector').append(option);
+	
 	for (chatroomname in instance_chatrooms) {
 		
-		option = '<option>' + chatroomname + '</option>';
-		$('#chatroom_management_selector').append(option);
 			var listitem = '<li class="room_selection_item" onclick="change_selected_room(\'' + chatroomname + '\')"><a>' + chatroomname + '</a></li>';
 		$('#list_of_rooms').append(listitem);
 	}
@@ -256,7 +224,7 @@ function populateRoomSearchBox(data) {
 
 function inviteChatroomFriend(friendname) {
 	
-	var roomname = $("#chatroom_management_selector").val();
+
 	roomname = $('#curr_selected_room').html();
 	log(roomname  + ' and ' + friendname);
 	invite_to_chatroom(friendname, roomname);
@@ -366,7 +334,7 @@ function addRoomToBuddyList(roomjid, roomname, admin) {
 function removeChatroom() {
 
 
-	var roomjid = $("#chatroom_management_selector").val();
+	
 	roomjid = $('#curr_selected_room').html();
 	
 	if(instance_chatrooms[roomjid].admin == my_user_name) {

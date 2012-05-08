@@ -78,21 +78,23 @@ function repopulate_pending_requests(data) {
 	
 	if(data.friend_requests.length == 0 && data.room_invites.length == 0) {
 		//change image to plain envelope
-		$('#pending_requests_img').html('<img class="friends_button" src="/static/imgs/pending_envelope.png" height=25px  onclick="open_pending_requests()" style="position:relative; top:-3px;"/>');
+		$('#pending_requests_img').html('<img  class="friends_button" src="/static/imgs/pending_envelope.png" height=25px  onclick="open_pending_requests()" style="position:relative; top:-3px; border: 1px solid #F2F2F2;padding: 2px 5px 2px;"/>');
 	}
 	else {
 		// change image to exclamation envelope
 		
-		$('#pending_requests_img').html('<img class="friends_button" src="/static/imgs/pending_envelope_exclamation.png" height=25px onclick="open_pending_requests()" style="position:relative; top:-3px;"/>');
+		$('#pending_requests_img').html('<img  class="friends_button" src="/static/imgs/pending_envelope_exclamation.png" height=25px  onclick="open_pending_requests()" style="position:relative; top:-3px; border: 1px solid #F2F2F2; padding: 2px 5px 2px;"/>');
 	}
+	
 	
 	$('.friends_button').hover(
 		function() {
 			$(this).addClass('btn');
+			$(this).css({'border' : '1px solid #cccccc'});
 		},
 		function() {
-			
 			$(this).removeClass('btn');
+			$(this).css({'border' : '1px solid #F2F2F2'});
 		}
 	);
 	
