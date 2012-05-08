@@ -65,7 +65,7 @@ function makeNewChatbox(chat_with_name) {
 	// Create the div container for the dialog
 	$(" <div />" ).attr("id",new_name)
 	.attr("title", fullname)
-	.html('<div class = "scrolling_area" id = "text_area_' + chat_with_name + '">  </div> <textarea rows="2" name="send_text_' + chat_with_name + '" id="send_text_' + chat_with_name + '" class="chatbox_text" />')
+	.html('<div class = "scrolling_area" id = "text_area_' + chat_with_name + '">  </div> <div style="padding: 0px 10px;"> <textarea rows="2" name="send_text_' + chat_with_name + '" id="send_text_' + chat_with_name + '" class="chatbox_text" /> </div>')
 	.appendTo($( "#boxes" ));
 	
 	// Set Properties of the dialog

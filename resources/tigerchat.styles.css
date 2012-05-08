@@ -54,6 +54,7 @@
 .chatbox_text {
 	font-family: Tahoma,Arial,sans-serif;
 	font-size: 13px;
+	resize: none;
 }
 
 .room_manage_box {
