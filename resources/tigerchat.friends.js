@@ -132,24 +132,47 @@ function populateFriendsList() {
 	.attr("title", "Buddy List")
 	.html('<div class = "friends_list" id = "my_friends_list" style="height: 100%; margin: auto; position: relative; background-color:#F2F2F2; border-radius: 0px 0px 0px 12px;">' + 
 	
-	'<div class = "friends_header" id = "my_friends_header" style="height: 32px; padding-left: 5px; padding-top: 5px;">' + 
-	'<table>' +
+	'<div class = "friends_header" id = "my_friends_header" style="height: 60px; padding-left: 5px; padding-top: 10px;">' + 
+	'<table cellpadding="3" cellspacing="3" >' +
 	'<tr>' + 
-	'<td>' +
-	'<img src="/static/imgs/add_friend.png" height=25px onclick="openSearchBox()"/> ' +
+
+	'<td class="friends_button_td" width="50px" height="50px" style="text-align:center">' +
+	'<img class="friends_button" src="/static/imgs/add_friend.png" style="height:25px;" onclick="openSearchBox()"/> ' +
 	'</td>' + 
-	'<td>' + 
-	'<img src="/static/imgs/add_group.png" height=25px onclick="openRoomCreation()" />' + 
+	'<td width="5px"></td>' +
+	'<td class="friends_button_td" width="50px" height="50px" style="text-align:center">' + 
+	'<img  class="friends_button" src="/static/imgs/add_group.png" style="height:25px" onclick="openRoomCreation()" />' + 
 	'</td>' + 
-	'<td id="pending_requests_img">' + 
-	'<img src="/static/imgs/pending_envelope.png" height=25px  onclick="open_pending_requests()" style="position:relative; top:-3px;"/>' + 
+	'<td width="5px"></td>' +
+	'<td class="friends_button_td" width="50px" height="50px" id="pending_requests_img" style="text-align:center">' + 
+	'<img  class="friends_button" src="/static/imgs/pending_envelope.png" height=25px  onclick="open_pending_requests()" style="position:relative; top:-3px;"/>' + 
 	'</td>' + 
-	'<td>' + 
-	'<img src="/static/imgs/pending_envelope_exclamation.png" height=25px onclick="Manage_Chatrooms()" style="position:relative; top:-3px;"/>' + 
+	'<td width="5px"></td>' +
+	'<td class="friends_button_td" width="50px" height="50px" style="text-align:center">' + 
+	'<img class="friends_button" src="/static/imgs/pending_envelope_exclamation.png" height=25px onclick="Manage_Chatrooms()" style="position:relative; top:-3px;"/>' + 
 	'</td>' +
 	
+	//'<a class="btn btn-success">  <i class="icon-shopping-cart icon" 
 	
 	
+	/*
+	'<td>' +
+	'<li class="dropdown" id="menu1">' +
+	'<a class="dropdown-toggle" data-toggle="dropdown" href="#menu1">' +
+	'Dropdown' +
+	'<b class="caret"></b>' +
+	'</a>' +
+	'<ul class="dropdown-menu">' +
+	'<li><a href="#">Action</a></li>' +
+	'<li><a href="#">Another action</a></li>' +
+	'<li><a href="#">Something else here</a></li>' +
+	'<li class="divider"></li>' +
+	'<li><a href="#">Separated link</a></li>' +
+	'</ul>' +
+	'</li>' +
+	'</td>' +
+	*/
+	/*
 	'<td class="dropdown" id="menu1">' +
 	'<a class="dropdown-toggle" data-toggle="dropdown" href="#menu1">' +
 	'hello' +
@@ -160,7 +183,7 @@ function populateFriendsList() {
 	'<li><a href="#">action2></a></li>' +
 	'</ul>' +
 	'</td>' +
-	
+	*/
 	
 	
 	'</tr>' + 
@@ -175,13 +198,23 @@ function populateFriendsList() {
 	
 	'</div>' + 
 	
-	'<div class = "friends_table" id = "my_friends_table" style="overflow-y: auto; position: absolute; left: 7px; right: 5px; top:70px; bottom: 20px; background: white;">' +
+	'<div class = "friends_table" id = "my_friends_table" style="overflow-y: auto; position: absolute; left: 7px; right: 5px; top:80px; bottom: 20px; background: white;">' +
 	'<table width="100%" cellpadding="0" cellspacing="0" id="friend-table">' +
 	'</div>' +
 	'</table>' + 
 	'<div id="padding"></div>')
 	
 	.appendTo($("body"));
+	/*
+	$('.friends_button').hover(
+		function() {
+			$(this).addClass('btn');
+		},
+		function() {
+			
+			$(this).removeClass('btn');
+		}
+	);*/
 	
 	
 	// This SHOULD populate the table

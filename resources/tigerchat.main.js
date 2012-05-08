@@ -92,30 +92,29 @@ $(document).ready(function () {
 	//$('.dropdown-toggle').dropdown();
     
     
-	
+	$('.btn').button('reset');
     
     window.onblur = disableStuff;
 	window.onfocus = enableStuff;
-
-
-	log('whaat.');
-	$.getJSON("/requests/",
-			function(data){
-				log('ssssss');
-				repopulate_pending_requests(data);
-			}
+	$('#mybtn').button();
+	$('#mybtn').click(
+		function() {
+			$('#mybtn').button('loading');
+			window.setTimeout('timestuff()', 1000);
+		}
 	);
-    
-	log('whaat done.');
-
-    
-    
+	
+	
+	
+	
     // If we leave the page, disconnect our ejabberd connection
     window.onbeforeunload = function(){
 		connection.disconnect();
     };
     
 });
+
+
 
 function disableStuff() {
 	page_has_focus = false;

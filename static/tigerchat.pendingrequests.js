@@ -78,13 +78,23 @@ function repopulate_pending_requests(data) {
 	
 	if(data.friend_requests.length == 0 && data.room_invites.length == 0) {
 		//change image to plain envelope
-		$('#pending_requests_img').html('<img src="/static/imgs/pending_envelope.png" height=25px  onclick="open_pending_requests()" style="position:relative; top:-3px;"/>');
+		$('#pending_requests_img').html('<img class="friends_button" src="/static/imgs/pending_envelope.png" height=25px  onclick="open_pending_requests()" style="position:relative; top:-3px;"/>');
 	}
 	else {
 		// change image to exclamation envelope
 		
-		$('#pending_requests_img').html('<img src="/static/imgs/pending_envelope_exclamation.png" height=25px onclick="open_pending_requests()" style="position:relative; top:-3px;"/>');
+		$('#pending_requests_img').html('<img class="friends_button" src="/static/imgs/pending_envelope_exclamation.png" height=25px onclick="open_pending_requests()" style="position:relative; top:-3px;"/>');
 	}
+	
+	$('.friends_button').hover(
+		function() {
+			$(this).addClass('btn');
+		},
+		function() {
+			
+			$(this).removeClass('btn');
+		}
+	);
 	
 	
 	// For every request, create a row
