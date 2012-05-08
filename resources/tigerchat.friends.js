@@ -152,7 +152,7 @@ function populateFriendsList() {
 	'<img class="friends_button" src="/static/imgs/pending_envelope_exclamation.png" height=25px onclick="Manage_Chatrooms()" style="position:relative; top:-3px;"/>' + 
 	'</td>' +
 	
-	//'<a class="btn btn-success">  <i class="icon-shopping-cart icon" 
+	'<a class="btn btn-success">  <i class="icon-shopping-cart icon"></i> </a>' +
 	
 	
 	/*
