@@ -25,8 +25,10 @@ function openSearchBox() {
 			'<tr> <td width="50px"> <img src="/static/imgs/rsz_picture3.png"/> </td> <td> Enter a friend\'s name or netid in the search box below.  </td> </tr> </table>' +
 			'</div>' +
 			
-			'<div class="search_text" id="my_search_text" style="height: 32px; text-align: center; padding-left: 18px; padding-right: 30px; padding-top: 5px;" >' +
-			'<input type="text" id="search_textbox" style="width: 100%; border-radius: 0px">' +
+			'<div class="search_text" id="my_search_text" style="height: 32px; text-align: center; padding-left: 18px; padding-right: 40px; padding-top: 5px;" >' +
+			'<table style="width:100%;"> <tr> <td> ' +
+			'<input type="text" id="search_textbox" style="width: 100%; border-radius: 0px"> </td>' + 
+				'<td style="width: 30px;"><a id="searchbutton" class="btn btn-primary" style="width: 100%;">  <i class="icon-search icon-white"></i> </a></td></tr></table>' +
 			'</div>' + 
 			
 			'<div class="search_table" id="my_search_table" style="overflow-y: auto; position: absolute; left: 15px; right: 20px; top:100px; bottom: 20px; background: white;">' +
@@ -37,6 +39,17 @@ function openSearchBox() {
 			
 			'</div>')
 	.appendTo($( "body" ));	
+	
+	$('#searchbutton').click(
+		function() {
+			searchterm = $('#search_textbox').val();
+			$('#search_textbox').val('');	// clear the search box
+			$('#search-table tr').remove();	// clear the table
+			populateSearchBox(searchterm);
+		}
+	);
+	
+	
 	
 	// Assign enter keypress for the searchbox
 	$('#search_textbox').keypress(function(e)
