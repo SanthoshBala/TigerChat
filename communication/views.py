@@ -69,7 +69,7 @@ def ignore_friend(request):
 	person = request.user.person
 	inviter_jid = request.GET.get('jid')
 	inviter = Person.objects.get(jid=inviter_jid)
-	friendships = Friendship.objects.filter(receiver=person,sender=inviter)
+	friendships = Friendship.objects.filter(receiver=person,creator=inviter)
 	if len(friendships) is not 1:
 		return HttpResponseServerError()
 	else:

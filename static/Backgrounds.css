@@ -76,10 +76,13 @@ div.fillspace {
 	height:50px;
 }
 
-.centerimage {
+.centerimage {	
 	background:none; 
 	border-color:transparent;
 }
 
 .centerimagecontainer {
+	position:absolute;
+	left:16.7%;
+	top:40.3%;
 }

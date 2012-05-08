@@ -25,8 +25,10 @@ function openSearchBox() {
 			'<tr> <td width="50px"> <img src="/static/imgs/rsz_picture3.png"/> </td> <td> Enter a friend\'s name or netid in the search box below.  </td> </tr> </table>' +
 			'</div>' +
 			
-			'<div class="search_text" id="my_search_text" style="height: 32px; text-align: center; padding-left: 18px; padding-right: 30px; padding-top: 5px;" >' +
-			'<input type="text" id="search_textbox" style="width: 100%; border-radius: 0px">' +
+			'<div class="search_text" id="my_search_text" style="height: 32px; text-align: center; padding-left: 18px; padding-right: 40px; padding-top: 5px;" >' +
+			'<table style="width:100%;"> <tr> <td> ' +
+			'<input type="text" id="search_textbox" style="width: 100%; border-radius: 0px"> </td>' + 
+				'<td style="width: 30px;"><a id="searchbutton" class="btn btn-primary" style="width: 100%;">  <i class="icon-search icon-white"></i> </a></td></tr></table>' +
 			'</div>' + 
 			
 			'<div class="search_table" id="my_search_table" style="overflow-y: auto; position: absolute; left: 15px; right: 20px; top:100px; bottom: 20px; background: white;">' +
@@ -37,6 +39,17 @@ function openSearchBox() {
 			
 			'</div>')
 	.appendTo($( "body" ));	
+	
+	$('#searchbutton').click(
+		function() {
+			searchterm = $('#search_textbox').val();
+			$('#search_textbox').val('');	// clear the search box
+			$('#search-table tr').remove();	// clear the table
+			populateSearchBox(searchterm);
+		}
+	);
+	
+	
 	
 	// Assign enter keypress for the searchbox
 	$('#search_textbox').keypress(function(e)
@@ -54,13 +67,18 @@ function openSearchBox() {
 	$("#search_dialog").dialog({
         autoOpen: true,
         closeOnEscape: true,
-        resizable: true
+        resizable: true,
+        minHeight: 200,
+        minWidth: 300,
+        height: 250,
+        width: 310
     });
     
     // Set the height of the dialog
-    $("#search_dialog").css({'height' : '200'});    
-    $("#search_dialog").css({'min-width' : '250px'});  
-    $("#search_dialog").parent().css({'min-width' : '250px'});    
+    //$("#search_dialog").parent().css({'height' : '250'});
+    //$("#search_dialog").parent().css({'width' : '310'});
+    //$("#search_dialog").css({'height' : '250'});
+    //$("#search_dialog").css({'width' : '310'});
 }
 
 /************************************************************************
@@ -69,11 +87,37 @@ function openSearchBox() {
  * ADD LOADING ... HERE (#fix)
  ***********************************************************************/
 function populateSearchBox(searchterm) {
+	
+	var newrow = '<tr ><td id="loading_dots_text" style="text-align: right;" width="60%"></td><td id="loading_dots" style="text-align:left;"></td></tr>';
+	$('#search-table').append(newrow);	
+	
+	dots_id = setInterval(animateDots, 500);
+
+	
+	
+	
 	$.get("/search/", {query: searchterm},
 		function(data){
+
+			clearInterval(dots_id);
 			fillSearchBox(data);
 		}
    );	
+}
+
+
+function animateDots() {
+	var dotvals = $('#loading_dots').html();
+	numdots = dotvals.length;
+	if(numdots == 0) {
+		$('#loading_dots_text').append('Loading Results');
+		$('#loading_dots').append('.');
+		return;
+	}
+	if(numdots < 3) $('#loading_dots').append('.');
+	else $('#loading_dots').html('.');
+	
+	
 }
 
 
@@ -89,6 +133,11 @@ function fillSearchBox(data) {
 	// Clear the search table rows
 	$('#search-table tr').remove();
 		 
+		 
+	if(newdata.length == 0) {
+		var newrow = '<tr ><td style="text-align: center;" > No results found. </td> </tr>';
+		$('#search-table').append(newrow);		
+	}
 	// For each result
 	for(var i = 0; i < newdata.length; i++) {
 		

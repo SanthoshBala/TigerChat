@@ -80,6 +80,14 @@ function InitializeChatroomsVariable(data) {
 	}
 	
 	
+	$.getJSON("/requests/",
+			function(data){
+				repopulate_pending_requests(data);
+			}
+	);
+    
+	
+	
 	
 }
 
@@ -92,6 +100,7 @@ function populateFriendsList() {
 	
 	// Do not want to create multiple times
 	if ($("#friends_dialog").length > 0) {
+		$("#friends_dialog").dialog('open');
 		return;
 	}
 	
@@ -119,29 +128,50 @@ function populateFriendsList() {
 	'</div>' +
 	'</table>' + 
 	'<div id="padding"></div>')*/
-	
 	$(" <div />" ).attr("id", "friends_dialog")
 	.attr("title", "Buddy List")
 	.html('<div class = "friends_list" id = "my_friends_list" style="height: 100%; margin: auto; position: relative; background-color:#F2F2F2; border-radius: 0px 0px 0px 12px;">' + 
 	
-	'<div class = "friends_header" id = "my_friends_header" style="height: 32px; padding-left: 5px; padding-top: 5px;">' + 
-	'<table>' +
+	'<div class = "friends_header" id = "my_friends_header" style="height: 42px; padding-left: 5px; padding-bottom: 1px; padding-top: 1px;">' + 
+	'<table cellpadding="3" cellspacing="3" >' +
 	'<tr>' + 
+
+	'<td class="friends_button_td" width="25px" height="50px" style="text-align:center;padding: 0px 0px 6px 0px;">' +
+	'<div><img class="friends_button" src="/static/imgs/add_friend.png" style="height:27px; padding: 2px 5px 2px; border: 1px solid #F2F2F2;" onclick="openSearchBox()"></img></div>' +
+	'</td>' + 
+	/*'<td width="0px"></td>' +*/
+	'<td class="friends_button_td" width="27px" height="50px" style="text-align:center; padding: 0px 0px 6px 0px;">' + 
+	'<div id="roombutton" class="btn-group"><a class="dropdown-toggle" data-toggle="dropdown" style="box-shadow: none;"><img class="friends_button" src="/static/imgs/add_group.png" style="height:27px; padding: 2px 5px 2px; border: 1px solid #F2F2F2;"></img></a>' +
+	
+	' <ul class="dropdown-menu"><li><a style="cursor: pointer; text-align: left" onclick="openRoomCreation()">Create Room</a></li><li><a style="cursor: pointer; text-align: left" onclick="Manage_Chatrooms()">Manage Rooms</a></li></ul></div>' + 
+	'</td>' + 
+	/**/
+	/*'<td width="0px"></td>' +*/
+	'<td class="friends_button_td" width="25px" height="50px" id="pending_requests_img" style="text-align:center; padding: 0px 0px 6px 0px;">' + 
+	'<div><img  class="friends_button" src="/static/imgs/pending_envelope.png" height=25px  onclick="open_pending_requests()" style="padding: 2px 5px 2px; position:relative; top:-3px; border: 1px solid #F2F2F2;"></img></div>' + 
+	'</td>' + 
+	/*'<td width="0px"></td>' +*/
+	
+	
+	
+	/*
 	'<td>' +
-	'<img src="/static/imgs/add_friend.png" height=25px onclick="openSearchBox()"/> ' +
-	'</td>' + 
-	'<td>' + 
-	'<img src="/static/imgs/add_group.png" height=25px onclick="openRoomCreation()" />' + 
-	'</td>' + 
-	'<td>' + 
-	'<img src="/static/imgs/pending_envelope.png" height=25px  onclick="open_pending_requests()" style="position:relative; top:-3px;"/>' + 
-	'</td>' + 
-	'<td>' + 
-	'<img src="/static/imgs/pending_envelope_exclamation.png" height=25px onclick="Manage_Chatrooms()" style="position:relative; top:-3px;"/>' + 
+	'<li class="dropdown" id="menu1">' +
+	'<a class="dropdown-toggle" data-toggle="dropdown" href="#menu1">' +
+	'Dropdown' +
+	'<b class="caret"></b>' +
+	'</a>' +
+	'<ul class="dropdown-menu">' +
+	'<li><a href="#">Action</a></li>' +
+	'<li><a href="#">Another action</a></li>' +
+	'<li><a href="#">Something else here</a></li>' +
+	'<li class="divider"></li>' +
+	'<li><a href="#">Separated link</a></li>' +
+	'</ul>' +
+	'</li>' +
 	'</td>' +
-	
-	
-	
+	*/
+	/*
 	'<td class="dropdown" id="menu1">' +
 	'<a class="dropdown-toggle" data-toggle="dropdown" href="#menu1">' +
 	'hello' +
@@ -152,28 +182,43 @@ function populateFriendsList() {
 	'<li><a href="#">action2></a></li>' +
 	'</ul>' +
 	'</td>' +
-	
+	*/
 	
 	
 	'</tr>' + 
 	'</table>' +
 	'</div>' + 
 	
-	'<div class = "friends_searchbox" id = "my_friends_searchbox" style="height: 32px; text-align: center; padding-left: 5px; padding-right: 11px;">' + 
+	'<div class = "friends_searchbox" id = "my_friends_searchbox" style="height: 32px; text-align: center; padding-left: 5px; padding-right: 15px;">' + 
 	
 		
-	'<input type="text" id="friends_search" class="friends_search" style="border: none; width: 100%; border-radius: 0px; color: #BBBBBB" value="Filter friends..." />' + 
+	'<input type="text" id="friends_search" class="friends_search" style="border: none; width: 100%; border-radius: 0px; color: #BBBBBB; border: 1px solid #cccccc;" value="Filter friends..." />' + 
 	
 	
 	'</div>' + 
 	
-	'<div class = "friends_table" id = "my_friends_table" style="overflow-y: auto; position: absolute; left: 7px; right: 5px; top:70px; bottom: 20px; background: white;">' +
+	'<div class = "friends_table" id = "my_friends_table" style="overflow-y: auto; position: absolute; left: 5px; right: 5px; top:80px;  border: 1px solid #cccccc; bottom: 20px; background: white;">' +
 	'<table width="100%" cellpadding="0" cellspacing="0" id="friend-table">' +
 	'</div>' +
 	'</table>' + 
 	'<div id="padding"></div>')
 	
 	.appendTo($("body"));
+	
+	
+	
+	
+	$('.friends_button').hover(
+		function() {
+			$(this).addClass('btn');
+			$(this).css({'border' : '1px solid #cccccc'});
+		},
+		function() {
+			$(this).removeClass('btn');
+			$(this).css({'border' : '1px solid #F2F2F2'});
+		}
+	);
+	
 	
 	
 	// This SHOULD populate the table
@@ -202,17 +247,25 @@ function populateFriendsList() {
 	);
 
 
-
+	var posx = $(window).width() - 250;
+	var posy = 100;
+	if($(window).height() < 650) var friendheight = $(window).height() - 150;
+	else var friendheight = 600;
+	
 	$("#friends_dialog").dialog({
-		position: 'right',
+		position: [posx, posy],
         autoOpen: true,
         resizable: true,
-		closeOnEscape: false
+		closeOnEscape: false,
+		height: friendheight,
+		width: 220,
+		minHeight: 300,
+		minWidth: 150
     });
     
 	$("#friends_dialog").parent().css({'position' : 'fixed'});
     // set height
-    $("#friends_dialog").css({'height' : '250'});
+    //$("#friends_dialog").css({'height' : '250'});
 }
 
 
@@ -273,7 +326,7 @@ function repopulateFriendsList() {
 	// Row for expanding/collapsing chatrooms
 	var arrow_img = "/static/imgs/DownTriangle.png";
 	var newrow = '<tr friendname = "NONE" id= "chatrooms_collapse" status="open">' +
-			'<td style="width: 15px;" onclick="collapse_grouping(\'chatrooms\')"><img src="' + arrow_img + '" width="12" height="12" style="" /> </td>' + '<td colspan="2"> Chatrooms </td>' + '</tr>';
+			'<td style="width: 15px;" onclick="collapse_grouping(\'chatrooms\')"><img src="' + arrow_img + '" width="12" height="12" style="padding-left: 2px;" /> </td>' + '<td colspan="2"> Chatrooms </td>' + '</tr>';
 		$("#friend-table").append(newrow);
 		
 	for(var i = 0; i < sorted_list_rooms.length; i++) {
@@ -289,7 +342,7 @@ function repopulateFriendsList() {
 	// Row for expanding/collapsing online buddies
 	var arrow_img = "/static/imgs/DownTriangle.png";
 	var newrow = '<tr friendname = "NONE" id= "online_collapse" status="open">' +
-			'<td style="width: 15px;" onclick="collapse_grouping(\'online\')"><img src="' + arrow_img + '" width="12" height="12" style="" /> </td>' + '<td colspan="2"> Online </td>' + '</tr>';
+			'<td style="width: 15px;" onclick="collapse_grouping(\'online\')"><img src="' + arrow_img + '" width="12" height="12" style="padding-left: 2px;" /> </td>' + '<td colspan="2"> Online </td>' + '</tr>';
 		$("#friend-table").append(newrow);
 		
 		
@@ -314,7 +367,7 @@ function repopulateFriendsList() {
 	// Row for expanding/collapsing offline buddies
 	var arrow_img = "/static/imgs/DownTriangle.png";
 	var newrow = '<tr friendname = "NONE" id= "offline_collapse" status="open">' +
-			'<td style="width: 15px;" onclick="collapse_grouping(\'offline\')"><img src="' + arrow_img + '" width="12" height="12" style="" /> </td>' + '<td colspan="2"> Offline </td>' + '</tr>';
+			'<td style="width: 15px;" onclick="collapse_grouping(\'offline\')"><img src="' + arrow_img + '" width="12" height="12" style="padding-left: 2px" /> </td>' + '<td colspan="2"> Offline </td>' + '</tr>';
 		$("#friend-table").append(newrow);
 	
 	// Add my offline friends to the buddy list

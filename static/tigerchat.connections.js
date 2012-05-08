@@ -175,7 +175,7 @@ function handle_subscribe_message(newfriend) {
 			// Otherwise, we have received a request
 			$.getJSON("/requests/",
 				function(data){
-					open_pending_requests(data);
+					repopulate_pending_requests(data);
 				}
 			);
 		}
@@ -238,7 +238,7 @@ function onMessage(msg) {
 		else {
 			$.getJSON("/requests/",
 				function(data){
-					open_pending_requests(data);
+					repopulate_pending_requests(data);
 				}
 			);
 		}	

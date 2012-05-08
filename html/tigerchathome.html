@@ -15,10 +15,12 @@
 	<script type='text/javascript' src='/static/strophe.js'></script>
 	<script type='text/javascript' src='/static/loadingdotdotdot/jquery.loadingdotdotdot.js'></script>
 	<script type='text/javascript' src='/static/bootstrap/js/bootstrap.js/'></script>
+	<script type='text/javascript' src='/static/bootstrap/js/bootstrap-button.js'></script>
 	<script type='text/javascript' src='/static/bootstrap/js/bootstrap-dropdown.js/'></script>
 	<script type="text/javascript">
 	$('.dropdown-toggle').dropdown();
 	</script>
+	
 	
 	<script type='text/javascript' src='/static/tigerchat.chatboxes.js'></script>
 	<script type='text/javascript' src='/static/tigerchat.connections.js'></script>
@@ -39,7 +41,7 @@
 	<center class="centerimage" >
 		<img src="/static/imgs/tigerchat-bubble-logo.png" width="40%"/>
     </center>
-</div>\
+</div>
 
 
 <div class='navbar navbar-fixed-top'>
@@ -51,7 +53,7 @@
             <a href="/logout/"> Sign Out </a> 
           </li>
           <li>
-            <a href="/preferences/"> Preferences </a>
+            <a onclick="populateFriendsList()" style="cursor: pointer;"> Buddy List </a>
           </li>
           
           
@@ -87,11 +89,13 @@
 </div>
 
 
-	<div id='log' style="color: green;"></div>
+	<div id='log' style="position: fixed;color: green;"><br/><br/><br/><br/>
+	</div>
 	
-	<input  type="hidden" id="this_user_name" value={{this_user_name}} />
+	
+	
+		<input  type="hidden" id="this_user_name" value={{this_user_name}} />
     
-        <div id='boxes' style="color: green;"></div>
 
 
 </body>

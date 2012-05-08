@@ -54,6 +54,7 @@
 .chatbox_text {
 	font-family: Tahoma,Arial,sans-serif;
 	font-size: 13px;
+	resize: none;
 }
 
 .room_manage_box {
@@ -106,5 +107,11 @@
 
 input {
 	margin-bottom: 0px;
+}
+
+.friends_button_td {
+	/*background-image: -moz-linear-gradient(center top, #FFFFFF, #E6E6E6);
+*/
+
 }
 
