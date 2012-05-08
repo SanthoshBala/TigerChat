@@ -129,7 +129,7 @@ function populateFriendsList() {
 	'<div id="padding"></div>')*/
 	$(" <div />" ).attr("id", "friends_dialog")
 	.attr("title", "Buddy List")
-	.html('<div class = "friends_list" id = "my_friends_list" style="height: 100%; margin: auto; position: relative; background-color:#F2F2F2; border-radius: 0px 0px 0px 12px;">' + 
+	.html('<div class = "friends_list" id = "my_friends_list" style="height: 100%; margin: auto; position: relative; background-color:#F2F2F2; border-radius: 8px 8px 8px 8px;">' + 
 	
 	'<div class = "friends_header" id = "my_friends_header" style="height: 42px; padding-left: 5px; padding-bottom: 1px; padding-top: 1px;">' + 
 	'<table cellpadding="3" cellspacing="3" >' +
