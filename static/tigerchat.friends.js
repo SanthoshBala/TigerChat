@@ -143,7 +143,7 @@ function populateFriendsList() {
 	'<td class="friends_button_td" width="27px" height="50px" style="text-align:center; padding: 0px 0px 6px 0px;">' + 
 	'<div id="roombutton" class="btn-group"><a class="dropdown-toggle" data-toggle="dropdown" style="box-shadow: none;"><img class="friends_button" src="/static/imgs/add_group.png" style="height:27px; padding: 2px 5px 2px; border: 1px solid #F2F2F2;"></img></a>' +
 	
-	' <ul class="dropdown-menu"><li><a style="text-align: left" onclick="openRoomCreation()">Create Room</a></li><li><a style="text-align: left" onclick="Manage_Chatrooms()">Manage Rooms</a></li></ul></div>' + 
+	' <ul class="dropdown-menu"><li><a style="cursor: pointer; text-align: left" onclick="openRoomCreation()">Create Room</a></li><li><a style="cursor: pointer; text-align: left" onclick="Manage_Chatrooms()">Manage Rooms</a></li></ul></div>' + 
 	'</td>' + 
 	/**/
 	/*'<td width="0px"></td>' +*/
