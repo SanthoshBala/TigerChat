@@ -247,13 +247,17 @@ function populateFriendsList() {
 	);
 
 
-
+	var posx = $(window).width() - 250;
+	var posy = 100;
+	if($(window).height() < 650) var friendheight = $(window).height() - 150;
+	else var friendheight = 600;
+	
 	$("#friends_dialog").dialog({
-		position: 'right',
+		position: [posx, posy],
         autoOpen: true,
         resizable: true,
 		closeOnEscape: false,
-		height: 600,
+		height: friendheight,
 		width: 220,
 		minHeight: 300,
 		minWidth: 150

@@ -170,7 +170,7 @@ function Manage_Chatrooms() {
 		width: 450
 	});
 	
-	$("#room_management_dialog").parent().css({'position': 'fixed'});
+	$("#room_management_dialog").parent().css({'position': 'absolute'});
 	
 	
 	
