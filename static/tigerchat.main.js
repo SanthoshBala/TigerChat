@@ -18,6 +18,14 @@ function log(msg)
     $('#log').append('<div></div>').append(document.createTextNode(msg));
 }
 
+$(window).resize(function(){
+	$('.centerimagecontainer').css({
+	    position:'absolute',
+	    left: ($(window).width() - $('.centerimagecontainer').outerWidth())/2,
+	    top: ($(window).height() - $('.centerimagecontainer').outerHeight())/2
+	});
+});
+
 
 /************************************************************************
  * On page load, execute the following.
@@ -57,9 +65,7 @@ $(document).ready(function () {
 		resizable: true
 	});
 	
-	
-	
-	$/*(" <div />" ).attr("id", 'room_management_dialog')
+	/*$(" <div />" ).attr("id", 'room_management_dialog')
 		.attr("title", "Manage Room")
 		.html('<div class = "room_manage_box" id="room_manage_box">' + 
 		'<select id="chatroom_management_selector"></select>' + 
@@ -73,13 +79,34 @@ $(document).ready(function () {
 
 	
 	//  Figure out exact purpose of this...		
-    $(window).resize();
+	/*$(window).resize(function(){
+		$('.centerimagecontainer').css({
+			position:'absolute',
+			left: ($(window).width() - $('.centerimagecontainer').outerWidth())/2,
+			top: ($(window).height() - $('.centerimagecontainer').outerHeight())/2
+		});
+	});
+	$(window).resize();*/
+	
+	// start the dropdowns
+	//$('.dropdown-toggle').dropdown();
+    
+    
+	
     
     window.onblur = disableStuff;
 	window.onfocus = enableStuff;
 
 
-
+	log('whaat.');
+	$.getJSON("/requests/",
+			function(data){
+				log('ssssss');
+				repopulate_pending_requests(data);
+			}
+	);
+    
+	log('whaat done.');
 
     
     
@@ -87,6 +114,7 @@ $(document).ready(function () {
     window.onbeforeunload = function(){
 		connection.disconnect();
     };
+    
 });
 
 function disableStuff() {
@@ -142,4 +170,6 @@ function onConnect(status)
 		connection.send($pres().tree());
 	}
 }
+
+
 

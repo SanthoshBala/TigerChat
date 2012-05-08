@@ -25,9 +25,7 @@
 	padding:10px 48px;
 	text-decoration:none;
 	text-shadow:1px 1px 0px #cc9f52;
-	position:absolute;
-	bottom:40px;
-	left:100px;
+	z-index:99;
 }.big-button:hover {
 	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #fb9e25), color-stop(1, #fcac4b) );
 	background:-moz-linear-gradient( center top, #fb9e25 5%, #fcac4b 100% );
@@ -62,7 +60,7 @@ div#login {
 
 /* To fill up extra space */
 div#fillspace {
-	position: absolute;
+	position:absolute;
 	height:100px;
 }
 

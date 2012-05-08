@@ -8,11 +8,13 @@
 	<link rel="stylesheet" href="/static/myjquery-ui.css" type="text/css" />
 	<link rel="stylesheet" href="/static/Backgrounds.css" type='text/css' />
 	<link href='/static/bootstrap/css/bootstrap.css' rel='stylesheet' />
+	<link href='/static/tigerchat.styles.css' rel='stylesheet' />
 	
 	<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
 	<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js'></script>
 	<script type='text/javascript' src='/static/strophe.js'></script>
 	<script type='text/javascript' src='/static/loadingdotdotdot/jquery.loadingdotdotdot.js'></script>
+	<script type='text/javascript' src='/static/bootstrap/js/bootstrap-dropdown.js/'></script>
 	
 	<script type='text/javascript' src='/static/tigerchat.chatboxes.js'></script>
 	<script type='text/javascript' src='/static/tigerchat.connections.js'></script>
@@ -29,8 +31,10 @@
 <body class='backgroundschemes'>
 
 
-<div align="center" style="margin:auto; top:225px; left:0px; position:relative;">
-  <img src="/static/imgs/tigerchat-bubble-logo.png" width="40%" style="background:none; border-color:transparent"/>
+<div class="centerimagecontainer">
+	<center class="centerimage" >
+		<img src="/static/imgs/tigerchat-bubble-logo.png" width="40%"/>
+    </center>
 </div>\
 
 
@@ -45,6 +49,16 @@
           <li>
             <a href="/preferences/"> Preferences </a>
           </li>
+          
+          
+          <li class="dropdown" id="accountmenu">
+			  <a class="dropdown-toggle" data-toggle="dropdown" href="#accountmenu"> Settings<b class="caret"></b></a>
+			  <ul class="dropdown-menu">
+				  <li><a href="#">Login</a></li>
+			  </ul>
+          </li>
+
+
         </ul>
       </div>
     </div>

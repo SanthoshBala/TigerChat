@@ -1,45 +1,62 @@
 
 
 
+
+function create_pending_requests_dialog() {
+
+	// Create the pending dialog
+	$(" <div />" ).attr("id", 'subscribe_dialog')
+		.attr("title", "Pending Requests")
+		.html('<div class = "subscribe_box" id="subscribe_box">' + 
+		
+		'<div id="pending_title_friends" class="pending_title_hdr" style="margin-top: 10px; margin-left: 15px; margin-right:15px;"> Friends <hr style="margin: 1px 15px 10px 0px;" > </div>' +
+		'<div id="pending_friends_table" style="margin-left: 15px;"><table width="100%" cellpadding="3" cellspacing="3" id="pending-table"></table></div>' +
+		
+		'<div id="pending_title_chatrooms" class="pending_title_hdr" style="margin-top: 25px; margin-left: 15px; margin-right:15px;""> Chatrooms <hr style="margin: 1px 15px 10px 0px;" > </div>' +
+		'<div id="pending_rooms_table" style="margin-left: 15px;"> <table width="100%" cellpadding="3" cellspacing="3" id="pending-table-rooms"></table></div>' +
+		
+		'</div>')
+		.appendTo($( "body" ));
+		
+	
+	$("#subscribe_dialog").dialog({
+		autoOpen: false,
+		closeOnEscape: true,
+		resizable: true
+	});
+	
+	$("#subscribe_dialog").css({'height': '200px'});
+	$("#subscribe_dialog").css({'min-height': '150px'});
+	$("#subscribe_dialog").css({'min-width': '300px'});
+	$("#subscribe_dialog").parent().css({'min-height': '150px'});
+	$("#subscribe_dialog").parent().css({'min-width': '300px'});
+	//$("#subscribe_dialog").css({'margin': '15px'});
+	
+
+
+}
+
 /************************************************************************
  * If the pending requests dialog has been created, then just open it.
  * Otherwise, create it, and then open it.
  ***********************************************************************/
 function open_pending_requests() {
 	
-	log('opening pending requests.');
 	// If the pending dialog has already been created, then just open and
 	// populate it
 	if ($("#subscribe_dialog").length > 0) {
-		$('#search_dialog').dialog('open');
-		log('whaat.');
+		$('#subscribe_dialog').dialog('open');
 		
-		$.getJSON("/requests/",
-			function(data){
-				repopulate_pending_requests(data);
-			}
-		);
 		return;
 	}
 	
-	// Create the pending dialog
-	$(" <div />" ).attr("id", 'subscribe_dialog')
-		.attr("title", "Pending Requests")
-		.html('<div class = "subscribe_box" id="subscribe_box">' + 
-		'<table width="100%" cellpadding="0" cellspacing="0" id="pending-table">' +
-		'</div>')
-		.appendTo($( "body" ));
-	
-	$("#subscribe_dialog").dialog({
-		autoOpen: true,
-		closeOnEscape: true,
-		resizable: true
-	});
-	
+	create_pending_requests_dialog();
 	$.getJSON("/requests/",
-		function(data){
-			repopulate_pending_requests(data);
-		}
+			function(data){
+				repopulate_pending_requests(data);
+				
+				$('#subscribe_dialog').dialog('open');
+			}
 	);
 }
 
@@ -48,24 +65,51 @@ function open_pending_requests() {
  * Populate the pending requests.
  ***********************************************************************/
 function repopulate_pending_requests(data) {
-	log('hello.');
-	log(data);
+	
 	// Parse the JSON
 	//data = jQuery.parseJSON(data);
-	
 	// clear pending table
 	$('#pending-table tr').remove();
 	
+	if ($("#subscribe_dialog").length <= 0) {
+		create_pending_requests_dialog();
+	}
+	
+	
+	if(data.friend_requests.length == 0 && data.room_invites.length == 0) {
+		//change image to plain envelope
+		$('#pending_requests_img').html('<img src="/static/imgs/pending_envelope.png" height=25px  onclick="open_pending_requests()" style="position:relative; top:-3px;"/>');
+	}
+	else {
+		// change image to exclamation envelope
+		
+		$('#pending_requests_img').html('<img src="/static/imgs/pending_envelope_exclamation.png" height=25px onclick="open_pending_requests()" style="position:relative; top:-3px;"/>');
+	}
+	
+	
 	// For every request, create a row
-	log('populating requests.');
 	log(data.friend_requests);
 	for(var i = 0; i < data.friend_requests.length; i++) {
-		var newrow = '<tr pendingname= "' + data.friend_requests[i].creator + '">' +
-		'<td>' + data.friend_requests[i].creator + '</td>' +
-		'<td>' +  "<input type='button' value='Accept' onclick='addReceivedFriend(\"" + data.friend_requests[i].creator + "\")'/>" + '</td>' +
-		'<td>' +  "<input type='button' value='Reject' onclick='RejectFriend(\"" + data.friend_requests[i].creator + "\")'/>" + '</td>' +
-		'</tr>';
-		$("#pending-table").append(newrow);
+		
+		var sender_jid = data.friend_requests[i].creator;
+		
+		$.getJSON('/vcard/', {jid: sender_jid}, 
+			function(data) {
+							
+				FirstName = data.first_name;
+				LastName = data.last_name; 
+				var newrow = '<tr pendingname= "' + sender_jid + '">' +
+				'<td>' + FirstName + ' ' + LastName + '</td>' +
+				'<td>' +  "<input type='button' value='Accept' onclick='addReceivedFriend(\"" + sender_jid + "\")'/>" + '</td>' +
+				'<td>' +  "<input type='button' value='Reject' onclick='RejectFriend(\"" + sender_jid + "\")'/>" + '</td>' +
+				'</tr>';
+				$("#pending-table").append(newrow);
+				
+			}
+		);
+		
+		
+		
 	}
 	
 	for(var i = 0; i < data.room_invites.length; i++) {
@@ -77,7 +121,7 @@ function repopulate_pending_requests(data) {
 		$("#pending-table").append(newrow);
 	}
 
-	$('#subscribe_dialog').dialog('open');	
+	//$('#subscribe_dialog').dialog('open');	
 
 	// Add room requests to the pending table
 	//$.get('/room/requests/', function(data) {addPendingChatroomInvites(data) });
@@ -121,8 +165,9 @@ function AcceptReceivedChatroomInvite(roomjid) {
 			
 			roomjid = data.room_jid;
 			roomname= data.room_name;
+			admin = data.room_admin;
 			
-			addRoomToBuddyList(roomjid, roomname);
+			addRoomToBuddyList(roomjid, roomname, admin);
 			
 			sendChatroomPresence(roomjid);
 			
@@ -159,6 +204,7 @@ function addReceivedFriend(newfriendname) {
  * THIS FUNCTION NEEDS TO BE PROPERLY IMPLEMENTED. #fix
  ***********************************************************************/
 function RejectFriend(newfriendname) {
-	rejectRequest(connection, my_user_name, newfriendname);
+	$.getJSON("/friend/ignore/", {jid: newfriendname});
+	$('#pending-table tr[pendingname= "' + newfriendname + '"]').remove();
 }
 
