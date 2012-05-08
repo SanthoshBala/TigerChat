@@ -132,24 +132,24 @@ function populateFriendsList() {
 	.attr("title", "Buddy List")
 	.html('<div class = "friends_list" id = "my_friends_list" style="height: 100%; margin: auto; position: relative; background-color:#F2F2F2; border-radius: 0px 0px 0px 12px;">' + 
 	
-	'<div class = "friends_header" id = "my_friends_header" style="height: 60px; padding-left: 5px; padding-top: 10px;">' + 
+	'<div class = "friends_header" id = "my_friends_header" style="height: 42px; padding-left: 5px; padding-bottom: 1px; padding-top: 1px;">' + 
 	'<table cellpadding="3" cellspacing="3" >' +
 	'<tr>' + 
 
-	'<td class="friends_button_td" width="50px" height="50px" style="text-align:center">' +
-	'<img class="friends_button" src="/static/imgs/add_friend.png" style="height:25px;" onclick="openSearchBox()"/> ' +
+	'<td class="friends_button_td" width="25px" height="50px" style="text-align:center;">' +
+	'<img class="friends_button" src="/static/imgs/add_friend.png" style="height:27px; padding: 2px 5px 2px; border: 1px solid #F2F2F2;" onclick="openSearchBox()"/> ' +
 	'</td>' + 
-	'<td width="5px"></td>' +
-	'<td class="friends_button_td" width="50px" height="50px" style="text-align:center">' + 
-	'<img  class="friends_button" src="/static/imgs/add_group.png" style="height:25px" onclick="openRoomCreation()" />' + 
+	/*'<td width="0px"></td>' +*/
+	'<td class="friends_button_td" width="27px" height="50px" style="text-align:center">' + 
+	'<img  class="friends_button" src="/static/imgs/add_group.png" style="height:27px; padding: 2px 5px 2px; border: 1px solid #F2F2F2;" onclick="openRoomCreation()" />' + 
 	'</td>' + 
-	'<td width="5px"></td>' +
-	'<td class="friends_button_td" width="50px" height="50px" id="pending_requests_img" style="text-align:center">' + 
-	'<img  class="friends_button" src="/static/imgs/pending_envelope.png" height=25px  onclick="open_pending_requests()" style="position:relative; top:-3px;"/>' + 
+	/*'<td width="0px"></td>' +*/
+	'<td class="friends_button_td" width="25px" height="50px" id="pending_requests_img" style="text-align:center">' + 
+	'<img  class="friends_button" src="/static/imgs/pending_envelope.png" height=25px  onclick="open_pending_requests()" style="padding: 2px 5px 2px; position:relative; top:-3px; border: 1px solid #F2F2F2;"/>' + 
 	'</td>' + 
-	'<td width="5px"></td>' +
-	'<td class="friends_button_td" width="50px" height="50px" style="text-align:center">' + 
-	'<img class="friends_button" src="/static/imgs/pending_envelope_exclamation.png" height=25px onclick="Manage_Chatrooms()" style="position:relative; top:-3px;"/>' + 
+	/*'<td width="0px"></td>' +*/
+	'<td class="friends_button_td" width="25px" height="50px" style="text-align:center;">' + 
+	'<img class="friends_button" src="/static/imgs/pending_envelope_exclamation.png" height=25px onclick="Manage_Chatrooms()" style="padding: 2px 1px 2px 1px; position:relative; top:-3px; border: 1px solid #F2F2F2;"/>' + 
 	'</td>' +
 	
 	//'<a class="btn btn-success">  <i class="icon-shopping-cart icon" 
@@ -190,31 +190,34 @@ function populateFriendsList() {
 	'</table>' +
 	'</div>' + 
 	
-	'<div class = "friends_searchbox" id = "my_friends_searchbox" style="height: 32px; text-align: center; padding-left: 5px; padding-right: 11px;">' + 
+	'<div class = "friends_searchbox" id = "my_friends_searchbox" style="height: 32px; text-align: center; padding-left: 5px; padding-right: 15px;">' + 
 	
 		
-	'<input type="text" id="friends_search" class="friends_search" style="border: none; width: 100%; border-radius: 0px; color: #BBBBBB" value="Filter friends..." />' + 
+	'<input type="text" id="friends_search" class="friends_search" style="border: none; width: 100%; border-radius: 0px; color: #BBBBBB; border: 1px solid #cccccc;" value="Filter friends..." />' + 
 	
 	
 	'</div>' + 
 	
-	'<div class = "friends_table" id = "my_friends_table" style="overflow-y: auto; position: absolute; left: 7px; right: 5px; top:80px; bottom: 20px; background: white;">' +
+	'<div class = "friends_table" id = "my_friends_table" style="overflow-y: auto; position: absolute; left: 5px; right: 5px; top:80px;  border: 1px solid #cccccc; bottom: 20px; background: white;">' +
 	'<table width="100%" cellpadding="0" cellspacing="0" id="friend-table">' +
 	'</div>' +
 	'</table>' + 
 	'<div id="padding"></div>')
 	
 	.appendTo($("body"));
-	/*
+	
+	
 	$('.friends_button').hover(
 		function() {
 			$(this).addClass('btn');
+			$(this).css({'border' : '1px solid #cccccc'});
 		},
 		function() {
 			
 			$(this).removeClass('btn');
+			$(this).css({'border' : '1px solid #F2F2F2'});
 		}
-	);*/
+	);
 	
 	
 	// This SHOULD populate the table
@@ -314,7 +317,7 @@ function repopulateFriendsList() {
 	// Row for expanding/collapsing chatrooms
 	var arrow_img = "/static/imgs/DownTriangle.png";
 	var newrow = '<tr friendname = "NONE" id= "chatrooms_collapse" status="open">' +
-			'<td style="width: 15px;" onclick="collapse_grouping(\'chatrooms\')"><img src="' + arrow_img + '" width="12" height="12" style="" /> </td>' + '<td colspan="2"> Chatrooms </td>' + '</tr>';
+			'<td style="width: 15px;" onclick="collapse_grouping(\'chatrooms\')"><img src="' + arrow_img + '" width="12" height="12" style="padding-left: 2px;" /> </td>' + '<td colspan="2"> Chatrooms </td>' + '</tr>';
 		$("#friend-table").append(newrow);
 		
 	for(var i = 0; i < sorted_list_rooms.length; i++) {
@@ -330,7 +333,7 @@ function repopulateFriendsList() {
 	// Row for expanding/collapsing online buddies
 	var arrow_img = "/static/imgs/DownTriangle.png";
 	var newrow = '<tr friendname = "NONE" id= "online_collapse" status="open">' +
-			'<td style="width: 15px;" onclick="collapse_grouping(\'online\')"><img src="' + arrow_img + '" width="12" height="12" style="" /> </td>' + '<td colspan="2"> Online </td>' + '</tr>';
+			'<td style="width: 15px;" onclick="collapse_grouping(\'online\')"><img src="' + arrow_img + '" width="12" height="12" style="padding-left: 2px;" /> </td>' + '<td colspan="2"> Online </td>' + '</tr>';
 		$("#friend-table").append(newrow);
 		
 		
@@ -355,7 +358,7 @@ function repopulateFriendsList() {
 	// Row for expanding/collapsing offline buddies
 	var arrow_img = "/static/imgs/DownTriangle.png";
 	var newrow = '<tr friendname = "NONE" id= "offline_collapse" status="open">' +
-			'<td style="width: 15px;" onclick="collapse_grouping(\'offline\')"><img src="' + arrow_img + '" width="12" height="12" style="" /> </td>' + '<td colspan="2"> Offline </td>' + '</tr>';
+			'<td style="width: 15px;" onclick="collapse_grouping(\'offline\')"><img src="' + arrow_img + '" width="12" height="12" style="padding-left: 2px" /> </td>' + '<td colspan="2"> Offline </td>' + '</tr>';
 		$("#friend-table").append(newrow);
 	
 	// Add my offline friends to the buddy list
