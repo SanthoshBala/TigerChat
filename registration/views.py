@@ -36,7 +36,7 @@ def register_new_user(request):
 		return HttpResponseRedirect('/tigerchat/')
 
 	# Check if a system invitation exists for this person
-	invites = SystemInvitation.objects.filter(invitee_jid)
+	#invites = SystemInvitation.objects.filter(invitee_jid)
 
 	ldap_record = get_ldap_record(person.jid)
 	try:

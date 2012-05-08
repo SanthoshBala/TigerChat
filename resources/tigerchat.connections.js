@@ -215,7 +215,20 @@ function onMessage(msg) {
 		}
 		
 		else if(chatroom_newuser == 'leaveroom') {
-			delete instance_chatrooms[chatroom_jid].occupants[from];
+						
+			
+			
+			for (myroom in instance_chatrooms) {
+				for (member in instance_chatrooms[myroom].occupants) {
+					var membername = instance_chatrooms[myroom].occupants[member];
+					if (membername == from) {
+						delete instance_chatrooms[myroom].occupants[member];
+					}
+				}
+			}
+			
+			
+			
 			if ($("#chatbox_" + chatroom_jid).length > 0) {
 				if ($('#chatbox_' + chatroom_jid).dialog('isOpen') == true) {
 					var timestamp = getTimeStamp();
@@ -226,11 +239,22 @@ function onMessage(msg) {
 		}
 		
 		else if(chatroom_newuser == 'deleteroom') {
+			
+			
+			for (myroom in instance_chatrooms) {
+				for (member in instance_chatrooms[myroom].occupants) {
+					var membername = instance_chatrooms[myroom].occupants[member];
+					if (membername == from) {
+						delete instance_chatrooms[myroom].occupants[member];
+					}
+				}
+			}
+			
 			if ($("#chatbox_" + chatroom_jid).length > 0) {
 				if ($('#chatbox_' + chatroom_jid).dialog('isOpen') == true) {
 					var timestamp = getTimeStamp();
-					$('#text_area_' + sender).append('<span style = "color:#AAAAAA;" >' + timestamp + '</span> <span style = "color:#AAAAAA;" >' +  'The chatroom has been deleted.' + "</span><br/>");
-					$('#text_area_' + sender).scrollTop($('#text_area_' + chatroom_jid)[0].scrollHeight);
+					$('#text_area_' + chatroom_jid).append('<span style = "color:#AAAAAA;" >' + timestamp + '</span> <span style = "color:#AAAAAA;" >' +  'The chatroom has been deleted.' + "</span><br/>");
+					$('#text_area_' + chatroom_jid).scrollTop($('#text_area_' + chatroom_jid)[0].scrollHeight);
 				}
 			}
 		}
