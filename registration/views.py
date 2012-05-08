@@ -36,6 +36,7 @@ def register_new_user(request):
 		return HttpResponseRedirect('/tigerchat/')
 
 	# Check if a system invitation exists for this person
+
 	invites = SystemInvitation.objects.filter(invitee_netid=person.jid)
 	if len(invites) == 1:
 		invite = invites[0]

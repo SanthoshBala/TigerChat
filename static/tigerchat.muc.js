@@ -25,7 +25,7 @@ function change_selected_room(room_name) {
 	
 	
 	roomjid = room_name;
-			
+	
 			//log('changed selection to ' + roomjid);
 			if(roomjid == 'Select A Room') {
 				$('#room_manage_additions').css({'visibility': 'hidden'});
@@ -43,7 +43,7 @@ function change_selected_room(room_name) {
 			else {
 				//log(' I am not the admin');
 				
-				$('#room_manage_additions').css({'visibility': ''});
+				$('#room_manage_additions').css({'visibility': 'hidden'});
 
 			}
 			
@@ -90,7 +90,7 @@ function Manage_Chatrooms() {
 			'<div style="padding-left: 10px; padding-right: 16px;">' +
 			'<table style="width: 95%"><tr><td>' +	
 			'<div class="btn-group">' +
-			'<button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" style="width: 100%"><span id="curr_selected_room">Select A Fucking Room</span><span class="caret"></span></button>' +
+			'<button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" style="width: 100%"><span id="curr_selected_room">Select A Room</span><span class="caret"></span></button>' +
 			'<ul id="list_of_rooms" class="dropdown-menu">' +
 			'</ul>' +
 			'</div>' +
@@ -373,22 +373,33 @@ function removeChatroom() {
 	
 	roomjid = $('#curr_selected_room').html();
 	
+	log(roomjid);
+
+	if(roomjid == 'Select A Room' || roomjid == '') {
+		return;
+	}
+	
+	
 	if(instance_chatrooms[roomjid].admin == my_user_name) {
+		
+		log('This will delete the room!');
+		
 		sendChatroomDeletion(roomjid);
 		// send message saying the room has been destroyed
 		delete instance_chatrooms[roomjid];
 		repopulateFriendsList();
-		$('#room_delete_div').html('');
-		$('#my_search_text').html('');	
+		$('#room_manage_additions').css({'visibility': 'hidden'});
 		Manage_Chatrooms();
 	}
 	
 	else {
+		
+		log('This will remove the room from your buddy list.');
 		sendChatroomLeave(roomjid);
 		delete instance_chatrooms[roomjid];
 		repopulateFriendsList();
-		$('#room_delete_div').html('');
-		$('#my_search_text').html('');
+		$('#room_manage_additions').css({'visibility': 'hidden'});
+
 		Manage_Chatrooms();
 	}
 

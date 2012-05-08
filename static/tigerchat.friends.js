@@ -48,7 +48,6 @@ function InitializeChatroomsVariable(data) {
 		
 		// Populate the members of this room
 		
-		log('roomjid is : ' + roomjid);
 		if(i != mydata.length - 1) {
 			$.getJSON('/room/members/', {room_jid: roomjid}, 
 				function(data) {
@@ -148,7 +147,7 @@ function populateFriendsList() {
 	/**/
 	/*'<td width="0px"></td>' +*/
 	'<td class="friends_button_td" width="25px" height="50px" id="pending_requests_img" style="text-align:center; padding: 0px 0px 6px 0px;">' + 
-	'<div><img  class="friends_button" src="/static/imgs/pending_envelope.png" height=25px  onclick="open_pending_requests()" style="padding: 2px 5px 2px; position:relative; top:-3px; border: 1px solid #F2F2F2;"></img></div>' + 
+	'<div><img id="pending_requests_img" class="friends_button" src="/static/imgs/pending_envelope.png" height=25px  onclick="open_pending_requests()" style="padding: 2px 5px 2px; position:relative; top:-3px; border: 1px solid #F2F2F2;"></img></div>' + 
 	'</td>' + 
 	/*'<td width="0px"></td>' +*/
 	
