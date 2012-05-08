@@ -206,6 +206,8 @@ function populateFriendsList() {
 	.appendTo($("body"));
 	
 	
+	
+	
 	$('.friends_button').hover(
 		function() {
 			$(this).addClass('btn');

@@ -23,30 +23,31 @@ function change_selected_room(room_name) {
 	$('#curr_selected_room').html(room_name);
 	
 	
-	var roomjid = $("#chatroom_management_selector").val();
+	
 	roomjid = room_name;
 			
 			//log('changed selection to ' + roomjid);
 			if(roomjid == 'Select A Room') {
-				$('#room_delete_div').html('');
-				$('#my_search_text').html('');
+				$('#room_manage_additions').css({'visibility': 'hidden'});
 				return;
 			}
 			
 			else if(instance_chatrooms[roomjid].admin == my_user_name) {
 				//log(' I am the admin');
-				$('#room_delete_div').html('<input id="manage_rooms_delete" type="button" value="Remove" onclick="removeChatroom()"/>');
-				$('#my_search_text').html('<input type="text" id="chatroom_search_textbox" style="width: 100%; border-radius: 0px">');
+				$('#room_manage_additions').css({'visibility': ''});
+				
+				
 
 			}
 			
 			else {
 				//log(' I am not the admin');
-				$('#room_delete_div').html('<input id="manage_rooms_delete" type="button" value="Remove" onclick="removeChatroom()"/>');
-				$('#my_search_text').html('Please ask the administrator to add users');
+				
+				$('#room_manage_additions').css({'visibility': ''});
 
 			}
 			
+	
 }
 
 /************************************************************************
@@ -73,113 +74,114 @@ function Manage_Chatrooms() {
 		.attr("title", "Manage Room")
 		.html('<div class = "room_manage_box" id="room_manage_box" style="height: 100%; margin: auto; position: relative; background-color:white; border-radius: 0px 0px 0px 12px;">' +
 			
-			'<div class="selector_text" id="my_selector_text" style="height: 80px; text-align: center; padding-left: 5px; padding-right: 11px; padding-top: 5px;" >' +
-	
 			
 			
+			//'<table id="manage_overall_table" style="width: 100%; height: 100%"> <tr> <td style="margin: 5px; vertical-align: top;">' +
+			'<div id="wrapmydiv" style="height: 100%;">' +
+			
+			'<div class = "room_manage_rooms" id="room_manage_rooms" style=" height:  50px; margin: auto; position: absolute; top: 5px; left: 5px; right: 5px; background-color:white; border-radius: 0px 0px 8px 8px;">' +
 			
 			
+			'<div class="room_manage_rooms_toptext" id="my_room_manage_rooms_toptext"> ' +
+			'<table width="100%" cellpadding="10" cellspacing="10" id="room_manage_rooms_toptext_table">' + 
+			'<tr> <td width="50px"> <img src="/static/imgs/rsz_picture3.png"/> </td> <td> Select your room below.  </td> </tr> </table>' +
+			'</div>' +
+			
+			'<div style="padding-left: 10px; padding-right: 16px;">' +
+			'<table style="width: 95%"><tr><td>' +	
 			'<div class="btn-group">' +
-			'<button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span id="curr_selected_room">Select A Fucking Room</span><span class="caret"></span></button>' +
+			'<button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" style="width: 100%"><span id="curr_selected_room">Select A Fucking Room</span><span class="caret"></span></button>' +
 			'<ul id="list_of_rooms" class="dropdown-menu">' +
-			'<li class="room_selection_item"><a onclick="fkintest()">Action</a></li>' +
-			'<li class="room_selection_item"><a >Another action</a></li>' +
-			'<li class="room_selection_item"><a >Something else here</a></li>' +
 			'</ul>' +
 			'</div>' +
-			
-			
-			
-			
-			'<div id="room_delete_div">' +
-			//'<input id="manage_rooms_delete" type="button" value="Remove" onclick="removeChatroom()"/>' + 
+			'</td><td style="width: 30px;"><a id="roomdeletebutton" class="btn btn-danger" style="width: 100%;">  <i class="icon-minus icon-white"></i> </a></td></tr></table>' +
 			'</div>' +
+			
+			'</div>' +
+			
+			//'</td></tr> <tr><td style="vertical-align: top;"> ' +
+			
+
+			'<div class = "room_manage_additions" id="room_manage_additions" style="visibility: hidden; position: absolute; left: 5px; right: 5px; top: 105px; bottom: 5px; background-color:white; border-radius: 0px 0px 8px 8px;">' +
+			
+			'<div class="room_manage_additions_toptext" id="my_room_manage_additions_toptext"> ' +
+			'<table width="100%" cellpadding="10" cellspacing="10" id="room_manage_additions_toptext_table">' + 
+			'<tr> <td width="50px"> <img src="/static/imgs/rsz_picture3.png"/> </td> <td> Enter a user\'s name or netid in the search box below.  </td> </tr> </table>' +
+			'</div>' +
+			
+			'<div class="room_search_text" id="my_room_search_text" style="height: 32px; text-align: center; padding-left: 18px; padding-right: 40px; padding-top: 5px;" >' +
+			'<table style="width:100%;"> <tr> <td> ' +
+			'<input type="text" id="chatroom_search_textbox" style="width: 100%; border-radius: 0px"> </td>' + 
+				'<td style="width: 30px;"><a id="room_searchbutton" class="btn btn-primary" style="width: 100%;">  <i class="icon-search icon-white"></i> </a></td></tr></table>' +
 			'</div>' + 
 			
-			
-			'<div class="search_text" id="my_search_text" style="height: 32px; text-align: center; padding-left: 5px; padding-right: 11px; padding-top: 5px;" >' +
-		
-			//'<input type="text" id="chatroom_search_textbox" style="width: 100%; border-radius: 0px">' +
-			'</div>' + 
-			
-			'<div class="chatroom_search_table" id="chatroom_search_table" style="overflow-y: auto; position: absolute; left: 7px; right: 5px; top:120px; bottom: 20px; background: white;">' +
-			'<table width="100%" cellpadding="0" cellspacing="0" id="chatroom-search-table">' +
+			'<div class="chatroom_search_table" id="chatroom_search_table_div" style="overflow-y: auto; position: absolute; left: 15px; right: 20px; top:100px; bottom: 20px; background: white;">' +
+			'<table width=100% cellpadding="3" cellspacing="3" id="chatroom-search-table">' +
 			'</table>' + 
 			'</div>' +	
 			
-			'</div>')
+			'</div>' +
+			
+			//'</td></tr></table>' +
+			'</div>' +
+			'</div>'
+			
+			
+			)
 		.appendTo($( "body" ));
 	
 	
-	
-	
-	
-	// Set stuff when an option is selected
-	$('#chatroom_management_selector').change(
-		function(e){
-			
-			var roomjid = $("#chatroom_management_selector").val();
-			
-			//log('changed selection to ' + roomjid);
-			if(roomjid == 'Select A Room') {
-				$('#room_delete_div').html('');
-				$('#my_search_text').html('');
-				return;
-			}
-			
-			else if(instance_chatrooms[roomjid].admin == my_user_name) {
-				//log(' I am the admin');
-				$('#room_delete_div').html('<input id="manage_rooms_delete" type="button" value="Remove" onclick="removeChatroom()"/>');
-				$('#my_search_text').html('<input type="text" id="chatroom_search_textbox" style="width: 100%; border-radius: 0px">');
-
-			}
-			
-			else {
-				//log(' I am not the admin');
-				$('#room_delete_div').html('<input id="manage_rooms_delete" type="button" value="Remove" onclick="removeChatroom()"/>');
-				$('#my_search_text').html('Please ask the administrator to add users');
-
-			}
-			
+	$('#roomdeletebutton').click(
+		function() {
+			removeChatroom();
 		}
 	);
+	
+	
 	
 	$('#chatroom_search_textbox').keypress(function(e)
 	{
 		// 13 is enter key
 		if (e.which == 13){
+			log('pressed enter.');
 			searchterm = $('#chatroom_search_textbox').val();
 			$('#chatroom_search_textbox').val('');	// clear the search box
 			$('#chatroom-search-table tr').remove();	// clear the table
 				
-			var roomjid = $("#chatroom_management_selector").val();
-
+			//var roomjid = $("#chatroom_management_selector").val();
+			roomjid = $('#curr_selected_room').html();
 			fillRoomSearchBox(searchterm, roomjid);
 		}
 	});
+
+	
+	
+	
+	
+	
 	
 	$("#room_management_dialog").dialog({
 		autoOpen: true,
 		closeOnEscape: true,
-		resizable: true
+		resizable: true,
+		minHeight: 300,
+		minWidth: 400,
+		height: 350,
+		width: 450
 	});
 	
+	$("#room_management_dialog").parent().css({'position': 'fixed'});
 	
-    $("#room_management_dialog").css({'height' : '250'});
-    $("#room_management_dialog").css({'width' : '300'});
-    
+	
+	
     
     
     
 	$('.room_selection_item').remove();
 	$('#room_management_dialog').dialog('open');
-	$('#chatroom_management_selector').html('');
-	option = '<option>' + 'Select A Room' + '</option>';
-	$('#chatroom_management_selector').append(option);
+	
 	for (chatroomname in instance_chatrooms) {
 		
-		option = '<option>' + chatroomname + '</option>';
-		$('#chatroom_management_selector').append(option);
 			var listitem = '<li class="room_selection_item" onclick="change_selected_room(\'' + chatroomname + '\')"><a>' + chatroomname + '</a></li>';
 		$('#list_of_rooms').append(listitem);
 	}
@@ -232,7 +234,9 @@ function populateRoomSearchBox(data) {
 		}
 		
 		else if(newdata[i].friendship_status == 'DNE') {
-			continue;
+			newrow = 	newrow + 
+						'<td>' + '<button disabled="disabled" type="button"> Member </button>' + '</td>' + 
+						'</tr>';
 		}
 		
 		
@@ -256,7 +260,7 @@ function populateRoomSearchBox(data) {
 
 function inviteChatroomFriend(friendname) {
 	
-	var roomname = $("#chatroom_management_selector").val();
+
 	roomname = $('#curr_selected_room').html();
 	log(roomname  + ' and ' + friendname);
 	invite_to_chatroom(friendname, roomname);
@@ -366,7 +370,7 @@ function addRoomToBuddyList(roomjid, roomname, admin) {
 function removeChatroom() {
 
 
-	var roomjid = $("#chatroom_management_selector").val();
+	
 	roomjid = $('#curr_selected_room').html();
 	
 	if(instance_chatrooms[roomjid].admin == my_user_name) {
