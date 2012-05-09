@@ -292,12 +292,9 @@ function onMessage(msg) {
 			showChatRoomMessage(roomname, Strophe.getText(body), from, personfrom);
 			return true;
 		}
-		
-		// Otherwise, just show a regular message from a user
-		showChatMessage(from, Strophe.getText(body));
-			
+		//log('page: ' + page_has_focus);
 		if(page_has_focus == false) {
-			
+			//log('got a message while switched.');
 			$.getJSON('/vcard/', {jid: friend_netid}, 
 				function(data) {
 					
@@ -311,6 +308,10 @@ function onMessage(msg) {
 		//setInterval(BlinkMessage, 3000);
 		//
 		}
+		// Otherwise, just show a regular message from a user
+		showChatMessage(from, Strophe.getText(body));
+			
+		
 		
     }
 
