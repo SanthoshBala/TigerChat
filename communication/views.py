@@ -121,6 +121,22 @@ def add_friend(request):
 			f.save()
 		elif len(friendships) == 1:
 			f = friendships[0]
+			# 4 cases:
+			# 1 - pending, and I'm receiver
+			if f.status == 'Pending' and f.receiver == user.person:
+				f.status = 'Confirmed'
+				f.save()
+			# 2 - ignored, and I'm original receiver
+			elif f.status == 'Ignored' and f.receiver == user.person:
+				f.status = 'Confirmed'
+				f.save()
+			# 1 - pending, and I'm original creator
+			elif f.status == 'Pending' and f.creator == user.person:
+				pass
+			# 4 - ignored, and I'm original creator
+			else:
+				pass
+			
 			if f.status == 'Pending' and f.receiver == user.person:
 				f.status = 'Confirmed'
 				f.save()
@@ -135,8 +151,6 @@ def add_friend(request):
 # inviter: string
 # invitee: Person
 def send_invitation_email(inviter, invitee):
-	subject = 'Hello from Princeton TigerChat!'
-	from_email = 'TigerChat@tigerchat.net'
 	to = '%s@princeton.edu' % invitee
 	if not inviter.first_name:
 		first_name = 'A'
@@ -145,6 +159,8 @@ def send_invitation_email(inviter, invitee):
 		first_name = inviter.first_name
 		last_name = inviter.last_name
 	inviter_name = '%s %s' % (first_name, last_name)
+	subject = '%s has invited you to join TigerChat!' % inviter_name
+	from_email = 'TigerChat@tigerchat.net'
 	html_content = render_to_string('invite_email.html', {'to_addr': to, 'inviter': inviter_name})
 	text_content = '%s has invited you to join TigerChat!\nTigerChat is a chat portal built for the Princeton University community. Now you can always stay connected with your fellow Princetonians. Sign up with your University NetID and instantly chat with all of your friends. Join now at www.tigerchat.net.'
 	msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
