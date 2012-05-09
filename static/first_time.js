@@ -10,27 +10,35 @@ $(document).ready(function () {
     connection = new Strophe.Connection('/xmpp-httpbind');
 
 	// Set the global username
-	my_user_name = $('#user_name').get(0).value;
-	    
-		var callback = function (status) {
-			if (status === Strophe.Status.REGISTER) {
-			    connection.register.fields.username = my_user_name;
-				connection.register.fields.password = 'pwd';
-				connection.register.submit();
-		    } 
-		    else if (status === Strophe.Status.REGISTERED) {
-				window.location.replace("/tigerchat/");	
-		        connection.authenticate();
-		    } 
-		    else if (status === Strophe.Status.CONNECTED) {
-		    }
-		    else {
-		        // every other status a connection.connect would receive
-		    }
-		};
+	//my_user_name = $('#user_name').get(0).value;
+	$.getJSON('/profile/', 
+		function(data) {
+			 my_user_name = data.jid;
+	
+			
+			var callback = function (status) {
+				if (status === Strophe.Status.REGISTER) {
+					connection.register.fields.username = my_user_name;
+					connection.register.fields.password = 'pwd';
+					connection.register.submit();
+				} 
+				else if (status === Strophe.Status.REGISTERED) {
+					connection.authenticate();
+					window.location.replace("/tigerchat/");
+				} 
+				else if (status === Strophe.Status.CONNECTED) {
+				}
+				else {
+					// every other status a connection.connect would receive
+				}
+			};
 		
 		connection.register.connect("localhost", callback, 60, 1);
 
+		} 	
+	);
+	
+	
 });
 
 
