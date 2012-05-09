@@ -31,6 +31,15 @@ function openRoomCreation() {
 				}
 			);
 			
+			$('#chatroom_creation_name').keypress(
+				function(e) {
+						// 13 is enter key
+						if (e.which == 13){
+							create_chatroom();
+						}
+				}
+			);
+			
 		$("#room_creation_dialog").dialog({
 			autoOpen: true,
 			closeOnEscape: true,
@@ -128,7 +137,7 @@ function Manage_Chatrooms() {
 			
 			'<div class="room_manage_rooms_toptext" id="my_room_manage_rooms_toptext"> ' +
 			'<table width="100%" cellpadding="10" cellspacing="10" id="room_manage_rooms_toptext_table">' + 
-			'<tr> <td width="50px"> <img src="/static/imgs/rsz_picture3.png"/> </td> <td> Select your room below.  </td> </tr> </table>' +
+			'<tr> <td width="50px"> <img src="/static/imgs/rsz_room-no-plus.png"/> </td> <td> Select your room below.  </td> </tr> </table>' +
 			'</div>' +
 			
 			'<div style="padding-left: 10px; padding-right: 16px;">' +
@@ -209,9 +218,9 @@ function Manage_Chatrooms() {
 		closeOnEscape: true,
 		resizable: true,
 		minHeight: 300,
-		minWidth: 400,
+		minWidth: 300,
 		height: 350,
-		width: 450
+		width: 325
 	});
 	
 	$("#room_management_dialog").parent().css({'position': 'fixed'});

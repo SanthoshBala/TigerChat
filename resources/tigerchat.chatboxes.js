@@ -205,8 +205,9 @@ function sendChatroomPresence(roomjid) {
  ************************************************************************/
 function showChatMessage(from, message) {
 	makeNewChatbox(from);
+	var firstname = instance_friends[from].FirstName;
 	var timestamp = getTimeStamp();
-	$('#text_area_' + from).append('<span class="contactname" style = "color:#0033cc;" >' + timestamp + from + ": " + '</span> <span class="maintext" style = "color:#000000;" >' + message + "</span><br/>");
+	$('#text_area_' + from).append('<span class="contactname" style = "color:#0033cc;" >' + timestamp + firstname + ": " + '</span> <span class="maintext" style = "color:#000000;" >' + message + "</span><br/>");
 	$('#text_area_' + from).scrollTop($('#text_area_' + from)[0].scrollHeight);
 	
 }

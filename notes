@@ -7,30 +7,48 @@ fix rejecting a friend
 
 open already open window, reopen it
 
-create room on enter
+DONE - create room on enter
 
-fix width of manage rooms dialog
+DONE - fix width of manage rooms dialog
+
+DONE - add new image to manage rooms dialog
+
+on ignore, message alert doesn't go away
 
 change everything to getJSON
-
-remove /removeall
-
-turn off django debugging
 
 search by netid as well in add buddy
 
 fix default text in friends list
 
-write cronjob to clear logs on server
-
-minimize javascript
-
 chatrooms have no name (only jid) (or fix)
 
 on registration page, logo is larger than it should be
 
-test reject
-
 on add friend, the notification doesn't work and the row isn't removed....
 
-use first name in chat windows
+DONE - use first name in chat windows
+
+on dealt with all chatroom invitations, revert mailbox
+
+header notification not stopping
+
+reinvitations without refresh
+
+in message sent on room deletion, explain that room disappears after this session
+
+loading animation on manage rooms dialog
+
+
+
+
+
+LATE STAGE:
+
+remove /removeall
+
+turn off django debugging
+
+minimize javascript
+
+write cronjob to clear logs on server
