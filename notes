@@ -7,7 +7,7 @@ no adding yourself
 
 DONE - before deleting room, open modal dialog
 
-fix rejecting a friend
+DONE - fix rejecting a friend
 
 open already open window, reopen it
 
@@ -39,7 +39,7 @@ DONE - header notification not stopping
 
 reinvitations without refresh
 
-in message sent on room deletion, explain that room disappears after this session
+DONE - in message sent on room deletion, explain that room disappears after this session
 
 DONE - loading animation on manage rooms dialog
 
