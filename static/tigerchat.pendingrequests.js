@@ -197,21 +197,29 @@ function AcceptReceivedChatroomInvite(roomjid) {
  ***********************************************************************/
 function addReceivedFriend(newfriendname) {
 	
-	$.get("/addfriend/", {jid: newfriendname} );
+	$.getJSON("/addfriend/", {jid: newfriendname}, 
+		function(data) {
+
+			// send a subscribed message
+			acceptRequest(connection, my_user_name, newfriendname);
+			// send a subscribe message
+			sendRequest(connection, my_user_name, newfriendname);
+			
+			// Remove from the pending dialog table
+			$('#pending-table tr[pendingname= "' + newfriendname + '"]').remove();
+			$('#search-table tr[friendname="' + newfriendname + '"] td:eq(2)').replaceWith('<td>' + '<button disabled="disabled" type="button"> Friends </button>' + '</td>');
+			$.getJSON("/requests/",
+						function(data){
+							repopulate_pending_requests(data);
+						}
+					);
+
 	
-	// send a subscribed message
-	acceptRequest(connection, my_user_name, newfriendname);
-	// send a subscribe message
-	sendRequest(connection, my_user_name, newfriendname);
+		
+		} 
+	);
 	
-	// Remove from the pending dialog table
-	$('#pending-table tr[pendingname= "' + newfriendname + '"]').remove();
-	$('#search-table tr[friendname="' + newfriendname + '"] td:eq(2)').replaceWith('<td>' + '<button disabled="disabled" type="button"> Friends </button>' + '</td>');
-	$.getJSON("/requests/",
-				function(data){
-					repopulate_pending_requests(data);
-				}
-			);
+
 }
 
 
