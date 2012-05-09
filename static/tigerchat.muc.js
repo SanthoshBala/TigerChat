@@ -245,13 +245,37 @@ function Manage_Chatrooms() {
 
 function fillRoomSearchBox(searchterm, roomjid) {
 	
+	var newrow = '<tr ><td id="loading_dots_room_text" style="text-align: right;" width="60%"></td><td id="loading_dots_room" style="text-align:left;"></td></tr>';
+	$('#chatroom-search-table').append(newrow);	
+	
+	dots_id = setInterval(animateRoomDots, 500);
+
+	
 	
 	$.get("/search/", {query: searchterm, room_jid: roomjid},
 		function(data){
+			
+			clearInterval(dots_id);
 			populateRoomSearchBox(data);
 		}
 	);
 }
+
+
+function animateRoomDots() {
+	var dotvals = $('#loading_dots_room').html();
+	numdots = dotvals.length;
+	if(numdots == 0) {
+		$('#loading_dots_room_text').append('Loading Results');
+		$('#loading_dots_room').append('.');
+		return;
+	}
+	if(numdots < 3) $('#loading_dots_room').append('.');
+	else $('#loading_dots_room').html('.');
+	
+	
+}
+
 
 // never returns DNE #fix
 function populateRoomSearchBox(data) {
