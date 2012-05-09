@@ -27,8 +27,8 @@ $(window).resize(function(){
 	    top: ($(window).height() - $('.centerimagecontainer').outerHeight())/2
 	});
 	
-	log($(window).width());
-	log($('.centerimagecontainer').outerWidth());
+	//log($(window).width());
+	//log($('.centerimagecontainer').outerWidth());
 	
 	var winwidth = $(window).width();
 	var winheight = $(window).height();
@@ -63,11 +63,12 @@ $(window).resize(function(){
 });
 
 
+
+
 /************************************************************************
  * On page load, execute the following.
  ***********************************************************************/
 $(document).ready(function () {
-	$(window).resize();
 	
 	// Create a strophe connection, set the username, and connect
     connection = new Strophe.Connection('/xmpp-httpbind');

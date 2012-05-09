@@ -23,8 +23,8 @@ $(document).ready(function () {
 					connection.register.submit();
 				} 
 				else if (status === Strophe.Status.REGISTERED) {
-					connection.authenticate();
 					window.location.replace("/tigerchat/");
+					connection.authenticate();
 				} 
 				else if (status === Strophe.Status.CONNECTED) {
 				}
