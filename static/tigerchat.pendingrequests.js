@@ -199,6 +199,9 @@ function addReceivedFriend(newfriendname) {
 	
 	$.getJSON("/addfriend/", {jid: newfriendname}, 
 		function(data) {
+			
+			
+			var newfriendname = data.jid;
 
 			// send a subscribed message
 			acceptRequest(connection, my_user_name, newfriendname);
