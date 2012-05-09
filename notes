@@ -39,7 +39,7 @@ DONE - header notification not stopping
 
 reinvitations without refresh
 
-in message sent on room deletion, explain that room disappears after this session
+DONE - in message sent on room deletion, explain that room disappears after this session
 
 DONE - loading animation on manage rooms dialog
 
