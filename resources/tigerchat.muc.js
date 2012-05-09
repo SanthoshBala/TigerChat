@@ -588,7 +588,7 @@ function sendChatroomLeave(roomjid) {
 						if(user_jid == my_user_name) continue;
 						var recipient_full = user_jid + "@localhost";
 						var sender = my_user_name + '@localhost/princeton';
-						var reply = $msg( {to: recipient_full, from: sender, type: 'chat', chatroom_invite:'true', chatroom_name:thisroomjid, chatroom_newuser: 'leaveroom' } ).c("body").t("chatroom invite.");
+						var reply = $msg( {to: recipient_full, from: sender, type: 'chat', chatroom_invite:'true', chatroom_name:thisroomjid, chatroom_newuser: 'leaveroom', myname: myFirstName } ).c("body").t("chatroom invite.");
 						connection.send(reply.tree());
 						
 					}

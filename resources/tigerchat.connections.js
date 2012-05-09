@@ -208,8 +208,17 @@ function onMessage(msg) {
 		var chatroom_newuser = msg.getAttribute('chatroom_newuser');
 		var chatroom_jid = msg.getAttribute('chatroom_name');
 		if(chatroom_newuser == 'true') {
-		
 			
+			if ($("#chatbox_" + chatroom_jid).length > 0) {
+				if ($('#chatbox_' + chatroom_jid).dialog('isOpen') == true) {
+						
+					var timestamp = getTimeStamp();
+					var personfrom = msg.getAttribute('myname');
+					$('#text_area_' + chatroom_jid).append('<span style = "color:#AAAAAA;" >' + timestamp + '</span> <span style = "color:#AAAAAA;" >' +  personfrom + ' has joined the room.' + "</span><br/>");
+					$('#text_area_' + chatroom_jid).scrollTop($('#text_area_' + chatroom_jid)[0].scrollHeight);
+				}
+			}
+
 			instance_chatrooms[chatroom_jid].occupants.push(from);
 			
 		}
@@ -232,7 +241,8 @@ function onMessage(msg) {
 			if ($("#chatbox_" + chatroom_jid).length > 0) {
 				if ($('#chatbox_' + chatroom_jid).dialog('isOpen') == true) {
 					var timestamp = getTimeStamp();
-					$('#text_area_' + chatroom_jid).append('<span style = "color:#AAAAAA;" >' + timestamp + '</span> <span style = "color:#AAAAAA;" >' +  sender + ' has left the room.' + "</span><br/>");
+					var personfrom = msg.getAttribute('myname');
+					$('#text_area_' + chatroom_jid).append('<span style = "color:#AAAAAA;" >' + timestamp + '</span> <span style = "color:#AAAAAA;" >' +  personfrom + ' has left the room.' + "</span><br/>");
 					$('#text_area_' + chatroom_jid).scrollTop($('#text_area_' + chatroom_jid)[0].scrollHeight);
 				}
 			}
