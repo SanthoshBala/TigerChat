@@ -121,6 +121,22 @@ def add_friend(request):
 			f.save()
 		elif len(friendships) == 1:
 			f = friendships[0]
+			# 4 cases:
+			# 1 - pending, and I'm receiver
+			if f.status == 'Pending' and f.receiver == user.person:
+				f.status = 'Confirmed'
+				f.save()
+			# 2 - ignored, and I'm original receiver
+			elif f.status == 'Ignored' and f.receiver == user.person:
+				f.status = 'Confirmed'
+				f.save()
+			# 1 - pending, and I'm original creator
+			elif f.status == 'Pending' and f.creator == user.person:
+				pass
+			# 4 - ignored, and I'm original creator
+			else:
+				pass
+			
 			if f.status == 'Pending' and f.receiver == user.person:
 				f.status = 'Confirmed'
 				f.save()
