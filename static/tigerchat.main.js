@@ -37,7 +37,6 @@ $(window).resize(function(){
 	var friendx = $('#friends_dialog').dialog("option", "position")[0];
 	var friendy = $('#friends_dialog').dialog("option", "position")[1];
 	
-	//log('winheight : ' + winheight);
 	
 	if( (friendx + friendwidth + 50 > winwidth) ) {
 		var newx = winwidth - 51 - friendwidth;
@@ -117,11 +116,11 @@ $(document).ready(function () {
     window.onbeforeunload = function(){
 		connection.disconnect();
     };
-   
+    
    	$('.centerimagecontainer').css({
-	    position:'absolute',
-	    left: ($(window).width() - $('.centerimagecontainer').outerWidth())/2,
-	    top: ($(window).height() - $('.centerimagecontainer').outerHeight())/2
+	    position:'fixed',
+	    left: ($(window).width() - 400)/2,
+	    top: ($(window).height() - 150)/2
 	}); 
 });
 

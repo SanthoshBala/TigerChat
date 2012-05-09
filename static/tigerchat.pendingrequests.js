@@ -49,7 +49,13 @@ function open_pending_requests() {
 	if ($("#subscribe_dialog").length > 0) {
 		$('#subscribe_dialog').dialog('close');
 		$('#subscribe_dialog').dialog('open');
-		
+		$.getJSON("/requests/",
+			function(data){
+				repopulate_pending_requests(data);
+				
+				$('#subscribe_dialog').dialog('open');
+			}
+		);
 		return;
 	}
 	
