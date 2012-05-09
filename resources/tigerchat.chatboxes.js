@@ -23,7 +23,7 @@ function HandleChatboxEnter(chat_with_name) {
 	// Get timestamp, append my own message to the chatbox, and scroll to the bottom
 	var timestamp = getTimeStamp();
 	
-	$('#text_area_' + chat_with_name).append('<span class="username" style = "color:#ff6633;" >' + timestamp + my_user_name + ": " + '</span> <span class="maintext" style = "color:#000000;" >' + send_text + "</span><br/>");
+	$('#text_area_' + chat_with_name).append('<span class="username" style = "color:#ff6633;" >' + timestamp + myFirstName + ": " + '</span> <span class="maintext" style = "color:#000000;" >' + send_text + "</span><br/>");
 	$('#text_area_' + chat_with_name).scrollTop($('#text_area_' + chat_with_name)[0].scrollHeight);
 	sendMessage(send_text, sender_name, chat_with_name);
 }
@@ -48,13 +48,15 @@ function makeNewChatbox(chat_with_name) {
 	if ($("#" + new_name).length > 0) {
 		// If it's open
 		if ($('#' + new_name).dialog('isOpen') == true) {
+			 $('#' + new_name).dialog('close');
+			 $('#' + new_name).dialog('open');
 			return;
 		}
 		// if its not open, open it
 		else {
 			 $('#' + new_name).dialog('open');
 			 $('#text_area_' + chat_with_name).scrollTop($('#text_area_' + chat_with_name)[0].scrollHeight);
-			 $("#" + new_name).css({'height' : '250'});
+			 //$("#" + new_name).css({'height' : '250'});
 			return;
 		}
 	}
@@ -70,14 +72,18 @@ function makeNewChatbox(chat_with_name) {
 	$("#" + new_name).dialog({
         autoOpen: true,
         closeOnEscape: true,
-        resizable: true		
+        resizable: true,
+        minWidth: 300,
+        minHeight: 280,
+        height: 285,
+        width: 305		
     });
     // Add my class, and set default height
 	$("#" + new_name).addClass('chatbox_below_title');
-	$("#" + new_name).css({'height' : '250'});
+	//$("#" + new_name).css({'height' : '250'});
 	$("#" + new_name).parent().css({'position' : 'fixed'});
-	$("#" + new_name).parent().css({'top' : '200px'});
-	$("#" + new_name).parent().css({'left' : '500px'});
+	//$("#" + new_name).parent().css({'top' : '200px'});
+	//$("#" + new_name).parent().css({'left' : '500px'});
 	
 	// Focus function makes sure that only a single chatbox has the orange header
 	$("#" + new_name).parent().focus( 

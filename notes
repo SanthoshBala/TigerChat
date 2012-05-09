@@ -3,13 +3,17 @@ Notes:
 
 DONE - before sending email, open modal dialog
 
-no adding yourself
+DONE - no adding yourself
 
 DONE - before deleting room, open modal dialog
 
-fix rejecting a friend
+DONE - fix rejecting a friend
 
-open already open window, reopen it
+test denying chatroom invitation
+
+DONE - open already open window, reopen it
+
+standardize to buddy, not friend
 
 DONE - create room on enter
 
@@ -21,7 +25,7 @@ on ignore, message alert doesn't go away
 
 change everything to getJSON
 
-DONE - search by netid as well in add buddy
+FUCK IT - DOESN'T WORK FROM SERVER BECAUSE OF LDAP DOMAIN BLOCKING - search by netid as well in add buddy 
 
 fix default text in friends list
 
@@ -39,12 +43,24 @@ DONE - header notification not stopping
 
 reinvitations without refresh
 
-in message sent on room deletion, explain that room disappears after this session
+DONE - in message sent on room deletion, explain that room disappears after this session
 
 DONE - loading animation on manage rooms dialog
 
+title bar flashes on new message with uneven frequency
+	- just says "says..." instead of full name
+	
+DONE - change 'Manage Room' to 'Manage Rooms'
 
+fix naacho's name not showing up when I chat withh it
 
+show names within chatrooms as well as 1:1 chats
+
+pending requests dialog should close when empty
+
+Accepting an system invitation should automatically make inviter and invitee friends
+
+fix alignment of chat div - currently flowing under the textarea
 
 
 LATE STAGE:

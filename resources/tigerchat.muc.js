@@ -1,6 +1,7 @@
 
 function openRoomCreation() {
 	if( $('#room_creation_dialog').length > 0) {
+		$('#room_creation_dialog').dialog('close');
 		$('#room_creation_dialog').dialog('open');	
 	}
 	
@@ -112,6 +113,7 @@ function Manage_Chatrooms() {
 	// If the chatroom management dialog has already been created, then just open it
 	if ($("#room_management_dialog").length > 0) {
 		$('.room_selection_item').remove();
+		$('#room_management_dialog').dialog('closed');
 		$('#room_management_dialog').dialog('open');
 		change_selected_room('Select A Room');
 		for (chatroomname in instance_chatrooms) {
@@ -124,7 +126,7 @@ function Manage_Chatrooms() {
 
 	
 	$(" <div />" ).attr("id", 'room_management_dialog')
-		.attr("title", "Manage Room")
+		.attr("title", "Manage Rooms")
 		.html('<div class = "room_manage_box" id="room_manage_box" style="height: 100%; margin: auto; position: relative; background-color:white; border-radius: 0px 0px 0px 12px;">' +
 			
 			

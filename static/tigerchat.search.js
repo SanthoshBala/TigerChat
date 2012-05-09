@@ -10,14 +10,14 @@ function openSearchBox() {
 	if ($("#search_dialog").length > 0) {
 		// Clear lines from the table
 		$('#search-table tr').remove();
-		$('#search_dialog').dialog('open');
-		$("#search_dialog").css({'height' : '200'});    
+		$('#search_dialog').dialog('close');
+		$('#search_dialog').dialog('open');    
 		return;
 	}
 	
 	// Otherwise, create the dialog box
 	$(" <div />" ).attr("id", "search_dialog")
-	.attr("title", "Add Friend")
+	.attr("title", "Add Buddy")
 	.html(	'<div class = "search_box" id="my_search_box" style="height: 100%; margin: auto; position: relative; background-color:white; border-radius: 0px 0px 8px 8px;">' +
 			
 			'<div class="search_toptext" id="my_search_toptext"> ' +
@@ -149,6 +149,8 @@ function fillSearchBox(data) {
 		
 		// Get the username (jid)
 		var username = newdata[i].username;
+		
+		if (username == my_user_name) continue;
 		
 		// Create a row in the table
 		var newrow = 	'<tr friendname= "' + newdata[i].username + '">' +
