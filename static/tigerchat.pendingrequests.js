@@ -29,6 +29,9 @@ function create_pending_requests_dialog() {
 		width: 325
 	});
 	
+	$("#subscribe_dialog").parent().css({'position' : 'fixed'});
+
+	
 	//$("#subscribe_dialog").css({'margin': '15px'});
 	
 

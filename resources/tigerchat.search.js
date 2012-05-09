@@ -22,7 +22,7 @@ function openSearchBox() {
 			
 			'<div class="search_toptext" id="my_search_toptext"> ' +
 			'<table width="100%" cellpadding="10" cellspacing="10" id="search_toptext_table">' + 
-			'<tr> <td width="50px"> <img src="/static/imgs/rsz_picture3.png"/> </td> <td> Enter a friend\'s name or netid in the search box below.  </td> </tr> </table>' +
+			'<tr> <td width="50px"> <img src="/static/imgs/rsz_picture3.png"/> </td> <td> Enter a friend\'s name in the search box below.  </td> </tr> </table>' +
 			'</div>' +
 			
 			'<div class="search_text" id="my_search_text" style="height: 32px; text-align: center; padding-left: 18px; padding-right: 40px; padding-top: 5px;" >' +
