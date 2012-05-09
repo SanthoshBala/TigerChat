@@ -2,30 +2,34 @@
 <html xmlns="http://www.w3.org/1999/xhtml" style= 'min-height:100%;'>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Main Page</title>
-
-<link rel="stylesheet" href="/static/Backgrounds.css" type='text/css' />
-<link href='/static/bootstrap/css/bootstrap.css' rel='stylesheet' />
-<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
-<script type='text/javascript' src='/static/strophe.js'></script>
-<script type='text/javascript' src='/static/strophe.register.js'></script>
+<title>TigerChat</title>
+	
+	<link rel="stylesheet" href="/static/myjquery-ui.css" type="text/css" />
+	<link rel="stylesheet" href="/static/Backgrounds.css" type='text/css' />
+	<link href='/static/bootstrap/css/bootstrap.css' rel='stylesheet' />
+	<link href='/static/tigerchat.styles.css' rel='stylesheet' />
+	
+	<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
+	<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js'></script>
+	<script type='text/javascript' src='/static/strophe.js'></script>
+	<script type='text/javascript' src='/static/loadingdotdotdot/jquery.loadingdotdotdot.js'></script>
+	<script type='text/javascript' src='/static/bootstrap/js/bootstrap.js/'></script>
+	<script type='text/javascript' src='/static/bootstrap/js/bootstrap-button.js'></script>
+	<script type='text/javascript' src='/static/bootstrap/js/bootstrap-dropdown.js'></script>
 <script type='text/javascript' src='/static/first_time.js'></script>
 
 </head>
 
 <body class='backgroundschemes'>
 
-
-<div align="center" style="margin:auto; top:225px; left:0px; position:relative;">
-  <img src="/static/imgs/tigerchat-bubble-logo.png" width="40%" style="background:none; border-color:transparent"/>
-</div>
-<div align="center" style="margin:auto; top:250px; left:0px; position:relative;">
-  <p id="loadingtitles"> Page is loading </p>
-  <input type="button" value="test" onclick="setSwitch()"  />
+<div class="centerimagecontainer" id="centerimagecontainer">
+	<center class="centerimage" >
+		<img src="/static/imgs/tigerchat-bubble-logo.png" style="width: 400px;"/>
+    </center>
 </div>
 
 
-<div class='navbar navbar-fixed-top'>
+<div class='navbar navbar-fixed-top' style="z-index:990">
     <div class='navbar-inner'>
       <div class='container'>
         <a class='brand' href='/tigerchat/'>TigerChat</a>
@@ -34,14 +38,24 @@
             <a href="/logout/"> Sign Out </a> 
           </li>
           <li>
-            <a href="/preferences/"> Preferences </a>
+            <a onclick="populateFriendsList()" style="cursor: pointer;"> Buddy List </a>
           </li>
+          
+          
+          <li class="dropdown" id="accountmenu">
+			  <a class="dropdown-toggle" data-toggle="dropdown" href="#accountmenu"> Settings<b class="caret"></b></a>
+			  <ul class="dropdown-menu">
+				  <li><a href="#">Login</a></li>
+			  </ul>
+          </li>
+
+
         </ul>
       </div>
     </div>
 </div>
 
-<div class='navbar navbar-fixed-bottom'>
+<div class='navbar navbar-fixed-bottom' style="z-index:990">
     <div class='navbar-inner'>
       <div class='container'>
         <ul class='nav' class='nav pull-left'>
@@ -59,8 +73,16 @@
     </div>
 </div>
 
-<div id='log'>
-</div>
+
+	<div id='log' style="position: fixed;color: green;"><br/><br/><br/><br/>
+	</div>
+	
+	
+	
+  
+    <div id='boxes' style="position: fixed;color: green;"><br/><br/><br/><br/>
+	</div>
+
 </body>
 
 </html>
