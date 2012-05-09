@@ -66,11 +66,22 @@ $(document).ready(function () {
 	// Create a strophe connection, set the username, and connect
     connection = new Strophe.Connection('/xmpp-httpbind');
 	// Set the global username (#fix - this could be hacked)
-	my_user_name = $('#this_user_name').get(0).value;
 	
-	var my_jid = my_user_name + '@localhost/princeton';
-	connection.connect(my_jid, 'pwd', onConnect);
-
+	
+	//my_user_name = $('#this_user_name').get(0).value;
+	$.getJSON('/profile/', 
+		function(data) {
+			 my_user_name = data.jid;
+			var my_jid = my_user_name + '@localhost/princeton';
+			connection.connect(my_jid, 'pwd', onConnect);
+	
+		} 	
+	);
+	
+	
+	
+	
+	
       
 	// Initialize the instance friends variable
 	$.get('/friends/', function(data) {InitializeFriendsVariable(data)} );
@@ -79,39 +90,6 @@ $(document).ready(function () {
   
   
 	
-	$(" <div />" ).attr("id", 'room_creation_dialog')
-		.attr("title", "Create A Room")
-		.html('<div class = "room_creation_box" id="room_creation_box" style="height: 100%; margin: auto; position: relative; background-color:white; border-radius: 0px 0px 8px 8px;">' +
-			
-			'<div class="roomcreation_toptext" id="my_roomcreation_toptext"> ' +
-			'<table width="100%" cellpadding="10" cellspacing="10" id="roomcreation_toptext_table">' + 
-			'<tr> <td width="50px"> <img src="/static/imgs/small_add_group.png"/> </td> <td> Enter the name of the room you wish to create.  </td> </tr> </table>' +
-			'</div>' +
-			
-			'<div class="search_text" id="chatroom_creation_name_div" style="height: 32px; text-align: center; padding-left: 18px; padding-right: 40px; padding-top: 5px;" >' +
-			'<table id="room_creation_table" style="width:100%;"> <tr> <td> ' +
-			'<input type="text" id="chatroom_creation_name" style="width: 100%; border-radius: 0px"> </td>' + 
-				'<td style="width: 10px;"><a id="create_chatroom_button" class="btn btn-success" style="width: 100%;">  <i class="icon-plus icon-white"></i> </a></td></tr></table>' +
-
-			'</div>')
-		.appendTo($( "body" ));
-		
-		$('#create_chatroom_button').click( 
-			function() {
-				create_chatroom();
-			}
-		);
-		
-	$("#room_creation_dialog").dialog({
-		autoOpen: false,
-		closeOnEscape: true,
-		resizable: true,
-		minWidth: 300,
-		minHeight: 200,
-		height: 210,
-		width: 310
-	});
-	
 	/*
 	$(window).resize();*/
 	
@@ -119,17 +97,11 @@ $(document).ready(function () {
 	//$('.dropdown-toggle').dropdown();
     
     
-	$('.btn').button('reset');
+	//$('.btn').button('reset');
     
     window.onblur = disableStuff;
 	window.onfocus = enableStuff;
-	$('#mybtn').button();
-	$('#mybtn').click(
-		function() {
-			$('#mybtn').button('loading');
-			window.setTimeout('timestuff()', 1000);
-		}
-	);
+	
 	
 	
 	
@@ -141,8 +113,8 @@ $(document).ready(function () {
    
    	$('.centerimagecontainer').css({
 	    position:'absolute',
-	    left: ($(window).width())/2,
-	    top: ($(window).height()).2
+	    left: ($(window).width() - $('.centerimagecontainer').outerWidth())/2,
+	    top: ($(window).height() - $('.centerimagecontainer').outerHeight())/2
 	}); 
 });
 

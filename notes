@@ -1,36 +1,36 @@
 Notes:
 
-come up with another word for "invite"
 
-should not be able to send email invitation multiple times - database
-
-add loading ... in searchbox - UI
+before sending email, open modal dialog
 
 fix rejecting a friend
 
-could the fact that we pass in the user name through a textbox be hacked?
+open already open window, reopen it
 
+create room on enter
 
-fix fact that on new buddy addition, we assume they are online
+fix width of manage rooms dialog
 
+change everything to getJSON
 
-case search - buddy list
-	
+remove /removeall
 
+turn off django debugging
 
+search by netid as well in add buddy
 
+fix default text in friends list
+
+write cronjob to clear logs on server
 
 minimize javascript
 
+chatrooms have no name (only jid) (or fix)
 
+on registration page, logo is larger than it should be
 
+test reject
 
+on add friend, the notification doesn't work and the row isn't removed....
 
-DONE:
-
-sync between pending requests and search - adding a pending in search removes/changes the related rows in tables
-using first name in chat header and in friends list
-adding a friend from search that has sent you a request
-added illegal room name checking
-confirm that user has not entered blank for chatroom name
-had to replace spaces with underscore (not dot) for some funky reason
+use first name in chat windows

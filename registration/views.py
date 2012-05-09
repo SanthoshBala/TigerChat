@@ -67,6 +67,13 @@ def register_new_user(request):
 	return render_to_response('newuser.html', {'user_name': person.jid})
 	#return HttpResponseRedirect('/tigerchat/')
 
+
+@login_required
+def get_profile(request):
+	person = request.user.person
+	data = simplejson.dumps(person, default=json_handler)
+	return HttpResponse(data, mimetype='application/javascript')
+	
 ##### ADMIN VIEWS #####
 
 ## users(): Returns list of all users in database

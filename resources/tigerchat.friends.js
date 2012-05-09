@@ -118,30 +118,6 @@ function populateFriendsList() {
 		return;
 	}
 	
-	// HTML for the friend dialog
-	/*$(" <div />" ).attr("id", "friends_dialog")
-	.attr("title", "Buddy List")
-	.html('<div class = "friends_list" id = "my_friends_list" style="height: 100%; margin: auto; position: relative; background-color:#F2F2F2; border-radius: 0px 0px 0px 12px;">' + 
-	
-	'<div class = "friends_header" id = "my_friends_header" style="height: 32px; padding-left: 5px; padding-top: 5px;">' + 
-	'<input type="button" onclick="openSearchBox()" value="Search"/> ' + '<input type="button" onclick="openRoomCreation()" value="Rooms"/>' + 
-	'<input type="button" onclick="open_pending_requests()" value="pending"/>' + 
-	'<input type="button" onclick="Manage_Chatrooms()" value="manage"/>' + 
-	'</div>' + 
-	
-	'<div class = "friends_searchbox" id = "my_friends_searchbox" style="height: 32px; text-align: center; padding-left: 5px; padding-right: 11px;">' + 
-	
-		
-	'<input type="text" id="friends_search" class="friends_search" style="border: none; width: 100%; border-radius: 0px; color: #BBBBBB" value="Filter friends..." />' + 
-	
-	
-	'</div>' + 
-	
-	'<div class = "friends_table" id = "my_friends_table" style="overflow-y: auto; position: absolute; left: 7px; right: 5px; top:70px; bottom: 20px; background: white;">' +
-	'<table width="100%" cellpadding="0" cellspacing="0" id="friend-table">' +
-	'</div>' +
-	'</table>' + 
-	'<div id="padding"></div>')*/
 	$(" <div />" ).attr("id", "friends_dialog")
 	.attr("title", "Buddy List")
 	.html('<div class = "friends_list" id = "my_friends_list" style="height: 100%; margin: auto; position: relative; background-color:#F2F2F2; border-radius: 8px 8px 8px 8px;">' + 

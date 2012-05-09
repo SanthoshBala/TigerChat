@@ -19,7 +19,6 @@ $(document).ready(function () {
 				connection.register.submit();
 		    } 
 		    else if (status === Strophe.Status.REGISTERED) {
-				log('Registered the user.'):
 		        connection.authenticate();
 				window.location.replace("/tigerchat/");
 		    } 

@@ -1,6 +1,50 @@
 
 function openRoomCreation() {
-	$('#room_creation_dialog').dialog('open');	
+	if( $('#room_creation_dialog').length > 0) {
+		$('#room_creation_dialog').dialog('open');	
+	}
+	
+	
+	else {
+	
+	
+		$(" <div />" ).attr("id", 'room_creation_dialog')
+			.attr("title", "Create A Room")
+			.html('<div class = "room_creation_box" id="room_creation_box" style="height: 100%; margin: auto; position: relative; background-color:white; border-radius: 0px 0px 8px 8px;">' +
+				
+				'<div class="roomcreation_toptext" id="my_roomcreation_toptext"> ' +
+				'<table width="100%" cellpadding="10" cellspacing="10" id="roomcreation_toptext_table">' + 
+				'<tr> <td width="50px"> <img src="/static/imgs/small_add_group.png"/> </td> <td> Enter the name of the room you wish to create.  </td> </tr> </table>' +
+				'</div>' +
+				
+				'<div class="search_text" id="chatroom_creation_name_div" style="height: 32px; text-align: center; padding-left: 18px; padding-right: 40px; padding-top: 5px;" >' +
+				'<table id="room_creation_table" style="width:100%;"> <tr> <td> ' +
+				'<input type="text" id="chatroom_creation_name" style="width: 100%; border-radius: 0px"> </td>' + 
+					'<td style="width: 10px;"><a id="create_chatroom_button" class="btn btn-success" style="width: 100%;">  <i class="icon-plus icon-white"></i> </a></td></tr></table>' +
+
+				'</div>')
+			.appendTo($( "body" ));
+			
+			$('#create_chatroom_button').click( 
+				function() {
+					create_chatroom();
+				}
+			);
+			
+		$("#room_creation_dialog").dialog({
+			autoOpen: true,
+			closeOnEscape: true,
+			resizable: true,
+			minWidth: 300,
+			minHeight: 200,
+			height: 210,
+			width: 310
+		});
+		
+		
+	$("#room_creation_dialog").parent().css({'position' : 'fixed'});
+	
+	}
 }
 
 
@@ -170,7 +214,7 @@ function Manage_Chatrooms() {
 		width: 450
 	});
 	
-	$("#room_management_dialog").parent().css({'position': 'absolute'});
+	$("#room_management_dialog").parent().css({'position': 'fixed'});
 	
 	
 	
