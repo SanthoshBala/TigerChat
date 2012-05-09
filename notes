@@ -13,7 +13,7 @@ test denying chatroom invitation
 
 DONE - open already open window, reopen it
 
-standardize to buddy, not friend
+DONE - standardize to buddy, not friend
 
 DONE - create room on enter
 
@@ -21,7 +21,7 @@ DONE - fix width of manage rooms dialog
 
 DONE - add new image to manage rooms dialog
 
-on ignore, message alert doesn't go away
+DONE - on ignore, message alert doesn't go away
 
 change everything to getJSON
 
@@ -33,11 +33,11 @@ chatrooms have no name (only jid) (or fix)
 
 on registration page, logo is larger than it should be
 
-on add friend, the notification doesn't work and the row isn't removed....
+DONE - on add friend, the notification doesn't work and the row isn't removed....
 
 DONE - use first name in chat windows
 
-on dealt with all chatroom invitations, revert mailbox
+DONE - on dealt with all chatroom invitations, revert mailbox
 
 DONE - header notification not stopping
 

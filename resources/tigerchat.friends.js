@@ -55,6 +55,7 @@ function InitializeChatroomsVariable(data) {
 					
 					for(var j=0; j < data.members.length; j++) {
 						var user_jid = data.members[j].jid;
+						
 						instance_chatrooms[thisroomjid].occupants[j] = user_jid;
 					}
 				}
@@ -71,7 +72,9 @@ function InitializeChatroomsVariable(data) {
 						var user_jid = data.members[j].jid;
 						instance_chatrooms[thisroomjid].occupants[j] = user_jid;
 					}
+					
 					// We populate on the last call
+					initializeChatroomFriendNames();
 					populateFriendsList();
 				}
 			);
@@ -89,8 +92,6 @@ function InitializeChatroomsVariable(data) {
 	
 	
 }
-
-
 
 /************************************************************************
  *  Create the friends list initially.

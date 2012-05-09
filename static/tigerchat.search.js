@@ -175,7 +175,7 @@ function fillSearchBox(data) {
 		// If we have received a friend request from them, have an "accept" button
 		else if(newdata[i].friendship_status == 'To_Accept') {
 			newrow = 	newrow + 
-						'<td>' + '<input type="button" value="Add" onclick="addReceivedFriend(\'' + newdata[i].username + '\')"/>' + '</td>' + 
+						'<td>' + '<input type="button" value="Accept" onclick="addReceivedFriend(\'' + newdata[i].username + '\')"/>' + '</td>' + 
 						'</tr>';
 
 		}

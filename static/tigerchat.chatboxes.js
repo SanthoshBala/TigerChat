@@ -154,7 +154,7 @@ function sendMessage(message_to_send, sender, recipient) {
 		for(var i = 0; i < occupants.length; i++) {
 			if(occupants[i] == my_user_name) continue;
 			var recipient_full = occupants[i] + "@localhost";
-			var reply = $msg( {to: recipient_full, from: sender, type: 'chat', msgtype: 'chatroom', chatroom_jid: chatroom_name } ).c("body").t(message_to_send);
+			var reply = $msg( {to: recipient_full, from: sender, type: 'chat', msgtype: 'chatroom', chatroom_jid: chatroom_name, myname: myFirstName } ).c("body").t(message_to_send);
 			connection.send(reply.tree());
 		}
 		return;
@@ -223,10 +223,10 @@ function showChatMessage(from, message) {
  * 
  * If no open window exists, open (or create).
  ************************************************************************/
-function showChatRoomMessage(from, message, sender) {
+function showChatRoomMessage(from, message, sender, person) {
 	makeNewChatbox(from);
 	var timestamp = getTimeStamp();
-	$('#text_area_' + from).append('<span class="contactname" style = "color:#0033cc;" >' + timestamp + sender + ": " + '</span> <span class="maintext" style = "color:#000000;" >' + message + "</span><br/>");
+	$('#text_area_' + from).append('<span class="contactname" style = "color:#0033cc;" >' + timestamp + person + ": " + '</span> <span class="maintext" style = "color:#000000;" >' + message + "</span><br/>");
 	$('#text_area_' + from).scrollTop($('#text_area_' + from)[0].scrollHeight);
 }
 
