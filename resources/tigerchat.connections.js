@@ -278,7 +278,7 @@ function onMessage(msg) {
 		var msgtype = msg.getAttribute('msgtype');
 		if(msgtype == 'chatroom') {
 			roomname = msg.getAttribute('chatroom_jid');
-			var personfrom = msg.getAttribute(myname);
+			var personfrom = msg.getAttribute('myname');
 			showChatRoomMessage(roomname, Strophe.getText(body), from, personfrom);
 			return true;
 		}

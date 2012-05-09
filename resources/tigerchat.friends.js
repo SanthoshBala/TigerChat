@@ -74,7 +74,6 @@ function InitializeChatroomsVariable(data) {
 					}
 					
 					// We populate on the last call
-					initializeChatroomFriendNames();
 					populateFriendsList();
 				}
 			);
