@@ -38,6 +38,11 @@ $(document).ready(function () {
 		} 	
 	);
 	
+	$('.centerimagecontainer').css({
+	    position:'fixed',
+	    left: ($(window).width() - 400)/2,
+	    top: ($(window).height() - 150)/2
+	}); 
 	
 });
 
