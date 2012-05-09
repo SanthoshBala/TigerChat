@@ -260,11 +260,7 @@ function sendInvite(newfriendname) {
         autoOpen: true,
         modal: true
     });
-	
-	
-	
-	
-	}
+}
 
 function invite(newfriendname) {
 	$.get("/addfriend/", {jid: newfriendname} );

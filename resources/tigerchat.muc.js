@@ -448,10 +448,66 @@ function removeChatroom() {
 
 
 	
+	
 	roomjid = $('#curr_selected_room').html();
 	
-	log(roomjid);
+	if(roomjid == 'Select A Room' || roomjid == '') {
+		return;
+	}
+	
+	
+	if(instance_chatrooms[roomjid].admin == my_user_name) {
+		
+		var message = "Doing this will delete the room. Are you sure you want to continue?";
+	}
+	
+	else {
+		
+		var message = "Doing this will remove you from the room. Are you sure you want to continue?";
+	}
 
+	
+
+	$(" <div />" ).attr("id",'confirm_deletion')
+	.attr("title", 'Confirm Room Removal')
+	.html(
+		'<div id="myconfirmationremoval">' + 
+		'<table width=100%> <tr style="text-align: center;"><td colspan="2" style="height: 50px;">' + message +
+		'</td></tr>' +
+		'<tr style="text-align: center;">' +
+		'<td style="width: 100px;"> <a id="removebutton" class="btn btn-success" style="width: 60px;">  <i class="icon-ok icon-white"></i></a> </td>' +
+		'<td style="width: 100px"> <a id="noremovebutton" class="btn btn-danger" style="width: 60px;">  <i class="icon-remove icon-white"></i></a></td> ' +
+		'</tr></table></div>'
+		
+	)
+	.appendTo($( "#boxes" ));
+
+	$('#removebutton').click(
+		function() {
+			deleteroom();
+			$('#confirm_deletion').dialog('destroy').remove()
+		}
+	);
+	$('#noremovebutton').click(
+		function() {
+			$('#confirm_deletion').dialog('destroy').remove()
+		}
+	);
+	
+	$('#confirm_deletion').dialog( {
+        autoOpen: true,
+        modal: true
+    });
+	
+	
+	
+}
+
+function deleteroom() {
+	
+	
+	roomjid = $('#curr_selected_room').html();
+	
 	if(roomjid == 'Select A Room' || roomjid == '') {
 		return;
 	}
@@ -482,11 +538,16 @@ function removeChatroom() {
 
 	
 
-}
-
-
-
-
+}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 function sendChatroomDeletion(roomjid) {
 
