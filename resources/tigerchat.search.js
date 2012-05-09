@@ -228,11 +228,49 @@ function addNewFriend(newfriendname) {
  ***********************************************************************/
 function sendInvite(newfriendname) {
 	// post to /addfriend/ where database takes care of sending invite
+	
+	
+	$(" <div />" ).attr("id",'confirm_invitation')
+	.attr("title", 'Confirm Invitation')
+	.html(
+		'<div id="myconfirmationinvitation">' + 
+		'<table width=100%> <tr style="text-align: center;"><td colspan="2" style="height: 50px;">' +
+		'Do you want to send an invitation email? </td></tr>' +
+		'<tr style="text-align: center;">' +
+		'<td style="width: 100px;"> <a id="sendInvitebutton" class="btn btn-success" style="width: 60px;">  <i class="icon-ok icon-white"></i></a> </td>' +
+		'<td style="width: 100px"> <a id="nosendInvitebutton" class="btn btn-danger" style="width: 60px;">  <i class="icon-remove icon-white"></i></a></td> ' +
+		'</tr></table></div>'
+		
+	)
+	.appendTo($( "#boxes" ));
+
+	$('#sendInvitebutton').click(
+		function() {
+			invite(newfriendname);
+			$('#confirm_invitation').dialog('destroy').remove()
+		}
+	);
+	$('#nosendInvitebutton').click(
+		function() {
+			$('#confirm_invitation').dialog('destroy').remove()
+		}
+	);
+	
+	$('#confirm_invitation').dialog( {
+        autoOpen: true,
+        modal: true
+    });
+	
+	
+	
+	
+	}
+
+function invite(newfriendname) {
 	$.get("/addfriend/", {jid: newfriendname} );
 	
 	// change search table row to "invited"
 	$('#search-table tr[friendname="' + newfriendname + '"] td:eq(2)').replaceWith('<td>' + '<button disabled="disabled" type="button"> Invite Sent </button>' + '</td>');
+
 }
-
-
 
