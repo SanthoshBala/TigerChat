@@ -27,8 +27,7 @@ $(window).resize(function(){
 	    top: ($(window).height() - $('.centerimagecontainer').outerHeight())/2
 	});
 	
-	//log($(window).width());
-	//log($('.centerimagecontainer').outerWidth());
+	
 	
 	var winwidth = $(window).width();
 	var winheight = $(window).height();
@@ -141,7 +140,7 @@ function enableStuff() {
 
 function BlinkMessage() {
 	
-	//log(from);
+	
 	if(	$(document).attr('title') == 'TigerChat') {
 		$(document).attr('title', new_msg_from + ' says...');
 	}

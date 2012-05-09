@@ -35,7 +35,7 @@ function handlePresences(connection, user, newFriend, presType)
 			var pres_message = $pres();
 		}			
 	}	
-	log(pres_message);
+	
 	connection.send(pres_message.tree());
 	//var recipient_full = newFriend + "@localhost";
 	//var reply = $msg( {to: recipient_full, from: sender, type: 'presence' } ).c("body").t('testmsg');
@@ -292,9 +292,9 @@ function onMessage(msg) {
 			showChatRoomMessage(roomname, Strophe.getText(body), from, personfrom);
 			return true;
 		}
-		//log('page: ' + page_has_focus);
+		
 		if(page_has_focus == false) {
-			//log('got a message while switched.');
+		
 			$.getJSON('/vcard/', {jid: friend_netid}, 
 				function(data) {
 					

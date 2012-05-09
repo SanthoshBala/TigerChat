@@ -122,7 +122,6 @@ function repopulate_pending_requests(data) {
 	
 	
 	// For every request, create a row
-	log(data.friend_requests);
 	for(var i = 0; i < data.friend_requests.length; i++) {
 		
 		var sender_jid = data.friend_requests[i].creator;
@@ -188,7 +187,7 @@ function addPendingChatroomInvites(data) {
 
 function RejectReceivedChatroomInvite(roomjid) {
 
-	log('ok.');
+
 
 }
 
@@ -226,10 +225,10 @@ function AcceptReceivedChatroomInvite(roomjid) {
 }
 
 function refresh_pending_requests(data) {
-	log('refreshing.');
+	
 	
 	if(data.friend_requests.length == 0 && data.room_invites.length == 0) {		
-		log('no more requests!');		
+	
 		$('#pending_requests_img_div').html('<a id="ttip3" rel="tooltip" title="Requests"><img id="pending_requests_img" class="friends_button" src="/static/imgs/pending_envelope.png" height=25px  onclick="open_pending_requests()" style="padding: 2px 5px 2px; position:relative; top:-3px; border: 1px solid #F2F2F2;"></img></a>');
 		$('#subscribe_dialog').dialog('close');
 		
