@@ -70,6 +70,7 @@ function makeNewChatbox(chat_with_name) {
 	
 	// Set Properties of the dialog
 	$("#" + new_name).dialog({
+	    position: 'center',    
         autoOpen: true,
         closeOnEscape: true,
         resizable: true,
