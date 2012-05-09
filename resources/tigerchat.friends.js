@@ -128,18 +128,18 @@ function populateFriendsList() {
 	'<tr>' + 
 
 	'<td class="friends_button_td" width="25px" height="50px" style="text-align:center;padding: 0px 0px 6px 0px;">' +
-	'<div><img class="friends_button" src="/static/imgs/add_friend.png" style="height:27px; padding: 2px 5px 2px; border: 1px solid #F2F2F2;" onclick="openSearchBox()"></img></div>' +
+	'<div><a id="ttip1" rel="tooltip" title="Add a Buddy"><img class="friends_button" src="/static/imgs/add_friend.png" style="height:27px; padding: 2px 5px 2px; border: 1px solid #F2F2F2;" onclick="openSearchBox()"></img></a></div>' +
 	'</td>' + 
 	/*'<td width="0px"></td>' +*/
-	'<td class="friends_button_td" width="50px" height="50px" style="text-align:center; padding: 0px 0px 6px 0px;">' + 
-	'<div id="roombutton" class="btn-group"><a class="dropdown-toggle" data-toggle="dropdown" style="box-shadow: none;"><img class="friends_button" src="/static/imgs/add_group.png" style="height:27px; padding: 2px 5px 2px; border: 1px solid #F2F2F2;"></img></a>' +
+	'<td class="friends_button_td" width="70px" height="50px" style="text-align:center; padding: 0px 0px 6px 0px;">' + 
+	'<div id="roombutton" class="btn-group"><a class="dropdown-toggle" data-toggle="dropdown" style="box-shadow: none;"><a id="ttip2" rel="tooltip" title="Rooms"><img class="friends_button" src="/static/imgs/add_group.png" style="height:27px; padding: 2px 5px 2px; border: 1px solid #F2F2F2;"></img></a></a>' +
 	
 	' <ul class="dropdown-menu"><li><a style="cursor: pointer; text-align: left" onclick="openRoomCreation()">Create Room</a></li><li><a style="cursor: pointer; text-align: left" onclick="Manage_Chatrooms()">Manage Rooms</a></li></ul></div>' + 
 	'</td>' + 
 	/**/
 	/*'<td width="0px"></td>' +*/
-	'<td class="friends_button_td" width="50px" height="50px" id="pending_requests_img" style="text-align:center; padding: 0px 0px 6px 0px;">' + 
-	'<div><img id="pending_requests_img" class="friends_button" src="/static/imgs/pending_envelope.png" height=25px  onclick="open_pending_requests()" style="padding: 2px 5px 2px; position:relative; top:-3px; border: 1px solid #F2F2F2;"></img></div>' + 
+	'<td class="friends_button_td" width="50px" height="50px" id="pending_requests_img_div" style="text-align:center; padding: 0px 0px 6px 0px;">' + 
+	'<div><a id="ttip3" rel="tooltip" title="Requests"><img id="pending_requests_img" class="friends_button" src="/static/imgs/pending_envelope.png" height=25px  onclick="open_pending_requests()" style="padding: 2px 5px 2px; position:relative; top:-3px; border: 1px solid #F2F2F2;"></a></img></div>' + 
 	'</td>' + 
 	/*'<td width="0px"></td>' +*/
 	
@@ -196,6 +196,20 @@ function populateFriendsList() {
 	
 	.appendTo($("body"));
 	
+	
+	
+	$('#ttip1').tooltip({
+		'placement':'top',
+		'delay': { 'show': 700, 'hide': 100 }
+,	});
+	$('#ttip2').tooltip({
+		'placement':'top',
+		'delay': { 'show': 700, 'hide': 100 }
+	});
+	$('#ttip3').tooltip({
+		'placement':'top',
+		'delay': { 'show': 700, 'hide': 100 }
+	});
 	
 	
 	
@@ -326,9 +340,10 @@ function repopulateFriendsList() {
 	for(var i = 0; i < sorted_list_rooms.length; i++) {
 		chatroom_name = sorted_list_rooms[i];
 		var imgurl = "/static/imgs/princeton.png";
+		var roomname = instance_chatrooms[chatroom_name].name;
 		
 		var newrow = '<tr friendname= "' + chatroom_name + '" grouping="chatrooms">' +
-			'<td style="width: 15px;"></td> <td style="width: 20px;"> <img src="' + imgurl + '" width="14" height="14" style="" />  </td> ' + '<td>' + chatroom_name + '</td>' + '</tr>';	
+			'<td style="width: 15px;"></td> <td style="width: 20px;"> <img src="' + imgurl + '" width="14" height="14" style="" />  </td> ' + '<td>' + roomname + '</td>' + '</tr>';	
 		$("#friend-table").append(newrow);
 	}
 	

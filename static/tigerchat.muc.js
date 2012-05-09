@@ -89,7 +89,7 @@ function change_selected_room(room_name) {
 			else if(instance_chatrooms[roomjid].admin == my_user_name) {
 				//log(' I am the admin');
 				$('#room_manage_additions').css({'visibility': ''});
-				
+				$('#chatroom-search-table tr').remove();
 				
 
 			}
@@ -192,13 +192,22 @@ function Manage_Chatrooms() {
 		}
 	);
 	
-	
+	$('#create_chatroom_button').click( 
+		function() {
+			searchterm = $('#chatroom_search_textbox').val();
+			$('#chatroom_search_textbox').val('');	// clear the search box
+			$('#chatroom-search-table tr').remove();	// clear the table
+				
+			//var roomjid = $("#chatroom_management_selector").val();
+			roomjid = $('#curr_selected_room').html();
+			fillRoomSearchBox(searchterm, roomjid);
+		}
+	);
 	
 	$('#chatroom_search_textbox').keypress(function(e)
 	{
 		// 13 is enter key
 		if (e.which == 13){
-			log('pressed enter.');
 			searchterm = $('#chatroom_search_textbox').val();
 			$('#chatroom_search_textbox').val('');	// clear the search box
 			$('#chatroom-search-table tr').remove();	// clear the table
@@ -316,6 +325,7 @@ function populateRoomSearchBox(data) {
 			newrow = 	newrow + 
 						'<td>' + '<button disabled="disabled" type="button"> Member </button>' + '</td>' + 
 						'</tr>';
+			continue;
 		}
 		
 		
@@ -369,7 +379,7 @@ function create_chatroom() {
 	$('#room_creation_error_msg').remove();
 	// check if jid for chatroom already exists
 	if(isLegalRoomName(roomname) == false) {
-		newrow = '<tr id="room_creation_error_msg"><td colspan="2" style="text-align: center; color: red;"> Room names may only contain alphanumeric characters and spaces. </td></tr>';
+		newrow = '<tr id="room_creation_error_msg"><td colspan="2" style="text-align: center; color: red;"> Room names may only contain alphanumeric characters. </td></tr>';
 		$('#room_creation_table').append(newrow);
 		return;
 	}
@@ -410,7 +420,7 @@ function create_chatroom() {
 }
 
 function isLegalRoomName(roomname) {
-	var iChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?_";
+	var iChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?_ ";
 	for (var i = 0; i < roomname.length; i++) {
 		if (iChars.indexOf(roomname.charAt(i)) != -1) {
 			return false;

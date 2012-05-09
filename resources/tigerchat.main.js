@@ -106,7 +106,8 @@ $(document).ready(function () {
 	//$('.btn').button('reset');
     
     window.onblur = disableStuff;
-	window.onfocus = enableStuff;
+	//window.onfocus = enableStuff;
+	document.onmousedown = enableStuff;
 	
 	
 	
@@ -128,7 +129,6 @@ $(document).ready(function () {
 
 function disableStuff() {
 	page_has_focus = false;
-	//log('page no focus.');
 }
 function enableStuff() {
 	page_has_focus = true;

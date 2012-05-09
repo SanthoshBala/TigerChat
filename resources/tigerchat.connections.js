@@ -298,10 +298,11 @@ function onMessage(msg) {
 			$.getJSON('/vcard/', {jid: friend_netid}, 
 				function(data) {
 					
-					
-					new_msg_from = data.first_name;
-						
-					interval_id = setInterval(BlinkMessage, 1500);
+					if(new_msg_from == '') {
+						new_msg_from = data.first_name;
+							
+						interval_id = setInterval(BlinkMessage, 1500);
+					}
 				}
 			);
 		
