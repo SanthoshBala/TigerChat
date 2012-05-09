@@ -22,14 +22,13 @@ function create_pending_requests_dialog() {
 	$("#subscribe_dialog").dialog({
 		autoOpen: false,
 		closeOnEscape: true,
-		resizable: true
+		resizable: true,
+		minHeight: 250,
+		minWidth: 300,
+		height: 275,
+		width: 325
 	});
 	
-	$("#subscribe_dialog").css({'height': '200px'});
-	$("#subscribe_dialog").css({'min-height': '150px'});
-	$("#subscribe_dialog").css({'min-width': '300px'});
-	$("#subscribe_dialog").parent().css({'min-height': '150px'});
-	$("#subscribe_dialog").parent().css({'min-width': '300px'});
 	//$("#subscribe_dialog").css({'margin': '15px'});
 	
 
@@ -70,6 +69,7 @@ function repopulate_pending_requests(data) {
 	//data = jQuery.parseJSON(data);
 	// clear pending table
 	$('#pending-table tr').remove();
+	$('#pending-table-rooms tr').remove();
 	
 	if ($("#subscribe_dialog").length <= 0) {
 		create_pending_requests_dialog();
@@ -78,12 +78,12 @@ function repopulate_pending_requests(data) {
 	
 	if(data.friend_requests.length == 0 && data.room_invites.length == 0) {
 		//change image to plain envelope
-		$('#pending_requests_img').html('<img  class="friends_button" src="/static/imgs/pending_envelope.png" height=25px  onclick="open_pending_requests()" style="position:relative; top:-3px; border: 1px solid #F2F2F2;padding: 2px 5px 2px;"/>');
+		$('#pending_requests_img').html('<img id="pending_requests_img" class="friends_button" src="/static/imgs/pending_envelope.png" height=25px  onclick="open_pending_requests()" style="padding: 2px 5px 2px; position:relative; top:-3px; border: 1px solid #F2F2F2;"></img>');
 	}
 	else {
 		// change image to exclamation envelope
 		
-		$('#pending_requests_img').html('<img  class="friends_button" src="/static/imgs/pending_envelope_exclamation.png" height=25px  onclick="open_pending_requests()" style="position:relative; top:-3px; border: 1px solid #F2F2F2; padding: 2px 5px 2px;"/>');
+		$('#pending_requests_img').html('<img id="pending_requests_img" class="friends_button" src="/static/imgs/pending_envelope_exclamation.png" height=25px  onclick="open_pending_requests()" style="padding: 2px 5px 2px; position:relative; top:-3px; border: 1px solid #F2F2F2;"></img>');
 	}
 	
 	
@@ -130,7 +130,7 @@ function repopulate_pending_requests(data) {
 		'<td>' +  "<input type='button' value='Accept' onclick='AcceptReceivedChatroomInvite(\"" + data.room_invites[i].room_jid + "\")'/>" + '</td>' +
 		'<td>' +  "<input type='button' value='Reject' onclick='RejectReceivedChatroomInvite(\"" + data.room_invites[i].room_jid + "\")'/>" + '</td>' +
 		'</tr>';
-		$("#pending-table").append(newrow);
+		$("#pending-table-rooms").append(newrow);
 	}
 
 	//$('#subscribe_dialog').dialog('open');	
@@ -155,7 +155,7 @@ function addPendingChatroomInvites(data) {
 		'<td>' +  "<input type='button' value='Accept' onclick='AcceptReceivedChatroomInvite(\"" + data[i].room_jid + "\")'/>" + '</td>' +
 		'<td>' +  "<input type='button' value='Reject' onclick='RejectReceivedChatroomInvite(\"" + data[i].room_jid + "\")'/>" + '</td>' +
 		'</tr>';
-		$("#pending-table").append(newrow);
+		$("#pending-table-rooms").append(newrow);
 	}
 	
 	// Open the dialog
@@ -168,7 +168,7 @@ function addPendingChatroomInvites(data) {
  ***********************************************************************/
 function AcceptReceivedChatroomInvite(roomjid) {
 
-	$('#pending-table tr[pendingname= "' + roomjid + '"]').remove();
+	$('#pending-table-rooms tr[pendingname= "' + roomjid + '"]').remove();
 
 	$.getJSON("/room/join", {room_jid: roomjid}, 
 		function(data) {
@@ -197,17 +197,32 @@ function AcceptReceivedChatroomInvite(roomjid) {
  ***********************************************************************/
 function addReceivedFriend(newfriendname) {
 	
-	$.get("/addfriend/", {jid: newfriendname} );
+	$.getJSON("/addfriend/", {jid: newfriendname}, 
+		function(data) {
+			
+			
+			var newfriendname = data.jid;
+
+			// send a subscribed message
+			acceptRequest(connection, my_user_name, newfriendname);
+			// send a subscribe message
+			sendRequest(connection, my_user_name, newfriendname);
+			
+			// Remove from the pending dialog table
+			$('#pending-table tr[pendingname= "' + newfriendname + '"]').remove();
+			$('#search-table tr[friendname="' + newfriendname + '"] td:eq(2)').replaceWith('<td>' + '<button disabled="disabled" type="button"> Friends </button>' + '</td>');
+			$.getJSON("/requests/",
+						function(data){
+							repopulate_pending_requests(data);
+						}
+					);
+
 	
-	// send a subscribed message
-	acceptRequest(connection, my_user_name, newfriendname);
-	// send a subscribe message
-	sendRequest(connection, my_user_name, newfriendname);
+		
+		} 
+	);
 	
-	// Remove from the pending dialog table
-	$('#pending-table tr[pendingname= "' + newfriendname + '"]').remove();
-	$('#search-table tr[friendname="' + newfriendname + '"] td:eq(2)').replaceWith('<td>' + '<button disabled="disabled" type="button"> Friends </button>' + '</td>');
-	
+
 }
 
 

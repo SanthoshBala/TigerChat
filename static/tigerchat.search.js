@@ -74,6 +74,8 @@ function openSearchBox() {
         width: 310
     });
     
+	$("#search_dialog").parent().css({'position' : 'fixed'});
+    
     // Set the height of the dialog
     //$("#search_dialog").parent().css({'height' : '250'});
     //$("#search_dialog").parent().css({'width' : '310'});

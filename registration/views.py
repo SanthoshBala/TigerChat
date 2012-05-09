@@ -36,7 +36,13 @@ def register_new_user(request):
 		return HttpResponseRedirect('/tigerchat/')
 
 	# Check if a system invitation exists for this person
-	invites = SystemInvitation.objects.filter(invitee_jid)
+
+	invites = SystemInvitation.objects.filter(invitee_netid=person.jid)
+	if len(invites) == 1:
+		invite = invites[0]
+		invite.delete()
+	else:
+		pass
 
 	ldap_record = get_ldap_record(person.jid)
 	try:
@@ -61,6 +67,13 @@ def register_new_user(request):
 	return render_to_response('newuser.html', {'user_name': person.jid})
 	#return HttpResponseRedirect('/tigerchat/')
 
+
+@login_required
+def get_profile(request):
+	person = request.user.person
+	data = simplejson.dumps(person, default=json_handler)
+	return HttpResponse(data, mimetype='application/javascript')
+	
 ##### ADMIN VIEWS #####
 
 ## users(): Returns list of all users in database

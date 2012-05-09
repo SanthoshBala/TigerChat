@@ -48,7 +48,6 @@ function InitializeChatroomsVariable(data) {
 		
 		// Populate the members of this room
 		
-		log('roomjid is : ' + roomjid);
 		if(i != mydata.length - 1) {
 			$.getJSON('/room/members/', {room_jid: roomjid}, 
 				function(data) {
@@ -82,7 +81,6 @@ function InitializeChatroomsVariable(data) {
 	
 	$.getJSON("/requests/",
 			function(data){
-				log('ssssss');
 				repopulate_pending_requests(data);
 			}
 	);
@@ -101,36 +99,28 @@ function populateFriendsList() {
 	
 	// Do not want to create multiple times
 	if ($("#friends_dialog").length > 0) {
+		$("#friends_dialog").dialog('open');
+		
+		var posx = $(window).width() - 250;
+		var posy = 100;
+		if($(window).height() < 800){
+			
+			 var friendheight = $(window).height() - 175;
+		 }
+		else var friendheight = 600;
+
+			$('#friends_dialog').dialog("option", "position", [posx, posy]);
+			$('#friends_dialog').dialog("option", "width", 220);
+			$('#friends_dialog').dialog("option", "height", friendheight);
+			
+		
+		
 		return;
 	}
 	
-	// HTML for the friend dialog
-	/*$(" <div />" ).attr("id", "friends_dialog")
-	.attr("title", "Buddy List")
-	.html('<div class = "friends_list" id = "my_friends_list" style="height: 100%; margin: auto; position: relative; background-color:#F2F2F2; border-radius: 0px 0px 0px 12px;">' + 
-	
-	'<div class = "friends_header" id = "my_friends_header" style="height: 32px; padding-left: 5px; padding-top: 5px;">' + 
-	'<input type="button" onclick="openSearchBox()" value="Search"/> ' + '<input type="button" onclick="openRoomCreation()" value="Rooms"/>' + 
-	'<input type="button" onclick="open_pending_requests()" value="pending"/>' + 
-	'<input type="button" onclick="Manage_Chatrooms()" value="manage"/>' + 
-	'</div>' + 
-	
-	'<div class = "friends_searchbox" id = "my_friends_searchbox" style="height: 32px; text-align: center; padding-left: 5px; padding-right: 11px;">' + 
-	
-		
-	'<input type="text" id="friends_search" class="friends_search" style="border: none; width: 100%; border-radius: 0px; color: #BBBBBB" value="Filter friends..." />' + 
-	
-	
-	'</div>' + 
-	
-	'<div class = "friends_table" id = "my_friends_table" style="overflow-y: auto; position: absolute; left: 7px; right: 5px; top:70px; bottom: 20px; background: white;">' +
-	'<table width="100%" cellpadding="0" cellspacing="0" id="friend-table">' +
-	'</div>' +
-	'</table>' + 
-	'<div id="padding"></div>')*/
 	$(" <div />" ).attr("id", "friends_dialog")
 	.attr("title", "Buddy List")
-	.html('<div class = "friends_list" id = "my_friends_list" style="height: 100%; margin: auto; position: relative; background-color:#F2F2F2; border-radius: 0px 0px 0px 12px;">' + 
+	.html('<div class = "friends_list" id = "my_friends_list" style="height: 100%; margin: auto; position: relative; background-color:#F2F2F2; border-radius: 8px 8px 8px 8px;">' + 
 	
 	'<div class = "friends_header" id = "my_friends_header" style="height: 42px; padding-left: 5px; padding-bottom: 1px; padding-top: 1px;">' + 
 	'<table cellpadding="3" cellspacing="3" >' +
@@ -140,20 +130,17 @@ function populateFriendsList() {
 	'<div><img class="friends_button" src="/static/imgs/add_friend.png" style="height:27px; padding: 2px 5px 2px; border: 1px solid #F2F2F2;" onclick="openSearchBox()"></img></div>' +
 	'</td>' + 
 	/*'<td width="0px"></td>' +*/
-	'<td class="friends_button_td" width="27px" height="50px" style="text-align:center; padding: 0px 0px 6px 0px;">' + 
+	'<td class="friends_button_td" width="50px" height="50px" style="text-align:center; padding: 0px 0px 6px 0px;">' + 
 	'<div id="roombutton" class="btn-group"><a class="dropdown-toggle" data-toggle="dropdown" style="box-shadow: none;"><img class="friends_button" src="/static/imgs/add_group.png" style="height:27px; padding: 2px 5px 2px; border: 1px solid #F2F2F2;"></img></a>' +
 	
 	' <ul class="dropdown-menu"><li><a style="cursor: pointer; text-align: left" onclick="openRoomCreation()">Create Room</a></li><li><a style="cursor: pointer; text-align: left" onclick="Manage_Chatrooms()">Manage Rooms</a></li></ul></div>' + 
 	'</td>' + 
 	/**/
 	/*'<td width="0px"></td>' +*/
-	'<td class="friends_button_td" width="25px" height="50px" id="pending_requests_img" style="text-align:center; padding: 0px 0px 6px 0px;">' + 
-	'<div><img  class="friends_button" src="/static/imgs/pending_envelope.png" height=25px  onclick="open_pending_requests()" style="padding: 2px 5px 2px; position:relative; top:-3px; border: 1px solid #F2F2F2;"></img></div>' + 
+	'<td class="friends_button_td" width="50px" height="50px" id="pending_requests_img" style="text-align:center; padding: 0px 0px 6px 0px;">' + 
+	'<div><img id="pending_requests_img" class="friends_button" src="/static/imgs/pending_envelope.png" height=25px  onclick="open_pending_requests()" style="padding: 2px 5px 2px; position:relative; top:-3px; border: 1px solid #F2F2F2;"></img></div>' + 
 	'</td>' + 
 	/*'<td width="0px"></td>' +*/
-	'<td class="friends_button_td" width="25px" height="50px" style="text-align:center; padding: 0px 0px 6px 0px;">' + 
-	'<div><img class="friends_button" src="/static/imgs/pending_envelope_exclamation.png" height=25px onclick="Manage_Chatrooms()" style="padding: 2px 1px 2px 1px; position:relative; top:-3px; border: 1px solid #F2F2F2;"></img></div>' + 
-	'</td>' +
 	
 	
 	
@@ -209,6 +196,8 @@ function populateFriendsList() {
 	.appendTo($("body"));
 	
 	
+	
+	
 	$('.friends_button').hover(
 		function() {
 			$(this).addClass('btn');
@@ -248,17 +237,28 @@ function populateFriendsList() {
 	);
 
 
-
+	var posx = $(window).width() - 250;
+	var posy = 100;
+	if($(window).height() < 800){
+		
+		 var friendheight = $(window).height() - 175;
+	 }
+	else var friendheight = 600;
+	
 	$("#friends_dialog").dialog({
-		position: 'right',
+		position: [posx, posy],
         autoOpen: true,
         resizable: true,
-		closeOnEscape: false
+		closeOnEscape: false,
+		height: friendheight,
+		width: 220,
+		minHeight: 300,
+		minWidth: 150
     });
     
 	$("#friends_dialog").parent().css({'position' : 'fixed'});
     // set height
-    $("#friends_dialog").css({'height' : '250'});
+    //$("#friends_dialog").css({'height' : '250'});
 }
 
 

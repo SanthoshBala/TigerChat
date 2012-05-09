@@ -104,7 +104,7 @@ def add_friend(request):
 		else:
 			invitation = SystemInvitation.objects.create(inviter=inviter, invitee_netid=invitee)
 			send_invitation_email(inviter, invitee)
-		http_response = HttpResponse('Invited')
+		data = simplejson.dumps({'jid': invitee}, default =json_handler)
 	elif (len(potential_friends) > 1):
 		## error
 		raise Exception('Non-specific jid')
@@ -143,8 +143,9 @@ def add_friend(request):
 				# if f.creator is the user.person, then they've already
 			# sent this friend request, so ignore this message
 			# else friendship already confirmed, so ignore
-				
-	return HttpResponse("Success")
+		data = simplejson.dumps(friend, default=json_handler)
+	
+	return HttpResponse(data, mimetype='application/javascript')
 
 ## send email to invited friend
 # inviter: string

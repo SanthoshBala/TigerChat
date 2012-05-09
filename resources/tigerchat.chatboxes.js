@@ -33,7 +33,6 @@ function HandleChatboxEnter(chat_with_name) {
  * Makes a new chatbox, or reopens one that had already been made.
 ************************************************************************/
 function makeNewChatbox(chat_with_name) {
-	
 	var new_name = "chatbox_" + chat_with_name;  // Creating the ID (chatbox_name)
 	
 	if(chat_with_name in instance_chatrooms) {
@@ -47,7 +46,6 @@ function makeNewChatbox(chat_with_name) {
 	
 	// If it has already been created, just open it
 	if ($("#" + new_name).length > 0) {
-		
 		// If it's open
 		if ($('#' + new_name).dialog('isOpen') == true) {
 			return;
@@ -91,6 +89,17 @@ function makeNewChatbox(chat_with_name) {
 		}
 	);
 	
+	
+	$('div[id^="chatbox"]').parent().children(":first-child").removeClass('ui-widget-header');
+	$('div[id*="chatbox"]').parent().children(":first-child").addClass('ui-widget-header-disabled');
+	
+	
+	$("#" + new_name).parent().children(":first").addClass('ui-widget-header');
+	$("#" + new_name).parent().children(":first").removeClass('ui-widget-header-disabled');
+	
+	
+	
+	
 	// Set some css for the sent text
 	$("#send_text_" + chat_with_name).css({'font-family': 'Tahoma,Arial,sans-serif'}); 
 	$("#send_text_" + chat_with_name).css({'font-size': '13px'});
@@ -114,11 +123,10 @@ function makeNewChatbox(chat_with_name) {
 		function() {
 		$('div[id^="chatbox"]').parent().children(":first-child").removeClass('ui-widget-header');
 		$('div[id*="chatbox"]').parent().children(":first-child").addClass('ui-widget-header-disabled');
-		$(this).parent().parent().children(":first").addClass('ui-widget-header');
-		$(this).parent().parent().children(":first").removeClass('ui-widget-header-disabled');		         
+		$(this).parent().parent().parent().children(":first").addClass('ui-widget-header');
+		$(this).parent().parent().parent().children(":first").removeClass('ui-widget-header-disabled');		         
 		}
 	);
-	
 	
 	
 }
@@ -197,8 +205,9 @@ function sendChatroomPresence(roomjid) {
  ************************************************************************/
 function showChatMessage(from, message) {
 	makeNewChatbox(from);
+	var firstname = instance_friends[from].FirstName;
 	var timestamp = getTimeStamp();
-	$('#text_area_' + from).append('<span class="contactname" style = "color:#0033cc;" >' + timestamp + from + ": " + '</span> <span class="maintext" style = "color:#000000;" >' + message + "</span><br/>");
+	$('#text_area_' + from).append('<span class="contactname" style = "color:#0033cc;" >' + timestamp + firstname + ": " + '</span> <span class="maintext" style = "color:#000000;" >' + message + "</span><br/>");
 	$('#text_area_' + from).scrollTop($('#text_area_' + from)[0].scrollHeight);
 	
 }

@@ -47,6 +47,7 @@ urlpatterns = patterns('',
     url(r'^users/$', 'TigerChat.registration.views.users'),
     url(r'^people/$', 'TigerChat.registration.views.people'),
     url(r'^removeall/$', 'TigerChat.registration.views.remove_everything'),
+	url(r'^profile/$', 'TigerChat.registration.views.get_profile'),
     
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
