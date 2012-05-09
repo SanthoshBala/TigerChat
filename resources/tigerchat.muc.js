@@ -124,7 +124,7 @@ function Manage_Chatrooms() {
 
 	
 	$(" <div />" ).attr("id", 'room_management_dialog')
-		.attr("title", "Manage Room")
+		.attr("title", "Manage Rooms")
 		.html('<div class = "room_manage_box" id="room_manage_box" style="height: 100%; margin: auto; position: relative; background-color:white; border-radius: 0px 0px 0px 12px;">' +
 			
 			
