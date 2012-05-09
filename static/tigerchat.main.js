@@ -3,6 +3,8 @@
 /**** ALL GLOBAL VARIABLES GO HERE ****/
 var connection = null;			// The strophe connection
 var my_user_name;				// My user name (jid)
+var myFirstName;				// My user name (jid)
+var myLastName;					// My user name (jid)
 var instance_friends = {};		// An associative array of my friends/information
 var instance_chatrooms = {};	// An associative array of my chatroom affiliations
 var page_has_focus = true;
@@ -74,6 +76,16 @@ $(document).ready(function () {
 			 my_user_name = data.jid;
 			var my_jid = my_user_name + '@localhost/princeton';
 			connection.connect(my_jid, 'pwd', onConnect);
+			
+			$.getJSON('/vcard/', {jid: my_user_name}, 
+				function(data) {
+					myFirstName = data.first_name; // #fix
+					myLastName = data.last_name; //#fix
+					
+				}
+			);
+			
+			
 	
 		} 	
 	);

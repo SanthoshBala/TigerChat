@@ -1,6 +1,7 @@
 
 function openRoomCreation() {
 	if( $('#room_creation_dialog').length > 0) {
+		$('#room_creation_dialog').dialog('close');
 		$('#room_creation_dialog').dialog('open');	
 	}
 	
@@ -112,6 +113,7 @@ function Manage_Chatrooms() {
 	// If the chatroom management dialog has already been created, then just open it
 	if ($("#room_management_dialog").length > 0) {
 		$('.room_selection_item').remove();
+		$('#room_management_dialog').dialog('closed');
 		$('#room_management_dialog').dialog('open');
 		change_selected_room('Select A Room');
 		for (chatroomname in instance_chatrooms) {

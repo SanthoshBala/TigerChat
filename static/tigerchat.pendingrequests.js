@@ -44,6 +44,7 @@ function open_pending_requests() {
 	// If the pending dialog has already been created, then just open and
 	// populate it
 	if ($("#subscribe_dialog").length > 0) {
+		$('#subscribe_dialog').dialog('close');
 		$('#subscribe_dialog').dialog('open');
 		
 		return;
