@@ -19,6 +19,7 @@ def search_ldap(request):
  
  	# Get all entries from ldapsearch
 	fout = getoutput('/usr/bin/ldapsearch -x -h ldap.princeton.edu -u -b o="Princeton University, c=US" "(cn=*%s*)"' % query)
+
 	entries = fout.split('#')[8:-3]
 	data = []
 

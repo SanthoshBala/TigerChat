@@ -3,13 +3,17 @@ Notes:
 
 DONE - before sending email, open modal dialog
 
-no adding yourself
+DONE - no adding yourself
 
 DONE - before deleting room, open modal dialog
 
 DONE - fix rejecting a friend
 
-open already open window, reopen it
+test denying chatroom invitation
+
+DONE - open already open window, reopen it
+
+standardize to buddy, not friend
 
 DONE - create room on enter
 

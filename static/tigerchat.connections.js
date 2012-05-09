@@ -253,7 +253,7 @@ function onMessage(msg) {
 			if ($("#chatbox_" + chatroom_jid).length > 0) {
 				if ($('#chatbox_' + chatroom_jid).dialog('isOpen') == true) {
 					var timestamp = getTimeStamp();
-					$('#text_area_' + chatroom_jid).append('<span style = "color:#AAAAAA;" >' + timestamp + '</span> <span style = "color:#AAAAAA;" >' +  'The chatroom has been deleted.' + "</span><br/>");
+					$('#text_area_' + chatroom_jid).append('<span style = "color:#AAAAAA;" >' + timestamp + '</span> <span style = "color:#AAAAAA;" >' +  'The chatroom has been deleted. The room will be removed from your buddy list after this session is completed.' + "</span><br/>");
 					$('#text_area_' + chatroom_jid).scrollTop($('#text_area_' + chatroom_jid)[0].scrollHeight);
 				}
 			}

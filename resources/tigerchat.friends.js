@@ -99,6 +99,7 @@ function populateFriendsList() {
 	
 	// Do not want to create multiple times
 	if ($("#friends_dialog").length > 0) {
+		$("#friends_dialog").dialog('close');
 		$("#friends_dialog").dialog('open');
 		
 		var posx = $(window).width() - 250;
