@@ -5,8 +5,8 @@ import sys
 # generality, but for some reason this reference generates a
 # KeyError exception
 
-PATH_TO_WORKSPACE = '/home/santhosh/workspace/'
-PATH_TO_TIGERCHAT = '/home/santhosh/workspace/TigerChat/'
+PATH_TO_WORKSPACE = '/home/vyas/workspace/'
+PATH_TO_TIGERCHAT = '/home/vyas/workspace/TigerChat/'
 
 if PATH_TO_WORKSPACE not in sys.path:
     sys.path.append(PATH_TO_WORKSPACE)

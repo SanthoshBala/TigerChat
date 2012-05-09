@@ -25,6 +25,9 @@ $(window).resize(function(){
 	    top: ($(window).height() - $('.centerimagecontainer').outerHeight())/2
 	});
 	
+	log($(window).width());
+	log($('.centerimagecontainer').outerWidth());
+	
 	var winwidth = $(window).width();
 	var winheight = $(window).height();
 	var friendwidth = $('#friends_dialog').dialog("option", "width");
@@ -62,6 +65,7 @@ $(window).resize(function(){
  * On page load, execute the following.
  ***********************************************************************/
 $(document).ready(function () {
+	$(window).resize();
 	
 	// Create a strophe connection, set the username, and connect
     connection = new Strophe.Connection('/xmpp-httpbind');
@@ -85,16 +89,6 @@ $(document).ready(function () {
       
 	// Initialize the instance friends variable
 	$.get('/friends/', function(data) {InitializeFriendsVariable(data)} );
-
-    
-  
-  
-	
-	/*
-	$(window).resize();*/
-	
-	// start the dropdowns
-	//$('.dropdown-toggle').dropdown();
     
     
 	//$('.btn').button('reset');
