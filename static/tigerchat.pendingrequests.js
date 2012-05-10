@@ -43,7 +43,7 @@ function create_pending_requests_dialog() {
  * Otherwise, create it, and then open it.
  ***********************************************************************/
 function open_pending_requests() {
-	
+	$('#ttip3').tooltip('hide');
 	// If the pending dialog has already been created, then just open and
 	// populate it
 	if ($("#subscribe_dialog").length > 0) {
