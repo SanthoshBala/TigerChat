@@ -147,7 +147,7 @@ function repopulate_pending_requests(data) {
 	
 	for(var i = 0; i < data.room_invites.length; i++) {
 		var newrow = '<tr pendingname= "' + data.room_invites[i].room_name + '">' +
-		'<td>' + data.room_invites[i].room_name + ' room</td>' +
+		'<td>' + data.room_invites[i].room_name + '</td>' +
 		'<td>' +  "<input type='button' value='Accept' onclick='AcceptReceivedChatroomInvite(\"" + data.room_invites[i].room_jid + "\")'/>" + '</td>' +
 		'<td>' +  "<input type='button' value='Reject' onclick='RejectReceivedChatroomInvite(\"" + data.room_invites[i].room_jid + "\")'/>" + '</td>' +
 		'</tr>';
