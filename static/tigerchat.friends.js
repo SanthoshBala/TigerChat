@@ -132,7 +132,7 @@ function populateFriendsList() {
 	'</td>' + 
 	/*'<td width="0px"></td>' +*/
 	'<td class="friends_button_td" width="70px" height="50px" style="text-align:center; padding: 0px 0px 6px 0px;">' + 
-	'<div id="roombutton" class="btn-group"><a class="dropdown-toggle" data-toggle="dropdown" style="box-shadow: none;"><a id="ttip2" rel="tooltip" title="Rooms"><img class="friends_button" src="/static/imgs/add_group.png" style="height:27px; padding: 2px 5px 2px; border: 1px solid #F2F2F2;"></img></a></a>' +
+	'<div id="roombutton" class="btn-group"><a class="dropdown-toggle" data-toggle="dropdown" style="box-shadow: none;"><b id="ttip2" rel="tooltip" title="Rooms"><img class="friends_button" src="/static/imgs/add_group.png" style="height:27px; padding: 2px 5px 2px; border: 1px solid #F2F2F2;"></img></b></a>' +
 	
 	' <ul class="dropdown-menu"><li><a style="cursor: pointer; text-align: left" onclick="openRoomCreation()">Create Room</a></li><li><a style="cursor: pointer; text-align: left" onclick="Manage_Chatrooms()">Manage Rooms</a></li></ul></div>' + 
 	'</td>' + 
@@ -204,7 +204,7 @@ function populateFriendsList() {
 ,	});
 	$('#ttip2').tooltip({
 		'placement':'top',
-		'delay': { 'show': 700, 'hide': 100 }
+		'delay': { 'show': 100, 'hide': 100 }
 	});
 	$('#ttip3').tooltip({
 		'placement':'top',

@@ -27,9 +27,9 @@ change everything to getJSON
 
 DONE - FUCK IT - DOESN'T WORK FROM SERVER BECAUSE OF LDAP DOMAIN BLOCKING - search by netid as well in add buddy 
 
-fix default text in friends list
+DONE - NOPEEEEE - fix default text in friends list
 
-chatrooms have no name (only jid) (or fix)
+DONE - chatroms have no name (only jid) (or fix)
 
 DONE - on registration page, logo is larger than it should be
 

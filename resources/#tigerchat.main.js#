@@ -1,4 +1,4 @@
-
+
 
 /**** ALL GLOBAL VARIABLES GO HERE ****/
 var connection = null;			// The strophe connection

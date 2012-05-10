@@ -366,6 +366,13 @@ function create_chatroom() {
 	
 	$('#room_creation_error_msg').remove();
 	// check if jid for chatroom already exists
+	
+	if(roomname.length < 4) {
+		newrow = '<tr id="room_creation_error_msg"><td colspan="2" style="text-align: center; color: red;"> Room names may only contain alphanumeric characters. </td></tr>';
+		$('#room_creation_table').append(newrow);
+		return;
+	
+	}
 	if(isLegalRoomName(roomname) == false) {
 		newrow = '<tr id="room_creation_error_msg"><td colspan="2" style="text-align: center; color: red;"> Room names may only contain alphanumeric characters. </td></tr>';
 		$('#room_creation_table').append(newrow);

@@ -58,19 +58,6 @@ function openRoomCreation() {
 }
 
 
-function TestRoomMembers() {
-
-	for(roomjid in instance_chatrooms) {
-	
-		log(roomjid);
-		log('name: ' + instance_chatrooms[roomjid].name);
-		for(var i = 0; i < instance_chatrooms[roomjid].occupants.length; i++) {
-			log('participant: ');
-			log(instance_chatrooms[roomjid].occupants[i]);
-		}
-	
-	}
-}
 
 
 function change_selected_room(room_name) {
@@ -80,14 +67,14 @@ function change_selected_room(room_name) {
 	
 	roomjid = room_name;
 	
-			//log('changed selection to ' + roomjid);
+	
 			if(roomjid == 'Select A Room') {
 				$('#room_manage_additions').css({'visibility': 'hidden'});
 				return;
 			}
 			
 			else if(instance_chatrooms[roomjid].admin == my_user_name) {
-				//log(' I am the admin');
+	
 				$('#room_manage_additions').css({'visibility': ''});
 				$('#chatroom-search-table tr').remove();
 				
@@ -95,7 +82,7 @@ function change_selected_room(room_name) {
 			}
 			
 			else {
-				//log(' I am not the admin');
+	
 				
 				$('#room_manage_additions').css({'visibility': 'hidden'});
 
@@ -351,7 +338,8 @@ function inviteChatroomFriend(friendname) {
 	
 
 	roomname = $('#curr_selected_room').html();
-	log(roomname  + ' and ' + friendname);
+
+
 	invite_to_chatroom(friendname, roomname);
 	$('#chatroom-search-table tr[friendname="' + friendname + '"] td:eq(2)').replaceWith('<td>' + '<button disabled="disabled" type="button"> Invited </button>' + '</td>');
 
@@ -378,6 +366,13 @@ function create_chatroom() {
 	
 	$('#room_creation_error_msg').remove();
 	// check if jid for chatroom already exists
+	
+	if(roomname.length < 4) {
+		newrow = '<tr id="room_creation_error_msg"><td colspan="2" style="text-align: center; color: red;"> Room names may only contain alphanumeric characters. </td></tr>';
+		$('#room_creation_table').append(newrow);
+		return;
+	
+	}
 	if(isLegalRoomName(roomname) == false) {
 		newrow = '<tr id="room_creation_error_msg"><td colspan="2" style="text-align: center; color: red;"> Room names may only contain alphanumeric characters. </td></tr>';
 		$('#room_creation_table').append(newrow);
@@ -430,7 +425,7 @@ function isLegalRoomName(roomname) {
 }
 
 function addRoomToBuddyList(roomjid, roomname, admin) {
-	//log('adding a room ' + roomjid + ' to my buddy list.');
+
 
 	var new_room = {};
 	new_room.occupants = new Array();
@@ -527,7 +522,7 @@ function deleteroom() {
 	
 	if(instance_chatrooms[roomjid].admin == my_user_name) {
 		
-		log('This will delete the room!');
+		
 		
 		sendChatroomDeletion(roomjid);
 		// send message saying the room has been destroyed
@@ -539,7 +534,7 @@ function deleteroom() {
 	
 	else {
 		
-		log('This will remove the room from your buddy list.');
+		
 		sendChatroomLeave(roomjid);
 		delete instance_chatrooms[roomjid];
 		repopulateFriendsList();
