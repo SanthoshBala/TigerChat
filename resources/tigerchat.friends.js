@@ -405,6 +405,14 @@ function repopulateFriendsList() {
 	// Click function for friends
 	$('#friend-table tr[friendname!="NONE"]').click(
 		function () {
+			var newname = $(this).attr("friendname");
+			if ($("#" + new_name).length > 0) {
+				// If it's open
+				if ($('#' + new_name).dialog('isOpen') == true) {
+					 $('#' + new_name).dialog('close');
+					 $('#' + new_name).dialog('open');
+				}
+			}
 			makeNewChatbox($(this).attr("friendname"));
 		}
 	);

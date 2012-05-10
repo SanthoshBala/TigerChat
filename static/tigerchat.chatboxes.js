@@ -47,8 +47,6 @@ function makeNewChatbox(chat_with_name) {
 	if ($("#" + new_name).length > 0) {
 		// If it's open
 		if ($('#' + new_name).dialog('isOpen') == true) {
-			 $('#' + new_name).dialog('close');
-			 $('#' + new_name).dialog('open');
 			return;
 		}
 		// if its not open, open it
