@@ -33,7 +33,7 @@ def register_new_user(request):
 		person.user = request.user
 		person.has_jabber_acct = True
 	else:
-		return HttpResponseRedirect('/tigerchat/')
+		return HttpResponseRedirect('/home/')
 
 	# Check if a system invitation exists for this person
 
@@ -64,7 +64,7 @@ def register_new_user(request):
 	except:
 		person.first_name = person.jid
 	person.save()
-	return render_to_response('newuser.html', {'user_name': person.jid})
+	return render_to_response('newuser.html', {'user_name': person.jid, 'first_name': person.first_name, 'last_name': person.last_name})
 	#return HttpResponseRedirect('/tigerchat/')
 
 

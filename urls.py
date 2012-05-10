@@ -8,9 +8,10 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # BASE URLS
-    url(r'^$', 'TigerChat.views.home', name='home'),
-    url(r'^tigerchat/$', 'TigerChat.views.tigerchat_main'),
-    url(r'^terms/$', 'TigerChat.views.terms'),
+    url(r'^$', 'TigerChat.views.welcome', name='welcome'),
+    url(r'^home/$', 'TigerChat.views.home', name='home'),
+    url(r'^tigerchat/$', 'TigerChat.views.tigerchat'),
+    url(r'^about/$', 'TigerChat.views.about'),
     
     # AUTHENTICATION URLS
     url(r'^login/$', 'django_cas.views.login'),
