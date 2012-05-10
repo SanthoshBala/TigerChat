@@ -9,7 +9,7 @@ DONE - before deleting room, open modal dialog
 
 DONE - fix rejecting a friend
 
-test denying chatroom invitation
+DONE - test denying chatroom invitation
 
 DONE - open already open window, reopen it
 
@@ -56,8 +56,6 @@ fix naacho's name not showing up when I chat withh it
 DONE - show names within chatrooms as well as 1:1 chats
 
 DONE - pending requests dialog should close when empty
-
-Accepting an system invitation should automatically make inviter and invitee friends
 
 DONE - fix alignment of chat div - currently flowing under the textarea
 

@@ -187,7 +187,18 @@ function addPendingChatroomInvites(data) {
 
 function RejectReceivedChatroomInvite(roomjid) {
 
-
+	$('#pending-table-rooms tr[pendingname= "' + roomjid + '"]').remove();
+	$.get("/room/deny/", {room_jid: roomjid},
+		function(data) {
+			$.getJSON("/requests/",
+					function(data){
+						refresh_pending_requests(data);
+						//repopulate_pending_requests(data);
+						
+					}
+			);
+		}
+	);
 
 }
 
@@ -198,7 +209,7 @@ function AcceptReceivedChatroomInvite(roomjid) {
 
 	$('#pending-table-rooms tr[pendingname= "' + roomjid + '"]').remove();
 
-	$.getJSON("/room/join", {room_jid: roomjid}, 
+	$.getJSON("/room/join/", {room_jid: roomjid}, 
 		function(data) {
 			
 			//data = jQuery.parseJSON(data);

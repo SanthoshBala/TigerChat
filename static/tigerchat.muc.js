@@ -368,7 +368,7 @@ function create_chatroom() {
 	// check if jid for chatroom already exists
 	
 	if(roomname.length < 4) {
-		newrow = '<tr id="room_creation_error_msg"><td colspan="2" style="text-align: center; color: red;"> Room names may only contain alphanumeric characters. </td></tr>';
+		newrow = '<tr id="room_creation_error_msg"><td colspan="2" style="text-align: center; color: red;"> Room names must be at least 4 characters. </td></tr>';
 		$('#room_creation_table').append(newrow);
 		return;
 	
