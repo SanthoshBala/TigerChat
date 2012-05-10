@@ -23,7 +23,7 @@ $(document).ready(function () {
 					connection.register.submit();
 				} 
 				else if (status === Strophe.Status.REGISTERED) {
-					window.location.replace("/tigerchat/");
+					window.location.replace("/home/");
 					connection.authenticate();
 				} 
 				else if (status === Strophe.Status.CONNECTED) {
@@ -48,7 +48,7 @@ $(document).ready(function () {
 
 
 function goToTigerchat() {
-	  document.location.href= "/tigerchat/"
+	  document.location.href= "/home/"
 }
 
 
