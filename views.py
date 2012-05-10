@@ -15,6 +15,8 @@ def home(request):
 		return HttpResponseRedirect('/tigerchat/')
 	return render_to_response('welcome.html')
 
+def terms(request):
+	return render_to_response('Information.html')
 @login_required   
 def tigerchat_main(request):
 	try:

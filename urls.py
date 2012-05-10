@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     # BASE URLS
     url(r'^$', 'TigerChat.views.home', name='home'),
     url(r'^tigerchat/$', 'TigerChat.views.tigerchat_main'),
+    url(r'^terms/$', 'TigerChat.views.terms'),
     
     # AUTHENTICATION URLS
     url(r'^login/$', 'django_cas.views.login'),
