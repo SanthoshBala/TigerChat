@@ -204,7 +204,7 @@ function populateFriendsList() {
 ,	});
 	$('#ttip2').tooltip({
 		'placement':'top',
-		'delay': { 'show': 100, 'hide': 100 }
+		'delay': { 'show': 700, 'hide': 100 }
 	});
 	$('#ttip3').tooltip({
 		'placement':'top',
