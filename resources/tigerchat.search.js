@@ -152,9 +152,17 @@ function fillSearchBox(data) {
 		
 		if (username == my_user_name) continue;
 		
+		var firstname = newdata[i].first_name;
+		var lastname = newdata[i].last_name;
+		
+		if(firstname == null && lastname == null) continue;
+		if(firstname == null) firstname = '';
+		if(lastname == null) lastname = '';
+		
+		
 		// Create a row in the table
 		var newrow = 	'<tr friendname= "' + newdata[i].username + '">' +
-						'<td>' + newdata[i].first_name + ' ' + newdata[i].last_name + '</td>' +
+						'<td>' + firstname + ' ' + lastname + '</td>' +
 						'<td>' + classyear + '</td>';
 		
 		// If we are already friends, have a disabled "confirmed" button
