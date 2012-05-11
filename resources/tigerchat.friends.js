@@ -406,7 +406,7 @@ function repopulateFriendsList() {
 	$('#friend-table tr[friendname!="NONE"]').click(
 		function () {
 			var newname = $(this).attr("friendname");
-			if ($("#" + new_name).length > 0) {
+			if ($("#" + newname).length > 0) {
 				// If it's open
 				if ($('#' + new_name).dialog('isOpen') == true) {
 					 $('#' + new_name).dialog('close');
