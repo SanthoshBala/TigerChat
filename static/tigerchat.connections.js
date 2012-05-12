@@ -295,7 +295,7 @@ function onMessage(msg) {
 		
 		if(page_has_focus == false) {
 		
-			$.getJSON('/vcard/', {jid: friend_netid}, 
+			$.getJSON('/vcard/', {jid: from}, 
 				function(data) {
 					
 					if(new_msg_from == '') {
