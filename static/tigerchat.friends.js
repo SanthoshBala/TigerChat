@@ -290,6 +290,7 @@ function repopulateFriendsList() {
 	
 	var filter_key = $('#friends_search').val();
 	if(filter_key == 'Filter friends...') filter_key = '';
+    filter_key_reg = new RegExp(filter_key, "i");
 	// Sort the list of friends
 	var sorted_list_online = [];
 	var sorted_list_offline = [];
@@ -298,7 +299,7 @@ function repopulateFriendsList() {
 	
 	for(chatroom_name in instance_chatrooms) {
 		// skip if doesnt match filter
-		if ( chatroom_name.search(filter_key) == -1 ) {
+		if ( chatroom_name.search(filter_key_reg) == -1 ) {
 			continue;
 		}
 		sorted_list_rooms.push(chatroom_name);	
@@ -307,9 +308,9 @@ function repopulateFriendsList() {
 	for(friend_netid in instance_friends) {
 		
 		// skip if doesnt match filter
-		if (  	(friend_netid.search(filter_key) == -1 ) &&  
-				(instance_friends[friend_netid].FirstName.search(filter_key) == -1 ) && 
-				(instance_friends[friend_netid].LastName.search(filter_key) == -1 ) ) {
+		if (  	(friend_netid.search(filter_key_reg) == -1 ) &&  
+				(instance_friends[friend_netid].FirstName.search(filter_key_reg) == -1 ) && 
+				(instance_friends[friend_netid].LastName.search(filter_key_reg) == -1 ) ) {
 			continue;
 		}
 		

@@ -179,7 +179,7 @@ function Manage_Chatrooms() {
 		}
 	);
 	
-	$('#create_chatroom_button').click( 
+	$('#room_searchbutton').click( 
 		function() {
 			searchterm = $('#chatroom_search_textbox').val();
 			$('#chatroom_search_textbox').val('');	// clear the search box
@@ -190,6 +190,8 @@ function Manage_Chatrooms() {
 			fillRoomSearchBox(searchterm, roomjid);
 		}
 	);
+
+	
 	
 	$('#chatroom_search_textbox').keypress(function(e)
 	{
